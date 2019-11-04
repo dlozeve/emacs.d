@@ -221,9 +221,12 @@
 
 (use-package elfeed
   :ensure t
-  :bind ("C-c f" . elfeed)
+  :bind ("C-c f" . elfeed))
+
+(use-package elfeed-org
+  :ensure t
   :config
-  (use-package "elfeed-org" :ensure t)
+  (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
 
 (use-package pdf-tools
