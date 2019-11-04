@@ -213,6 +213,8 @@
 (use-package gnu-apl-mode
   :ensure t
   :config
+  (defface  gnu-apl-default
+    '((t (:height 1.2 :family "APL385 Unicode"))) t)
   (defun em-gnu-apl-init ()
     (setq buffer-face-mode-face 'gnu-apl-default)
     (buffer-face-mode))
