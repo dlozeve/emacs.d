@@ -68,7 +68,7 @@
 ;; highlight the current line
 (use-package hl-line
   :config
-  (global-hl-line-mode 1))
+  (global-hl-line-mode -1))
 
 (use-package uniquify
   :config
@@ -80,7 +80,7 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
-(use-package "monokai-theme"
+(use-package monokai-theme
   :ensure t
   :config
   (load-theme 'monokai t))
@@ -219,7 +219,7 @@
 (use-package gnu-apl-mode
   :ensure t
   :config
-  (defface  gnu-apl-default
+  (defface gnu-apl-default
     '((t (:height 1.2 :family "APL385 Unicode"))) t)
   (defun em-gnu-apl-init ()
     (setq buffer-face-mode-face 'gnu-apl-default)
