@@ -269,6 +269,11 @@
   (interactive)
   (find-file "~/notes/journal.org"))
 
+(defun bib ()
+  "Find the bibliography file."
+  (interactive)
+  (find-file "~/notes/bibliography/bibliography.bib"))
+
 (use-package org
   :ensure t
   :bind (("C-c l" . org-store-link)
