@@ -165,6 +165,7 @@
   :config
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
         ispell-extra-args '("--sug-mode=ultra"))
+  (ispell-change-dictionary "british")
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   (global-set-key (kbd "<f8>") 'ispell-word)
@@ -321,21 +322,17 @@
   (setq org-capture-templates
 	(quote
 	 (("w" "Work" entry
-	   (file+olp "~/notes/planner.org" "Tasks" "Work")
+	   (file+olp "~/notes/planner.org" "Other")
 	   "*** TODO %?" :prepend t)
-	  ("e" "Event" entry
-	   (file "~/Nextcloud/org/gcal.org")
-	   "*** %?
-%^t" :prepend t)
 	  ("t" "Task" entry
-	   (file+olp "~/notes/planner.org" "Tasks" "Misc")
+	   (file+olp "~/notes/planner.org" "Personal")
 	   "*** TODO %?" :prepend t)
 	  ("j" "Journal Entry" entry
 	   (file+datetree "~/notes/journal.org")
-	   "* %T %^{Header: |Log|Note|Idea}
+	   "* %T Log
   %?%i" :empty_lines 1)
 	  ("p" "Project" entry
-	   (file+olp "~/notes/planner.org" "Projects")
+	   (file+olp "~/notes/planner.org" "Personal projects")
 	   "" :prepend t)
 	  ("n" "Note" entry
 	   (file+olp "~/notes/planner.org" "Notes")
