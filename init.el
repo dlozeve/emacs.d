@@ -155,6 +155,12 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
+(use-package yaml-mode
+  :ensure t)
+
+(use-package json-mode
+  :ensure t)
+
 (use-package flyspell
   :config
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
@@ -220,6 +226,13 @@
     (buffer-face-mode))
   (add-hook 'gnu-apl-interactive-mode-hook 'em-gnu-apl-init)
   (add-hook 'gnu-apl-mode-hook 'em-gnu-apl-init))
+
+(use-package restclient
+  :ensure t
+  :defer t
+  :mode (("\\.http\\'" . restclient-mode))
+  :bind (:map restclient-mode-map
+              ("C-c C-f" . json-mode-beautify)))
 
 (use-package elfeed
   :ensure t
