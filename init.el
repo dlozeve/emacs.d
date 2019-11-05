@@ -228,6 +228,12 @@
   (add-hook 'gnu-apl-interactive-mode-hook 'em-gnu-apl-init)
   (add-hook 'gnu-apl-mode-hook 'em-gnu-apl-init))
 
+(use-package tex-site
+  :defer t
+  :ensure auctex
+  :config
+  (setq TeX-auto-save t))
+
 (use-package restclient
   :ensure t
   :defer t
