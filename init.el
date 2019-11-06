@@ -232,7 +232,10 @@
   :defer t
   :ensure auctex
   :config
-  (setq TeX-auto-save t))
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
 (use-package restclient
   :ensure t
