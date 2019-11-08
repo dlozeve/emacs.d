@@ -139,6 +139,10 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch)))
 
+(use-package forge
+  :ensure t
+  :after magit)
+
 (use-package yasnippet
   :ensure t
   :config

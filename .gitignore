@@ -18,5 +18,6 @@ tramp
 nov-places
 transient/
 org-clock-save.el
+forge-database.sqlite
 custom.el
 email.el
