@@ -80,10 +80,12 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
-(use-package monokai-theme
+(use-package base16-theme
   :ensure t
+  :init
+  (setq base16-theme-256-color-source 'base16-shell)
   :config
-  (load-theme 'monokai t))
+  (load-theme 'base16-default-dark t))
 
 (use-package exec-path-from-shell
   :ensure t
