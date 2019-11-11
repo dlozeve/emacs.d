@@ -167,6 +167,9 @@
 (use-package json-mode
   :ensure t)
 
+(use-package cmake-mode
+  :ensure t)
+
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
