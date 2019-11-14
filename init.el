@@ -191,6 +191,9 @@
   (setq langtool-java-classpath
 	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
 
+(use-package python-docstring
+  :ensure t)
+
 (use-package elpy
   :ensure t
   :init
