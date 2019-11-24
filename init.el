@@ -50,6 +50,9 @@
 
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 
+(setq-default c-basic-offset 4)
+(setq c-default-style "linux")
+
 (set-frame-font "Iosevka:pixelsize=18" nil t)
 (add-to-list 'default-frame-alist '(font .  "Iosevka:pixelsize=18"))
 (set-face-attribute 'default t :font "Iosevka:pixelsize=18")
@@ -190,6 +193,29 @@
   :init
   (setq langtool-java-classpath
 	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
+
+(use-package lsp-mode
+  :commands lsp
+  :ensure t)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :ensure t)
+
+(use-package company-lsp
+  :ensure t
+  :commands company-lsp
+  ;; add company-lsp as a backend
+  :config (push 'company-lsp company-backends))
+
+(use-package ccls
+  :ensure t
+  :config
+  (setq ccls-executable "ccls")
+  (setq lsp-prefer-flymake nil)
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  :hook ((c-mode c++-mode objc-mode) .
+         (lambda () (require 'ccls) (lsp))))
 
 (use-package python-docstring
   :ensure t)
