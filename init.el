@@ -254,9 +254,16 @@
   :ensure t
   :config
   (require 'slime-autoloads)
-  (add-to-list 'slime-contribs 'slime-fancy)
+  (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
   (setq slime-lisp-implementations
-	'((sbcl ("/usr/bin/sbcl")))))
+	'((sbcl ("/usr/bin/sbcl"))))
+  (setq slime-net-coding-system 'utf-8-unix)
+  ;; Stop SLIME's REPL from grabbing DEL,
+  ;; which is annoying when backspacing over a '('
+  (defun override-slime-repl-bindings-with-paredit ()
+    (define-key slime-repl-mode-map
+      (read-kbd-macro paredit-backward-delete-key) nil))
+  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit))
 
 (use-package gnu-apl-mode
   :ensure t
