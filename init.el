@@ -266,6 +266,9 @@
   (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
   (setq lisp-indent-function 'lisp-indent-function))
 
+(use-package dyalog-mode
+  :ensure t)
+
 (use-package gnu-apl-mode
   :ensure t
   :config
