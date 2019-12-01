@@ -256,14 +256,15 @@
   (require 'slime-autoloads)
   (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
   (setq slime-lisp-implementations
-	'((sbcl ("/usr/bin/sbcl"))))
+	'((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)))
   (setq slime-net-coding-system 'utf-8-unix)
   ;; Stop SLIME's REPL from grabbing DEL,
   ;; which is annoying when backspacing over a '('
   (defun override-slime-repl-bindings-with-paredit ()
     (define-key slime-repl-mode-map
       (read-kbd-macro paredit-backward-delete-key) nil))
-  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit))
+  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+  (setq lisp-indent-function 'lisp-indent-function))
 
 (use-package gnu-apl-mode
   :ensure t
