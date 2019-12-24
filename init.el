@@ -58,6 +58,16 @@
 (set-face-attribute 'default t :font "Iosevka:pixelsize=18")
 (set-face-attribute 'default nil :font  "Iosevka:pixelsize=18")
 
+(defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+
+(defun unfill-region ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-region (region-beginning) (region-end) nil)))
+
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
@@ -182,7 +192,7 @@
         ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_GB") nil utf-8)))
   (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  ;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   (global-set-key (kbd "<f8>") 'ispell-word)
   (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
   (global-set-key (kbd "M-<f8>") 'flyspell-buffer)
