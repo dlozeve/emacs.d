@@ -192,6 +192,10 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
+(use-package format-all
+  :ensure t
+  :bind ("C-c C-f" . format-all-buffer))
+
 (use-package yaml-mode
   :ensure t)
 
@@ -258,6 +262,8 @@
   (add-hook 'elpy-mode-hook 'projectile-mode)
   (add-hook 'elpy-mode-hook (lambda () (flycheck-select-checker 'python-mypy)))
   (setq elpy-eldoc-show-current-function nil)
+  (define-key elpy-mode-map (kbd "C-c C-f") nil)
+  (define-key python-mode-map (kbd "C-c C-f") nil)
 
   (when (load "flycheck" t t)
     (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
@@ -518,4 +524,3 @@
 
 
 ;;; init.el ends here
-
