@@ -205,6 +205,9 @@
 (use-package cmake-mode
   :ensure t)
 
+(use-package dockerfile-mode
+  :ensure t)
+
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
