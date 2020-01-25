@@ -301,7 +301,10 @@
     (define-key slime-repl-mode-map
       (read-kbd-macro paredit-backward-delete-key) nil))
   (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
-  (setq lisp-indent-function 'lisp-indent-function))
+  (setq lisp-indent-function 'lisp-indent-function)
+  ;; Use the offline hyperspec from the "clhs" quicklisp package:
+  ;; https://www.hexstreamsoft.com/libraries/clhs/
+  (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
 (use-package dyalog-mode
   :ensure t)
