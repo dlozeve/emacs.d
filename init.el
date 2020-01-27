@@ -359,6 +359,11 @@
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-text-width 100))
 
+(use-package twittering-mode
+  :ensure t
+  :config
+  (setq twittering-reverse-mode t))
+
 ;; Org-mode
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
