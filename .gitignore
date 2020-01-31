@@ -1,5 +1,6 @@
 *~
 *.elc
+bookmarks
 auto-save-list
 recentf
 savehist
@@ -17,6 +18,7 @@ session*
 tramp
 nov-places
 transient/
+elpy/
 org-clock-save.el
 forge-database.sqlite
 custom.el
