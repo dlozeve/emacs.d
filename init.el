@@ -399,6 +399,8 @@
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
+  (add-to-list 'org-modules 'habits)
+
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/notes")
 
@@ -427,22 +429,22 @@
 
   (setq org-capture-templates
 	(quote
-	 (("w" "Work" entry
+	 (("w" "Work Task" entry
 	   (file+olp "~/notes/planner.org" "Other")
-	   "*** TODO %?" :prepend t)
-	  ("t" "Task" entry
+	   "** TODO %?")
+	  ("e" "Event" entry
+	   (file+olp "~/notes/planner.org" "Other")
+	   "** %?")
+	  ("t" "Personal Task" entry
 	   (file+olp "~/notes/planner.org" "Personal")
-	   "*** TODO %?" :prepend t)
+	   "** TODO %?")
 	  ("j" "Journal Entry" entry
 	   (file+datetree "~/notes/journal.org")
 	   "* %T Log
   %?%i" :empty_lines 1)
-	  ("p" "Project" entry
-	   (file+olp "~/notes/planner.org" "Personal projects")
-	   "" :prepend t)
 	  ("n" "Note" entry
-	   (file+olp "~/notes/planner.org" "Notes")
-	   "** %?" :prepend t))))
+	   (file+olp "~/notes/small_notes.org" "Work")
+	   "** %?"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
 	(quote
