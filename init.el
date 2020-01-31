@@ -45,6 +45,11 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
+;; System locale to use for formatting time values.  Make sure that
+;; the weekdays in the time stamps of your Org mode files and in the
+;; agenda appear in English.
+(setq system-time-locale "C")
+
 ;; replace buffer-menu with ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
