@@ -280,6 +280,9 @@
     (add-to-list 'flycheck-disabled-checkers 'python-flake8)
     (add-to-list 'flycheck-disabled-checkers 'python-pylint)))
 
+(use-package julia-mode
+  :ensure t)
+
 (use-package dante
   :ensure t
   :after haskell-mode
