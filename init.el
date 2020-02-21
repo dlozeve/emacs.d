@@ -525,6 +525,20 @@
 
   (setq bibtex-autokey-year-length 4))
 
+(use-package ox-gfm
+  :ensure t
+  :after (org)
+  :config
+  (eval-after-load "org"
+    '(require 'ox-gfm nil t)))
+
+(defun my-insert-char ()
+  "Search for a unicode character and insert it."
+  (interactive)
+  (with-temp-buffer
+    (call-interactively 'insert-char)
+    (kill-ring-save (point-min) (point-max))))
+
 
 ;; email configuration file
 (setq email-file (expand-file-name "email.el" user-emacs-directory))
