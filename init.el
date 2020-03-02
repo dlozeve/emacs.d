@@ -335,6 +335,7 @@
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
+  (setq TeX-engine 'luatex)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
 (use-package restclient
@@ -493,7 +494,12 @@
      (clojure . t)))
 
   (setq org-latex-pdf-process
-	'("latexmk -shell-escape -bibtex -pdf %f")))
+	'("latexmk -shell-escape -bibtex -pdf %f"))
+
+  ;; System locale to use for formatting time values.  Make sure that
+  ;; the weekdays in the time stamps of your Org mode files and in the
+  ;; agenda appear in English.
+  (setq system-time-locale "C"))
 
 (use-package org-ref
   :ensure t
