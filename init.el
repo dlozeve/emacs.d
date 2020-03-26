@@ -336,7 +336,15 @@
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
   (setq TeX-engine 'luatex)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
+  ;; Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-source-correlate-start-server t)
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer))
 
 (use-package restclient
   :ensure t
