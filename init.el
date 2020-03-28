@@ -551,6 +551,16 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
 
+(use-package deft
+  :ensure t
+  :after org
+  :bind ("C-c n d" . deft)
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-default-extension "org")
+  (deft-directory "~/notes/notes"))
+
 (use-package ox-gfm
   :ensure t
   :after (org)
