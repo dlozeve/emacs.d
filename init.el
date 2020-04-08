@@ -446,22 +446,12 @@
 
   (setq org-capture-templates
 	(quote
-	 (("w" "Work Task" entry
-	   (file+olp "~/notes/planner.org" "Other")
-	   "** TODO %?")
-	  ("e" "Event" entry
-	   (file+olp "~/notes/planner.org" "Other")
+	 (("e" "Event" entry
+	   (file+olp "~/notes/planner.org" "Tasks")
 	   "** %?")
 	  ("t" "Personal Task" entry
-	   (file+olp "~/notes/planner.org" "Personal")
-	   "** TODO %?")
-	  ("j" "Journal Entry" entry
-	   (file+datetree "~/notes/journal.org")
-	   "* %T Log
-  %?%i" :empty_lines 1)
-	  ("n" "Note" entry
-	   (file+olp "~/notes/small_notes.org" "Work")
-	   "** %?"))))
+	   (file+olp "~/notes/planner.org" "Tasks")
+	   "** TODO %?"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
 	(quote
@@ -542,12 +532,13 @@
 (use-package org-roam
   :ensure t
   :hook (after-init . org-roam-mode)
-  :custom (org-roam-directory "~/notes/notes")
+  :custom
+  (org-roam-directory "~/notes/notes")
   :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
                ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n g" . org-roam-show-graph))
+               ("C-c n g" . org-roam-graph-show))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
 
