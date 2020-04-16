@@ -22,4 +22,4 @@ elpy/
 org-clock-save.el
 forge-database.sqlite
 custom.el
-email.el
+secrets.el

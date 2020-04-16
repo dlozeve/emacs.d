@@ -386,6 +386,13 @@
   :config
   (setq twittering-reverse-mode t))
 
+(use-package mathpix.el
+  :load-path "site-lisp"
+  ;; You also need to configure `mathpix-app-id` and
+  ;; `mathpix-app-key`, for instance in secrets.el
+  :bind
+  ("C-x m" . mathpix-screenshot))
+
 ;; Org-mode
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
@@ -576,11 +583,11 @@
     (kill-ring-save (point-min) (point-max))))
 
 
-;; email configuration file
-(setq email-file (expand-file-name "email.el" user-emacs-directory))
+;; configuration file for secrets (API keys, etc)
+(setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
 
-(when (file-exists-p email-file)
-  (load email-file))
+(when (file-exists-p secrets-file)
+  (load secrets-file))
 
 
 ;; config changes made through the customize UI will be stored here
