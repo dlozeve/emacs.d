@@ -545,7 +545,11 @@
                ("C-c n b" . org-roam-switch-to-buffer)
                ("C-c n g" . org-roam-graph-show))
               :map org-mode-map
-              (("C-c n i" . org-roam-insert))))
+              (("C-c n i" . org-roam-insert)))
+  :config
+  (setq org-roam-graph-executable "dot")
+  (setq org-roam-graph-extra-config '(("overlap" . "false")))
+  (setq org-roam-completion-system 'ivy))
 
 (use-package deft
   :ensure t
