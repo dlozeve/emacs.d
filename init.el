@@ -322,8 +322,18 @@
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
+;; Use APL font face in current buffer
+(defun my-buffer-face-mode-apl ()
+  "Use the APL font in current buffer."
+  (interactive)
+  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
+  (buffer-face-mode))
+
 (use-package dyalog-mode
-  :ensure t)
+  :ensure t
+  :hook (dyalog-mode . my-buffer-face-mode-apl)
+  :custom
+  (dyalog-fix-whitespace-before-save t))
 
 (use-package gnu-apl-mode
   :ensure t
