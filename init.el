@@ -568,8 +568,9 @@
               (("C-c n i" . org-roam-insert)))
   :config
   (setq org-roam-graph-executable "dot")
-  (setq org-roam-graph-extra-config '(("overlap" . "false")))
-  (setq org-roam-completion-system 'ivy))
+  (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
+  (setq org-roam-completion-system 'ivy)
+  (require 'org-roam-protocol))
 
 (use-package deft
   :ensure t
