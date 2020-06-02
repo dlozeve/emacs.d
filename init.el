@@ -244,10 +244,15 @@
 
 (use-package lsp-mode
   :commands lsp
-  :ensure t)
+  :ensure t
+  :hook ((rust-mode . lsp)))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
+  :ensure t)
+
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol
   :ensure t)
 
 (use-package company-lsp
@@ -321,6 +326,9 @@
   ;; Use the offline hyperspec from the "clhs" quicklisp package:
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
+
+(use-package rust-mode
+  :ensure t)
 
 ;; Use APL font face in current buffer
 (defun my-buffer-face-mode-apl ()
