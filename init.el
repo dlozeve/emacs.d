@@ -63,7 +63,7 @@
 (bind-key "M-l" 'downcase-dwim)
 (bind-key "M-u" 'upcase-dwim)
 
-(setq-default c-basic-offset 4)
+(setq-default c-basic-offset 2)
 (setq c-default-style "linux")
 
 (set-frame-font "Iosevka:pixelsize=18" nil t)
@@ -245,21 +245,28 @@
 (use-package lsp-mode
   :commands lsp
   :ensure t
-  :hook ((rust-mode . lsp)))
+  :hook ((rust-mode . lsp)
+	 (c-mode . lsp))
+  :config
+  (setq lsp-clients-clangd-args
+	'("-j=2"
+	  "--background-index"
+	  "--clang-tidy"
+	  "--completion-style=bundled"
+	  "--pch-storage=memory"
+	  "--header-insertion=never"
+	  "--header-insertion-decorators=0"
+	  "--suggest-missing-includes")))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq lsp-ui-doc-position 'top))
 
 (use-package lsp-ivy
   :commands lsp-ivy-workspace-symbol
   :ensure t)
-
-(use-package company-lsp
-  :ensure t
-  :commands company-lsp
-  ;; add company-lsp as a backend
-  :config (push 'company-lsp company-backends))
 
 (use-package python-docstring
   :ensure t)
