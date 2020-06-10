@@ -262,6 +262,7 @@
   :commands lsp-ui-mode
   :ensure t
   :config
+  (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-position 'top))
 
 (use-package lsp-ivy
@@ -447,8 +448,6 @@
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
-  (add-to-list 'org-modules 'habits)
-
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/notes")
 
@@ -511,16 +510,11 @@
      (C . t)
      (ditaa . t)
      (dot . t)
-     (forth . t)
-     (haskell . t)
-     (java . t)
-     (js . t)
      (latex . t)
      (lisp . t)
-     (makefile . t)
-     (scheme . t)
-     (shell . t)
-     (clojure . t)))
+     (shell . t)))
+
+  (setq org-confirm-babel-evaluate nil)
 
   (setq org-latex-pdf-process
 	'("latexmk -shell-escape -bibtex -pdf %f"))
