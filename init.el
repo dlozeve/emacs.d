@@ -554,6 +554,19 @@
 
   (setq bibtex-autokey-year-length 4))
 
+(defun formatted-citation-at-point ()
+  "Kill the formatted citation for the reference at point using Pandoc."
+  (interactive)
+  (let* ((bibfile (expand-file-name (car (org-ref-find-bibliography))))
+	 (cslfile (concat (file-name-directory bibfile) "chicago-author-date.csl")))
+    (kill-new
+     (shell-command-to-string
+      (format
+       "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3"
+       (org-ref-get-bibtex-key-under-cursor)
+       bibfile
+       cslfile)))))
+
 (use-package org-roam
   :ensure t
   :hook (after-init . org-roam-mode)
