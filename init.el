@@ -202,6 +202,8 @@
   :init
   (setq projectile-completion-system 'ivy)
   :config
+  (setq projectile-enable-caching t)
+  (setq projectile-tags-command "ctags-exuberant -Re")
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
