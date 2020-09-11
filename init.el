@@ -59,9 +59,9 @@
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 
 ;; Better than default: act on the region if active
-(bind-key "M-c" 'capitalize-dwim)
-(bind-key "M-l" 'downcase-dwim)
-(bind-key "M-u" 'upcase-dwim)
+(global-set-key (kbd "M-c") 'capitalize-dwim)
+(global-set-key (kbd "M-l") 'downcase-dwim)
+(global-set-key (kbd "M-u") 'upcase-dwim)
 
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
