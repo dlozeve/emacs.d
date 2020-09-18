@@ -432,7 +432,7 @@
 (use-package twittering-mode
   :ensure t
   :config
-  (setq twittering-reverse-mode t))
+  (setq twittering-reverse-mode nil))
 
 (use-package mathpix.el
   :load-path "site-lisp"
@@ -504,12 +504,18 @@
 
   (setq org-capture-templates
 	(quote
-	 (("e" "Event" entry
+	 (("w" "Work Task" entry
 	   (file+olp "~/notes/planner.org" "Tasks")
+	   "** TODO %?")
+	  ("e" "Event" entry
+	   (file+olp "~/notes/planner.org" "Events")
 	   "** %?")
 	  ("t" "Personal Task" entry
-	   (file+olp "~/notes/planner.org" "Tasks")
-	   "** TODO %?"))))
+	   (file+olp "~/notes/planner.org" "Personal")
+	   "** TODO %?")
+	  ("v" "Personal Event" entry
+	   (file+olp "~/notes/planner.org" "Personal")
+	   "** %?"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
 	(quote
@@ -551,6 +557,9 @@
   ;; the weekdays in the time stamps of your Org mode files and in the
   ;; agenda appear in English.
   (setq system-time-locale "C"))
+
+(use-package ox-pandoc
+  :ensure t)
 
 (use-package org-ref
   :ensure t
