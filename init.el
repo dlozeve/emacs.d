@@ -599,7 +599,7 @@
     (kill-new
      (shell-command-to-string
       (format
-       "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3"
+       "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
        (org-ref-get-bibtex-key-under-cursor)
        bibfile
        cslfile)))))
