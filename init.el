@@ -556,7 +556,18 @@
   ;; System locale to use for formatting time values.  Make sure that
   ;; the weekdays in the time stamps of your Org mode files and in the
   ;; agenda appear in English.
-  (setq system-time-locale "C"))
+  (setq system-time-locale "C")
+
+  (with-eval-after-load "ox-latex"
+    (add-to-list 'org-latex-classes
+		 '("koma-article" "\\documentclass{scrartcl}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+  (setq org-latex-default-class "koma-article"))
 
 (use-package ox-pandoc
   :ensure t)
