@@ -504,13 +504,13 @@
 
   (setq org-capture-templates
 	(quote
-	 (("w" "Work Task" entry
+	 (("t" "Work Task" entry
 	   (file+olp "~/notes/planner.org" "Tasks")
 	   "** TODO %?")
 	  ("e" "Event" entry
 	   (file+olp "~/notes/planner.org" "Events")
 	   "** %?")
-	  ("t" "Personal Task" entry
+	  ("p" "Personal Task" entry
 	   (file+olp "~/notes/planner.org" "Personal")
 	   "** TODO %?")
 	  ("v" "Personal Event" entry
