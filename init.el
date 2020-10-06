@@ -654,6 +654,46 @@
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
 
+(use-package mu4e
+  :load-path "~/build/mu-1.4.13/mu4e"
+  :bind ("C-c m" . mu4e)
+  :custom
+  ;; Folders
+  (mu4e-sent-folder   "/sent")       ;; folder for sent messages
+  (mu4e-drafts-folder "/drafts")     ;; unfinished messages
+  (mu4e-trash-folder  "/trash")      ;; trashed messages
+  (mu4e-refile-folder "/archive")    ;; saved messages
+  ;; Sync
+  (mu4e-get-mail-command "mbsync -a")
+  (mu4e-update-interval 300) ;       ;; update every 5 min
+  ;; Personal details
+  (user-mail-address "dimitri.lozeve@sysnav.fr")
+  (user-full-name "Dimitri Lozeve")
+  ;; Behaviour
+  (message-kill-buffer-on-exit t)
+  (mu4e-confirm-quit nil)
+  (mu4e-attachment-dir "~/Downloads")
+  (mu4e-sent-messages-behavior 'delete)  ;; don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (mail-user-agent 'mu4e-user-agent)  ;; default program for sending mail in Emacs
+  ;; View and compose
+  (mu4e-use-fancy-chars nil)
+  (mu4e-view-show-addresses t)
+  (mu4e-view-show-images t)
+  (mu4e-headers-show-threads t)
+  (mu4e-compose-dont-reply-to-self t)
+  :config
+  (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
+  (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it
+	starttls-use-gnutls t
+	smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+	smtpmail-auth-credentials '(("smtp.gmail.com" 587 "dimitri.lozeve@sysnav.fr" nil))
+	smtpmail-default-smtp-server "smtp.gmail.com"
+	smtpmail-smtp-server "smtp.gmail.com"
+	smtpmail-smtp-service 587))
+
 (use-package vterm
   :ensure t
   :config
