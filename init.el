@@ -488,9 +488,12 @@
 		     (org-agenda-start-on-weekday 1)
 		     (org-agenda-prefix-format " → %t%s ")
 		     (org-agenda-repeating-timestamp-show-all t)))
-	    (alltodo ""
-		     ((org-agenda-prefix-format "[ ] ")
-		      (org-agenda-sorting-strategy '(tag-up priority-down)))))
+	    (tags-todo "tasks"
+		       ((org-agenda-prefix-format "[ ] ")
+			(org-agenda-sorting-strategy '(tag-up priority-down))))
+	    (tags-todo "personal|research"
+		       ((org-agenda-prefix-format "[ ] ")
+			(org-agenda-sorting-strategy '(tag-up priority-down)))))
 	   ((org-agenda-remove-tags t))
 	   ("fortnight.html"))
 	  ("n" "Agenda and all TODOs"
