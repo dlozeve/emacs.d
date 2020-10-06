@@ -339,6 +339,7 @@
   (buffer-face-mode))
 
 (use-package matlab
+  :ensure matlab-mode
   :config
   ;; This is a simple script to set the required environment variables
   ;; before launching Matlab in Emacs. This prevents an issue where
@@ -649,6 +650,14 @@
   :config
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
+
+(use-package vterm
+  :ensure t
+  :config
+  (setq vterm-kill-buffer-on-exit t)
+  (global-set-key (kbd "C-x RET RET") 'vterm)
+  (define-key vterm-mode-map (kbd "<C-backspace>")
+    (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
 (defun my-insert-char ()
   "Search for a unicode character and insert it."
