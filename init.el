@@ -491,7 +491,7 @@
 	    (tags-todo "tasks"
 		       ((org-agenda-prefix-format "[ ] ")
 			(org-agenda-sorting-strategy '(tag-up priority-down))))
-	    (tags-todo "personal|research"
+	    (tags-todo "personal"
 		       ((org-agenda-prefix-format "[ ] ")
 			(org-agenda-sorting-strategy '(tag-up priority-down)))))
 	   ((org-agenda-remove-tags t))
@@ -681,6 +681,7 @@
   (mu4e-view-show-images t)
   (mu4e-headers-show-threads t)
   (mu4e-compose-dont-reply-to-self t)
+  (mu4e-compose-format-flowed t)
   :config
   (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
   (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
