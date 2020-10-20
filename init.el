@@ -305,9 +305,9 @@
   (add-hook 'haskell-mode-hook 'dante-mode)
   (add-hook 'haskell-mode-hook 'flycheck-mode))
 
-(use-package paredit
+(use-package lispy
   :ensure t
-  :hook ((emacs-lisp-mode eval-expression-minibuffer-setup ielm-mode lisp-mode lisp-interaction-mode scheme-mode slime-repl-mode) . enable-paredit-mode))
+  :hook ((emacs-lisp-mode eval-expression-minibuffer-setup ielm-mode lisp-mode lisp-interaction-mode scheme-mode slime-repl-mode) . lispy-mode))
 
 (use-package slime
   :ensure t
@@ -328,6 +328,9 @@
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
+(use-package geiser
+  :ensure t)
+
 (use-package rust-mode
   :ensure t)
 
@@ -340,6 +343,7 @@
 
 (use-package matlab
   :ensure matlab-mode
+  :defer t
   :config
   ;; This is a simple script to set the required environment variables
   ;; before launching Matlab in Emacs. This prevents an issue where
@@ -482,9 +486,9 @@
 
   (setq org-agenda-custom-commands
 	(quote
-	 (("z" "Fortnight and TODOs"
+	 (("z" "Agenda and TODOs"
 	   ((agenda ""
-		    ((org-agenda-span 14)
+		    ((org-agenda-span 7)
 		     (org-agenda-start-on-weekday 1)
 		     (org-agenda-prefix-format " → %t%s ")
 		     (org-agenda-repeating-timestamp-show-all t)))
