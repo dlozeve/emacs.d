@@ -66,10 +66,11 @@
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
 
-(set-frame-font "Iosevka:pixelsize=18" nil t)
-(add-to-list 'default-frame-alist '(font .  "Iosevka:pixelsize=18"))
-(set-face-attribute 'default t :font "Iosevka:pixelsize=18")
-(set-face-attribute 'default nil :font  "Iosevka:pixelsize=18")
+(let ((my-font "Iosevka:pixelsize=18"))
+  (set-frame-font my-font nil t)
+  (add-to-list 'default-frame-alist `(font . ,my-font))
+  (set-face-attribute 'default t :font my-font)
+  (set-face-attribute 'default nil :font my-font))
 
 (defun unfill-paragraph ()
   (interactive)
@@ -492,7 +493,7 @@
 		     (org-agenda-start-on-weekday 1)
 		     (org-agenda-prefix-format " → %t%s ")
 		     (org-agenda-repeating-timestamp-show-all t)))
-	    (tags-todo "tasks"
+	    (tags-todo "work"
 		       ((org-agenda-prefix-format "[ ] ")
 			(org-agenda-sorting-strategy '(tag-up priority-down))))
 	    (tags-todo "personal"
@@ -512,17 +513,11 @@
 
   (setq org-capture-templates
 	(quote
-	 (("t" "Work Task" entry
-	   (file+olp "~/notes/planner.org" "Tasks")
+	 (("t" "Task" entry
+	   (file+olp "~/notes/planner.org" "Inbox")
 	   "** TODO %?")
 	  ("e" "Event" entry
-	   (file+olp "~/notes/planner.org" "Events")
-	   "** %?")
-	  ("p" "Personal Task" entry
-	   (file+olp "~/notes/planner.org" "Personal")
-	   "** TODO %?")
-	  ("v" "Personal Event" entry
-	   (file+olp "~/notes/planner.org" "Personal")
+	   (file+olp "~/notes/planner.org" "Inbox")
 	   "** %?"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
@@ -639,6 +634,7 @@
   (setq org-roam-graph-executable "dot")
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
   (setq org-roam-completion-system 'ivy)
+  (setq org-roam-link-use-custom-faces 'everywhere)
   (require 'org-roam-protocol))
 
 (use-package deft
