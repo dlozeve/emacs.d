@@ -295,6 +295,9 @@
     (add-to-list 'flycheck-disabled-checkers 'python-flake8)
     (add-to-list 'flycheck-disabled-checkers 'python-pylint)))
 
+(use-package jupyter
+  :ensure t)
+
 (use-package julia-mode
   :ensure t)
 
@@ -549,7 +552,8 @@
      (dot . t)
      (latex . t)
      (lisp . t)
-     (shell . t)))
+     (shell . t)
+     (jupyter . t)))
 
   (setq org-confirm-babel-evaluate nil)
 
