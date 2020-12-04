@@ -329,7 +329,7 @@
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
-(use-package geiser
+(use-package racket-mode
   :ensure t)
 
 (use-package rust-mode
