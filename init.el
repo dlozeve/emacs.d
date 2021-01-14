@@ -311,7 +311,7 @@
 
 (use-package lispy
   :ensure t
-  :hook ((emacs-lisp-mode eval-expression-minibuffer-setup ielm-mode lisp-mode lisp-interaction-mode scheme-mode slime-repl-mode) . lispy-mode))
+  :hook ((emacs-lisp-mode eval-expression-minibuffer-setup ielm-mode lisp-mode lisp-interaction-mode scheme-mode slime-repl-mode racket-mode racket-repl-mode) . lispy-mode))
 
 (use-package slime
   :ensure t
@@ -482,6 +482,8 @@
   (setq org-src-fontify-natively t)
   ;; tabs in src blocks
   (setq org-src-tab-acts-natively t)
+  ;; full contents opened by default
+  (setq org-startup-folded nil)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
@@ -492,7 +494,7 @@
 	(quote
 	 (("z" "Agenda and TODOs"
 	   ((agenda ""
-		    ((org-agenda-span 7)
+		    ((org-agenda-span 1)
 		     (org-agenda-start-on-weekday 1)
 		     (org-agenda-prefix-format " → %t%s ")
 		     (org-agenda-repeating-timestamp-show-all t)))
@@ -703,7 +705,7 @@
   :ensure t
   :config
   (setq vterm-kill-buffer-on-exit t)
-  (global-set-key (kbd "C-x RET RET") 'vterm)
+  (global-set-key (kbd "C-x RET RET") 'vterm-other-window)
   (define-key vterm-mode-map (kbd "<C-backspace>")
     (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
