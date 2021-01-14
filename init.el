@@ -673,7 +673,7 @@
   (mu4e-get-mail-command "mbsync -a")
   (mu4e-update-interval 300) ;       ;; update every 5 min
   ;; Personal details
-  (user-mail-address "dimitri.lozeve@sysnav.fr")
+  (user-mail-address "dimitri@lozeve.com")
   (user-full-name "Dimitri Lozeve")
   ;; Behaviour
   (message-kill-buffer-on-exit t)
@@ -694,12 +694,13 @@
   (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
   (require 'smtpmail)
   (setq message-send-mail-function 'smtpmail-send-it
-	starttls-use-gnutls t
-	smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-	smtpmail-auth-credentials '(("smtp.gmail.com" 587 "dimitri.lozeve@sysnav.fr" nil))
-	smtpmail-default-smtp-server "smtp.gmail.com"
-	smtpmail-smtp-server "smtp.gmail.com"
-	smtpmail-smtp-service 587))
+	;; starttls-use-gnutls t
+	;; smtpmail-starttls-credentials '(("smtp.zoho.eu" 587 nil nil))
+	smtpmail-auth-credentials '(("smtp.zoho.eu" 465 "dimitri@lozeve.com" nil))
+	smtpmail-default-smtp-server "smtp.zoho.eu"
+	smtpmail-smtp-server "smtp.zoho.eu"
+	smtpmail-stream-type 'ssl
+	smtpmail-smtp-service 465))
 
 (use-package vterm
   :ensure t
