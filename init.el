@@ -6,8 +6,8 @@
 
 (require 'package)
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 ;; keep the installed packages in .emacs.d
 (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
 (package-initialize)
@@ -208,10 +208,6 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
-(use-package format-all
-  :ensure t
-  :bind ("C-c C-f" . format-all-buffer))
-
 (use-package yaml-mode
   :ensure t)
 
@@ -408,6 +404,10 @@
   (add-hook 'TeX-after-compilation-finished-functions
             #'TeX-revert-document-buffer))
 
+(use-package format-all
+  :ensure t
+  :bind ("C-c C-f" . format-all-buffer))
+
 (use-package restclient
   :ensure t
   :defer t
@@ -486,6 +486,7 @@
   (setq org-startup-folded nil)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
+  (add-hook 'org-mode-hook 'org-fragtog-mode)
 
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/notes")
@@ -494,7 +495,7 @@
 	(quote
 	 (("z" "Agenda and TODOs"
 	   ((agenda ""
-		    ((org-agenda-span 1)
+		    ((org-agenda-span 7)
 		     (org-agenda-start-on-weekday 1)
 		     (org-agenda-prefix-format " → %t%s ")
 		     (org-agenda-repeating-timestamp-show-all t)))
@@ -554,13 +555,9 @@
      (dot . t)
      (latex . t)
      (lisp . t)
-     (shell . t)
-     (jupyter . t)))
+     (shell . t)))
 
   (setq org-confirm-babel-evaluate nil)
-
-  (setq org-latex-pdf-process
-	'("latexmk -shell-escape -bibtex -pdf %f"))
 
   ;; System locale to use for formatting time values.  Make sure that
   ;; the weekdays in the time stamps of your Org mode files and in the
@@ -574,11 +571,20 @@
                    ("\\subsection{%s}" . "\\subsection*{%s}")
                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    (add-to-list 'org-latex-packages-alist
+		 '("AUTO" "babel" t ("pdflatex")))
+    (add-to-list 'org-latex-packages-alist
+		 '("AUTO" "polyglossia" t ("xelatex" "lualatex"))))
 
+  (setq org-latex-pdf-process
+	'("latexmk -shell-escape -lualatex -bibtex -pdf %f"))
   (setq org-latex-default-class "koma-article"))
 
 (use-package ox-pandoc
+  :ensure t)
+
+(use-package org-fragtog
   :ensure t)
 
 (use-package org-ref
@@ -642,6 +648,11 @@
   (setq org-roam-completion-system 'ivy)
   (setq org-roam-link-use-custom-faces 'everywhere)
   (require 'org-roam-protocol))
+
+(use-package org-roam-bibtex
+  :ensure t
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode))
 
 (use-package deft
   :ensure t
