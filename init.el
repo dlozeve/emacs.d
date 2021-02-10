@@ -107,12 +107,17 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
-(use-package base16-theme
+;; (use-package base16-theme
+;;   :ensure t
+;;   :init
+;;   (setq base16-theme-256-color-source 'base16-shell)
+;;   :config
+;;   (load-theme 'base16-default-dark t))
+
+(use-package color-theme-sanityinc-tomorrow
   :ensure t
-  :init
-  (setq base16-theme-256-color-source 'base16-shell)
   :config
-  (load-theme 'base16-default-dark t))
+  (load-theme 'sanityinc-tomorrow-night))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -204,7 +209,7 @@
   (setq projectile-completion-system 'ivy)
   :config
   (setq projectile-enable-caching t)
-  (setq projectile-tags-command "ctags-exuberant -Re")
+  (setq projectile-tags-command "ctags-universal -Re")
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
@@ -344,18 +349,15 @@
   (setq matlab-shell-command-switches '("-nodesktop"))
   (setq mlint-program "/usr/local/bin/mlint")
   (setq-default matlab-show-mlint-warnings t)
-  (set-face-attribute 'linemark-stop-face nil
-		      :background 'unspecified
-		      :underline '(:color "red3" :style wave))
-  (set-face-attribute 'linemark-caution-face nil
-		      :background 'unspecified
-		      :underline '(:color "yellow4" :style wave))
-  (set-face-attribute 'linemark-go-face nil
-		      :background 'unspecified
-		      :underline '(:color "green4" :style wave))
-  (set-face-attribute 'linemark-funny-face nil
-		      :background 'unspecified
-		      :underline '(:color "blue3" :style wave)))
+  :custom-face
+  (linemark-stop-face ((t (:background 'unspecified)
+			  (:underline '(:color "red3" :style wave)))))
+  (linemark-caution-face ((t (:background 'unspecified)
+			     (:underline '(:color "yellow4" :style wave)))))
+  (linemark-go-face ((t (:background 'unspecified)
+			(:underline '(:color "green4" :style wave)))))
+  (linemark-funny-face ((t (:background 'unspecified)
+			   (:underline '(:color "blue3" :style wave))))))
 
 (use-package dyalog-mode
   :ensure t
