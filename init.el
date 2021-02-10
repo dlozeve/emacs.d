@@ -245,7 +245,8 @@
   :commands lsp
   :ensure t
   :hook ((rust-mode . lsp)
-	 (c-mode . lsp))
+	 (c-mode . lsp)
+	 (python-mode . lsp))
   :config
   (setq lsp-clients-clangd-args
 	'("-j=2"
@@ -255,7 +256,12 @@
 	  "--pch-storage=memory"
 	  "--header-insertion=never"
 	  "--header-insertion-decorators=0"
-	  "--suggest-missing-includes")))
+	  "--suggest-missing-includes"))
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+  (setq gc-cons-threshold 100000000)
+  (setq lsp-completion-provider :capf)
+  (setq lsp-file-watch-threshold nil))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -268,31 +274,13 @@
   :commands lsp-ivy-workspace-symbol
   :ensure t)
 
-(use-package python-docstring
-  :ensure t)
-
-(use-package elpy
+(use-package lsp-pyright
   :ensure t
-  :init
-  (elpy-enable)
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp)))	; or lsp-deferred
   :config
-  (add-hook 'python-mode-hook 'python-docstring-mode)
-  (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
-  (add-hook 'elpy-mode-hook 'projectile-mode)
-  (add-hook 'elpy-mode-hook (lambda () (flycheck-select-checker 'python-mypy)))
-  (setq elpy-eldoc-show-current-function nil)
-  (define-key elpy-mode-map (kbd "C-c C-f") nil)
-  (define-key python-mode-map (kbd "C-c C-f") nil)
-
-  (when (load "flycheck" t t)
-    (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-    (add-hook 'elpy-mode-hook 'flycheck-mode)
-    ;; (flycheck-add-next-checker 'python-pylint '(warning . python-mypy) t)
-    (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-    (add-to-list 'flycheck-disabled-checkers 'python-pylint)))
-
-(use-package jupyter
-  :ensure t)
+  (setq lsp-pyright-use-library-code-for-types nil))
 
 (use-package julia-mode
   :ensure t)
