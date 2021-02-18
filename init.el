@@ -282,6 +282,7 @@
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
+			 (local-unset-key (kbd "C-f"))
                          (require 'lsp-pyright)
                          (lsp)))	; or lsp-deferred
   :config
@@ -572,7 +573,10 @@
   (setq org-latex-default-class "koma-article"))
 
 (use-package ox-pandoc
-  :ensure t)
+  :ensure t
+  :config
+  (setq org-pandoc-options '((standalone . t)
+			     (bibliography . "~/notes/bibliography/bibliography.bib"))))
 
 (use-package org-fragtog
   :ensure t)
@@ -625,19 +629,23 @@
   :hook (after-init . org-roam-mode)
   :custom
   (org-roam-directory "~/notes/notes")
-  :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert)))
+  :bind
+  (:map org-roam-mode-map
+        (("C-c n l" . org-roam)
+         ("C-c n f" . org-roam-find-file)
+         ("C-c n b" . org-roam-switch-to-buffer)
+         ("C-c n g" . org-roam-graph)
+	 ("C-c n j" . org-roam-dailies-capture-today)
+	 ("C-c n t" . org-roam-dailies-find-today)))
+  (:map org-mode-map
+	(("C-c n i" . org-roam-insert)))
   :config
   (setq org-roam-graph-executable "dot")
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
   (setq org-roam-completion-system 'ivy)
   (setq org-roam-link-use-custom-faces 'everywhere)
-  (require 'org-roam-protocol))
+  (require 'org-roam-protocol)
+  (setq org-roam-dailies-directory "daily/"))
 
 (use-package org-roam-bibtex
   :ensure t
