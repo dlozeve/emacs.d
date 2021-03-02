@@ -286,7 +286,8 @@
                          (require 'lsp-pyright)
                          (lsp)))	; or lsp-deferred
   :config
-  (setq lsp-pyright-use-library-code-for-types nil))
+  (setq lsp-pyright-use-library-code-for-types nil)
+  (flycheck-add-next-checker 'lsp 'python-pylint))
 
 (use-package julia-mode
   :ensure t)
@@ -408,7 +409,9 @@
 
 (use-package elfeed
   :ensure t
-  :bind ("C-c f" . elfeed))
+  :bind ("C-c f" . elfeed)
+  :config
+  (setq shr-width 100))
 
 (use-package elfeed-org
   :ensure t
@@ -611,7 +614,7 @@
 
   (setq bibtex-autokey-year-length 4))
 
-(defun formatted-citation-at-point ()
+(defun dl/formatted-citation-at-point ()
   "Kill the formatted citation for the reference at point using Pandoc."
   (interactive)
   (let* ((bibfile (expand-file-name (car (org-ref-find-bibliography))))
@@ -668,6 +671,14 @@
   :config
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-indent-width 4)
+  (setq graphviz-dot-preview-extension "svg"))
+
+(use-package company-graphviz-dot)
 
 (use-package mu4e
   :load-path "~/build/mu-1.4.13/mu4e"
