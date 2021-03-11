@@ -292,6 +292,14 @@
 (use-package julia-mode
   :ensure t)
 
+(use-package julia-repl
+  :ensure t
+  :hook (julia-mode . julia-repl-mode)
+  :init
+  (setenv "JULIA_NUM_THREADS" "6")
+  :config
+  (julia-repl-set-terminal-backend 'vterm))
+
 (use-package dante
   :ensure t
   :after haskell-mode
