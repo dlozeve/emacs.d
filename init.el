@@ -122,9 +122,13 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (when (memq window-system '(mac ns))
+  (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")))
+    (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
+    (exec-path-from-shell-copy-env "PYENV_ROOT")
+    (exec-path-from-shell-copy-env "PYENV_ROOT")
+    (exec-path-from-shell-copy-env "GAMBIT")
+    (exec-path-from-shell-copy-env "GERBIL_HOME")))
 
 (use-package ivy
   :ensure t
@@ -310,7 +314,17 @@
 
 (use-package lispy
   :ensure t
-  :hook ((emacs-lisp-mode eval-expression-minibuffer-setup ielm-mode lisp-mode lisp-interaction-mode scheme-mode slime-repl-mode racket-mode racket-repl-mode) . lispy-mode))
+  :hook ((emacs-lisp-mode
+	  eval-expression-minibuffer-setup
+	  ielm-mode
+	  lisp-mode
+	  lisp-interaction-mode
+	  scheme-mode
+	  inferior-scheme-mode
+	  slime-repl-mode
+	  racket-mode
+	  racket-repl-mode
+	  gerbil-mode) . lispy-mode))
 
 (use-package slime
   :ensure t
@@ -333,6 +347,43 @@
 
 (use-package racket-mode
   :ensure t)
+
+(use-package gerbil-mode
+  :when (getenv "GERBIL_HOME")
+  :ensure nil
+  :defer t
+  :mode (("\\.ss\\'"  . gerbil-mode)
+         ("\\.pkg\\'" . gerbil-mode))
+  :bind (:map comint-mode-map
+              (("C-S-n" . comint-next-input)
+               ("C-S-p" . comint-previous-input)
+               ("C-S-l" . clear-comint-buffer))
+              :map gerbil-mode-map
+              (("C-S-l" . clear-comint-buffer)))
+  :init
+  (setf gambit (getenv "GAMBIT"))
+  (setf gerbil (getenv "GERBIL_HOME"))
+  (autoload 'gerbil-mode
+    (concat gerbil "/etc/gerbil-mode.el") "Gerbil editing mode." t)
+  :hook
+  ((inferior-scheme-mode-hook . gambit-inferior-mode))
+  :config
+  (require 'gambit (concat gambit "/share/emacs/site-lisp/gambit.el"))
+  (setf scheme-program-name (concat gerbil "/bin/gxi"))
+
+  (let ((tags (locate-dominating-file default-directory "TAGS")))
+    (when tags (visit-tags-table tags)))
+  (visit-tags-table (concat gerbil "/src/TAGS"))
+
+  (when (package-installed-p 'smartparens)
+    (sp-pair "'" nil :actions :rem)
+    (sp-pair "`" nil :actions :rem))
+
+  (defun clear-comint-buffer ()
+    (interactive)
+    (with-current-buffer "*scheme*"
+      (let ((comint-buffer-maximum-size 0))
+        (comint-truncate-buffer)))))
 
 (use-package rust-mode
   :ensure t)
