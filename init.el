@@ -30,6 +30,9 @@
 
 (setq auto-window-vscroll nil)
 
+;; Dired human readable sizes
+(setq dired-listing-switches "-alh")
+
 ;; Enable disabled commands
 (put 'narrow-to-region 'disabled nil)
 
@@ -107,17 +110,22 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
-;; (use-package base16-theme
-;;   :ensure t
-;;   :init
-;;   (setq base16-theme-256-color-source 'base16-shell)
-;;   :config
-;;   (load-theme 'base16-default-dark t))
-
-(use-package color-theme-sanityinc-tomorrow
+(use-package base16-theme
   :ensure t
+  :init
+  (setq base16-theme-256-color-source 'base16-shell)
   :config
-  (load-theme 'sanityinc-tomorrow-night))
+  (load-theme 'base16-default-dark t))
+
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :config
+;;   (load-theme 'sanityinc-tomorrow-night))
+
+;; (use-package vscode-dark-plus-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'vscode-dark-plus t))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -611,6 +619,8 @@
      (shell . t)))
 
   (setq org-confirm-babel-evaluate nil)
+  (setq org-src-preserve-indentation nil
+	org-edit-src-content-indentation 0)
 
   ;; System locale to use for formatting time values.  Make sure that
   ;; the weekdays in the time stamps of your Org mode files and in the
@@ -744,13 +754,13 @@
   :bind ("C-c m" . mu4e)
   :custom
   ;; Folders
-  (mu4e-sent-folder   "/sent")       ;; folder for sent messages
-  (mu4e-drafts-folder "/drafts")     ;; unfinished messages
-  (mu4e-trash-folder  "/trash")      ;; trashed messages
-  (mu4e-refile-folder "/archive")    ;; saved messages
+  (mu4e-sent-folder   "/sent")	  ;; folder for sent messages
+  (mu4e-drafts-folder "/drafts")  ;; unfinished messages
+  (mu4e-trash-folder  "/trash")	  ;; trashed messages
+  (mu4e-refile-folder "/archive") ;; saved messages
   ;; Sync
   (mu4e-get-mail-command "mbsync -a")
-  (mu4e-update-interval 300) ;       ;; update every 5 min
+  (mu4e-update-interval 300)		;       ;; update every 5 min
   ;; Personal details
   (user-mail-address "dimitri@lozeve.com")
   (user-full-name "Dimitri Lozeve")
@@ -758,8 +768,8 @@
   (message-kill-buffer-on-exit t)
   (mu4e-confirm-quit nil)
   (mu4e-attachment-dir "~/Downloads")
-  (mu4e-sent-messages-behavior 'delete)  ;; don't save messages to Sent Messages, Gmail/IMAP takes care of this
-  (mail-user-agent 'mu4e-user-agent)  ;; default program for sending mail in Emacs
+  (mu4e-sent-messages-behavior 'delete)	;; don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (mail-user-agent 'mu4e-user-agent) ;; default program for sending mail in Emacs
   ;; View and compose
   (mu4e-use-fancy-chars nil)
   (mu4e-view-show-addresses t)
