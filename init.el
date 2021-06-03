@@ -4,20 +4,8 @@
 
 ;;; Code:
 
-(require 'package)
-
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-;; keep the installed packages in .emacs.d
-(setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
-(package-initialize)
-;; update the package metadata is the local cache is missing
-(unless package-archive-contents
-  (package-refresh-contents))
-
 ;; Always load newest byte code
 (setq load-prefer-newer t)
-
 
 (setq inhibit-startup-screen t)
 (tool-bar-mode -1)
@@ -86,21 +74,17 @@
   (let ((fill-column (point-max)))
     (fill-region (region-beginning) (region-end) nil)))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-
-;;; built-in packages
+;;; Built-in packages
 (use-package paren
   :config
   (show-paren-mode 1))
 
-;; highlight the current line
+;; Highlight the current line
 (use-package hl-line
   :config
   (global-hl-line-mode -1))
 
+;; Better renaming rules for buffers with the same name
 (use-package uniquify
   :config
   (setq uniquify-buffer-name-style 'forward)
@@ -110,31 +94,47 @@
   ;; don't muck with special buffers
   (setq uniquify-ignore-buffers-re "^\\*"))
 
+;; Straight.el setup
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+
 ;; Theme
 (use-package base16-theme
-  :ensure t
+  :straight t
   :init
   (setq base16-theme-256-color-source 'base16-shell)
   :config
   (load-theme 'base16-default-dark t))
 
 ;; (use-package color-theme-sanityinc-tomorrow
-;;   :ensure t
+;;   :straight t
 ;;   :config
 ;;   (load-theme 'sanityinc-tomorrow-night))
 
 ;; (use-package vscode-dark-plus-theme
-;;   :ensure t
+;;   :straight t
 ;;   :config
 ;;   (load-theme 'vscode-dark-plus t))
 
 (use-package mood-line
-  :ensure t
+  :straight t
   :config
   (mood-line-mode t))
 
 (use-package exec-path-from-shell
-  :ensure t
+  :straight t
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)
@@ -145,7 +145,7 @@
     (exec-path-from-shell-copy-env "GERBIL_HOME")))
 
 (use-package ivy
-  :ensure t
+  :straight t
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
@@ -154,12 +154,12 @@
   (global-set-key (kbd "<f6>") 'ivy-resume))
 
 (use-package swiper
-  :ensure t
+  :straight t
   :config
   (global-set-key "\C-s" 'swiper))
 
 (use-package counsel
-  :ensure t
+  :straight t
   :config
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
@@ -175,29 +175,29 @@
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
 (use-package deadgrep
-  :ensure t
+  :straight t
   :bind (("<f5>" . deadgrep)))
 
 (use-package ace-window
-  :ensure t
+  :straight t
   :config
   (global-set-key (kbd "M-o") 'ace-window)
   (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package magit
-  :ensure t
+  :straight t
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch)))
 
 (use-package forge
-  :ensure t
+  :straight t
   :after magit)
 
 (use-package yasnippet
-  :ensure t
+  :straight t
   :diminish yas-minor-mode
   :init
-  (use-package yasnippet-snippets :ensure t :after yasnippet)
+  (use-package yasnippet-snippets :straight t :after yasnippet)
   :hook ((prog-mode LaTeX-mode org-mode) . yas-minor-mode)
   :bind
   (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
@@ -217,12 +217,12 @@
         (ignore-errors (yas-next-field))))))
 
 (use-package flycheck
-  :ensure t
+  :straight t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package projectile
-  :ensure t
+  :straight t
   :init
   (setq projectile-completion-system 'ivy)
   :config
@@ -232,16 +232,16 @@
   (projectile-mode +1))
 
 (use-package yaml-mode
-  :ensure t)
+  :straight t)
 
 (use-package json-mode
-  :ensure t)
+  :straight t)
 
 (use-package cmake-mode
-  :ensure t)
+  :straight t)
 
 (use-package dockerfile-mode
-  :ensure t)
+  :straight t)
 
 (use-package flyspell
   :config
@@ -259,14 +259,14 @@
   (global-set-key (kbd "C-<f8>") 'flyspell-check-previous-highlighted-word))
 
 (use-package langtool
-  :ensure t
+  :straight t
   :init
   (setq langtool-java-classpath
 	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
 
 (use-package lsp-mode
   :commands lsp
-  :ensure t
+  :straight t
   :hook ((rust-mode . lsp)
 	 (c-mode . lsp)
 	 (python-mode . lsp))
@@ -289,17 +289,17 @@
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :ensure t
+  :straight t
   :config
   (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-position 'top))
 
 (use-package lsp-ivy
   :commands lsp-ivy-workspace-symbol
-  :ensure t)
+  :straight t)
 
 (use-package lsp-pyright
-  :ensure t
+  :straight t
   :hook (python-mode . (lambda ()
 			 (local-unset-key (kbd "C-f"))
                          (require 'lsp-pyright)
@@ -309,10 +309,10 @@
   (flycheck-add-next-checker 'lsp 'python-pylint))
 
 (use-package julia-mode
-  :ensure t)
+  :straight t)
 
 (use-package julia-repl
-  :ensure t
+  :straight t
   :hook (julia-mode . julia-repl-mode)
   :init
   (setenv "JULIA_NUM_THREADS" "6")
@@ -320,7 +320,7 @@
   (julia-repl-set-terminal-backend 'vterm))
 
 (use-package dante
-  :ensure t
+  :straight t
   :after haskell-mode
   :commands 'dante-mode
   :init
@@ -328,7 +328,7 @@
   (add-hook 'haskell-mode-hook 'flycheck-mode))
 
 (use-package lispy
-  :ensure t
+  :straight t
   :hook ((emacs-lisp-mode
 	  eval-expression-minibuffer-setup
 	  ielm-mode
@@ -342,7 +342,7 @@
 	  gerbil-mode) . lispy-mode))
 
 (use-package slime
-  :ensure t
+  :straight t
   :config
   (require 'slime-autoloads)
   (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
@@ -361,11 +361,11 @@
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
 (use-package racket-mode
-  :ensure t)
+  :straight t)
 
 (use-package gerbil-mode
   :when (getenv "GERBIL_HOME")
-  :ensure nil
+  :straight nil
   :defer t
   :mode (("\\.ss\\'"  . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
@@ -401,7 +401,7 @@
         (comint-truncate-buffer)))))
 
 (use-package rust-mode
-  :ensure t)
+  :straight t)
 
 ;; Use APL font face in current buffer
 (defun my-buffer-face-mode-apl ()
@@ -411,7 +411,7 @@
   (buffer-face-mode))
 
 (use-package matlab
-  :ensure matlab-mode
+  :straight matlab-mode
   :config
   ;; This is a simple script to set the required environment variables
   ;; before launching Matlab in Emacs. This prevents an issue where
@@ -434,13 +434,13 @@
   )
 
 (use-package dyalog-mode
-  :ensure t
+  :straight t
   :hook (dyalog-mode . my-buffer-face-mode-apl)
   :custom
   (dyalog-fix-whitespace-before-save t))
 
 (use-package gnu-apl-mode
-  :ensure t
+  :straight t
   :config
   (defface gnu-apl-default
     '((t (:height 1.2 :family "APL385 Unicode"))) t)
@@ -452,7 +452,7 @@
 
 (use-package tex-site
   :defer t
-  :ensure auctex
+  :straight auctex
   :config
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
@@ -469,43 +469,43 @@
             #'TeX-revert-document-buffer))
 
 (use-package format-all
-  :ensure t
+  :straight t
   :bind ("C-c C-f" . format-all-buffer))
 
 (use-package restclient
-  :ensure t
+  :straight t
   :defer t
   :mode (("\\.http\\'" . restclient-mode))
   :bind (:map restclient-mode-map
               ("C-c C-f" . json-mode-beautify)))
 
 (use-package elfeed
-  :ensure t
+  :straight t
   :bind ("C-c f" . elfeed)
   :config
   (setq shr-width 100))
 
 (use-package elfeed-org
-  :ensure t
+  :straight t
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
 
 (use-package pdf-tools
-  :ensure t
+  :straight t
   :load-path "site-lisp/pdf-tools/lisp"
   :magic ("%PDF" . pdf-view-mode)
   :config
   (pdf-tools-install))
 
 (use-package nov
-  :ensure t
+  :straight t
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-text-width 100))
 
 (use-package twittering-mode
-  :ensure t
+  :straight t
   :config
   (setq twittering-reverse-mode nil))
 
@@ -534,7 +534,7 @@
   (find-file "~/notes/bibliography/bibliography.bib"))
 
 (use-package org
-  :ensure t
+  :straight t
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c b" . org-iswitchb)
@@ -654,16 +654,16 @@
   (setq org-latex-default-class "koma-article"))
 
 (use-package ox-pandoc
-  :ensure t
+  :straight t
   :config
   (setq org-pandoc-options '((standalone . t)
 			     (bibliography . "~/notes/bibliography/bibliography.bib"))))
 
 (use-package org-fragtog
-  :ensure t)
+  :straight t)
 
 (use-package org-ref
-  :ensure t
+  :straight t
   :config
   (setq reftex-default-bibliography '("~/notes/bibliography/bibliography.bib"))
   (setq org-ref-bibliography-notes "~/notes/bibliography/notes.org"
@@ -706,7 +706,7 @@
        cslfile)))))
 
 (use-package org-roam
-  :ensure t
+  :straight t
   :hook (after-init . org-roam-mode)
   :custom
   (org-roam-directory "~/notes/notes")
@@ -729,12 +729,12 @@
   (setq org-roam-dailies-directory "daily/"))
 
 (use-package org-roam-bibtex
-  :ensure t
+  :straight t
   :after org-roam
   :hook (org-roam-mode . org-roam-bibtex-mode))
 
 (use-package deft
-  :ensure t
+  :straight t
   :after org
   :bind ("C-c n d" . deft)
   :custom
@@ -744,14 +744,14 @@
   (deft-directory "~/notes/notes"))
 
 (use-package ox-gfm
-  :ensure t
+  :straight t
   :after (org)
   :config
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
 
 (use-package graphviz-dot-mode
-  :ensure t
+  :straight t
   :config
   (setq graphviz-dot-indent-width 4)
   (setq graphviz-dot-preview-extension "svg"))
@@ -759,7 +759,7 @@
 (use-package company-graphviz-dot)
 
 (use-package hledger-mode
-  :ensure t
+  :straight t
   :mode ("\\.journal\\'" "\\.hledger\\'")
   :init
   (setq hledger-jfile (expand-file-name "~/.hledger.journal"))
@@ -811,7 +811,7 @@
 	smtpmail-smtp-service 465))
 
 (use-package vterm
-  :ensure t
+  :straight t
   :config
   (setq vterm-kill-buffer-on-exit t)
   (global-set-key (kbd "C-x RET RET") 'vterm-other-window)
