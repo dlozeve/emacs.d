@@ -1,5 +1,13 @@
 *~
 *.elc
+\#recentf\#
+.lsp-session-v1
+.org-id-locations
+eln-cache/
+network-security.data
+org-roam.db
+racket-mode/
+snippets/
 bookmarks
 auto-save-list
 recentf
@@ -22,5 +30,6 @@ transient/
 elpy/
 org-clock-save.el
 forge-database.sqlite
+.cache/
 custom.el
 secrets.el
