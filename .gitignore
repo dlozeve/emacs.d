@@ -1,6 +1,5 @@
 *~
 *.elc
-\#recentf\#
 .lsp-session-v1
 .org-id-locations
 eln-cache/
@@ -31,5 +30,7 @@ elpy/
 org-clock-save.el
 forge-database.sqlite
 .cache/
+straight
+
 custom.el
 secrets.el
