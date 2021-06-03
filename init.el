@@ -407,7 +407,6 @@
 
 (use-package matlab
   :ensure matlab-mode
-  :defer t
   :config
   ;; This is a simple script to set the required environment variables
   ;; before launching Matlab in Emacs. This prevents an issue where
@@ -416,19 +415,18 @@
   ;; #!/usr/bin/env bash
   ;; export _JAVA_AWT_WM_NONREPARENTING=1
   ;; /usr/local/bin/matlab "$@"
-  (setq matlab-shell-command "~/.local/bin/run_matlab.sh")
+  (setq matlab-shell-command "~/.local/bin/run_matlab")
   (setq matlab-shell-command-switches '("-nodesktop"))
-  (setq mlint-program "/usr/local/bin/mlint")
-  (setq-default matlab-show-mlint-warnings t)
-  :custom-face
-  (linemark-stop-face ((t (:background 'unspecified)
-			  (:underline '(:color "red3" :style wave)))))
-  (linemark-caution-face ((t (:background 'unspecified)
-			     (:underline '(:color "yellow4" :style wave)))))
-  (linemark-go-face ((t (:background 'unspecified)
-			(:underline '(:color "green4" :style wave)))))
-  (linemark-funny-face ((t (:background 'unspecified)
-			   (:underline '(:color "blue3" :style wave))))))
+  ;; :custom-face
+  ;; (linemark-stop-face ((t (:background 'unspecified)
+  ;; 			  (:underline '(:color "red3" :style wave)))))
+  ;; (linemark-caution-face ((t (:background 'unspecified)
+  ;; 			     (:underline '(:color "yellow4" :style wave)))))
+  ;; (linemark-go-face ((t (:background 'unspecified)
+  ;; 			(:underline '(:color "green4" :style wave)))))
+  ;; (linemark-funny-face ((t (:background 'unspecified)
+  ;; 			   (:underline '(:color "blue3" :style wave)))))
+  )
 
 (use-package dyalog-mode
   :ensure t
