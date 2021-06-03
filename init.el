@@ -128,6 +128,11 @@
 ;;   :config
 ;;   (load-theme 'vscode-dark-plus t))
 
+(use-package mood-line
+  :ensure t
+  :config
+  (mood-line-mode t))
+
 (use-package exec-path-from-shell
   :ensure t
   :config
