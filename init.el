@@ -279,7 +279,8 @@
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
   (setq gc-cons-threshold 100000000)
   (setq lsp-completion-provider :capf)
-  (setq lsp-file-watch-threshold nil))
+  (setq lsp-file-watch-threshold nil)
+  (setq lsp-zig-zls-executable (expand-file-name "~/build/zls/zig-out/bin/zls")))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -617,11 +618,15 @@
      (dot . t)
      (latex . t)
      (lisp . t)
+     (plantuml . t)
      (shell . t)))
 
   (setq org-confirm-babel-evaluate nil)
   (setq org-src-preserve-indentation nil
 	org-edit-src-content-indentation 0)
+
+  (require 'ob-plantuml)
+  (setq org-plantuml-jar-path (expand-file-name "~/build/plantuml.jar"))
 
   ;; System locale to use for formatting time values.  Make sure that
   ;; the weekdays in the time stamps of your Org mode files and in the
@@ -749,6 +754,16 @@
   (setq graphviz-dot-preview-extension "svg"))
 
 (use-package company-graphviz-dot)
+
+(use-package hledger-mode
+  :ensure t
+  :mode ("\\.journal\\'" "\\.hledger\\'")
+  :init
+  (setq hledger-jfile (expand-file-name "~/.hledger.journal"))
+  :config
+  (add-to-list 'company-backends 'hledger-company)
+  (global-set-key (kbd "C-c e") 'hledger-jentry)
+  (global-set-key (kbd "C-c j") 'hledger-run-command))
 
 (use-package mu4e
   :load-path "~/build/mu-1.4.13/mu4e"
