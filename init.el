@@ -58,11 +58,12 @@
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
 
-(let ((my-font "Iosevka:pixelsize=18"))
-  (set-frame-font my-font nil t)
-  (add-to-list 'default-frame-alist `(font . ,my-font))
-  (set-face-attribute 'default t :font my-font)
-  (set-face-attribute 'default nil :font my-font))
+(let ((my-font "Iosevka")
+      (my-height 110))
+  (set-face-attribute 'default nil :family my-font :height my-height)
+  (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
+
+(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 130)
 
 (defun unfill-paragraph ()
   (interactive)
