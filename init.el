@@ -725,6 +725,7 @@
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
   (setq org-roam-completion-system 'ivy)
   (setq org-roam-link-use-custom-faces 'everywhere)
+  (set-face-attribute 'org-roam-link nil :foreground "lime green")
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/"))
 
