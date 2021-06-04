@@ -301,12 +301,15 @@
 (use-package lsp-pyright
   :straight t
   :hook (python-mode . (lambda ()
-			 (local-unset-key (kbd "C-f"))
                          (require 'lsp-pyright)
-                         (lsp)))	; or lsp-deferred
+                         (lsp) ; or lsp-deferred
+			 (local-unset-key (kbd "C-f"))))
   :config
   (setq lsp-pyright-use-library-code-for-types nil)
   (flycheck-add-next-checker 'lsp 'python-pylint))
+
+(use-package pyvenv
+  :straight t)
 
 (use-package julia-mode
   :straight t)
