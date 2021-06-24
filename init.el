@@ -112,22 +112,17 @@
   (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
-(use-package base16-theme
+;; (use-package base16-theme
+;;   :straight t
+;;   :init
+;;   (setq base16-theme-256-color-source 'base16-shell)
+;;   :config
+;;   (load-theme 'base16-default-dark t))
+
+(use-package color-theme-sanityinc-tomorrow
   :straight t
-  :init
-  (setq base16-theme-256-color-source 'base16-shell)
   :config
-  (load-theme 'base16-default-dark t))
-
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :straight t
-;;   :config
-;;   (load-theme 'sanityinc-tomorrow-night))
-
-;; (use-package vscode-dark-plus-theme
-;;   :straight t
-;;   :config
-;;   (load-theme 'vscode-dark-plus t))
+  (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package mood-line
   :straight t
