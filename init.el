@@ -785,16 +785,16 @@
   :bind ("C-c m" . mu4e)
   :custom
   ;; Folders
-  (mu4e-sent-folder   "/sent")	  ;; folder for sent messages
-  (mu4e-drafts-folder "/drafts")  ;; unfinished messages
-  (mu4e-trash-folder  "/trash")	  ;; trashed messages
-  (mu4e-refile-folder "/archive") ;; saved messages
+  ;; (mu4e-sent-folder   "/sent")    ;; folder for sent messages
+  ;; (mu4e-drafts-folder "/drafts")  ;; unfinished messages
+  ;; (mu4e-trash-folder  "/trash")   ;; trashed messages
+  ;; (mu4e-refile-folder "/archive") ;; saved messages
   ;; Sync
   (mu4e-get-mail-command "mbsync -a")
-  (mu4e-update-interval 300)		;       ;; update every 5 min
+  (mu4e-update-interval 300) ;; update every 5 min
   ;; Personal details
-  (user-mail-address "dimitri@lozeve.com")
-  (user-full-name "Dimitri Lozeve")
+  ;; (user-mail-address "dimitri@lozeve.com")
+  ;; (user-full-name "Dimitri Lozeve")
   ;; Behaviour
   (message-kill-buffer-on-exit t)
   (mu4e-confirm-quit nil)
@@ -807,20 +807,25 @@
   (mu4e-view-show-images t)
   (mu4e-headers-show-threads t)
   (mu4e-compose-dont-reply-to-self t)
+  ;; enable format=flowed
+  ;; - mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
+  ;; - each paragraph is a single long line; at sending, emacs will add the
+  ;;   special line continuation characters.
+  ;; - also see visual-line-fringe-indicators setting below
   (mu4e-compose-format-flowed t)
+  ;; because it looks like email clients are basically ignoring format=flowed,
+  ;; let's complicate their lives too. send format=flowed with looong lines. :)
+  ;; https://www.ietf.org/rfc/rfc2822.txt
+  (fill-flowed-encode-column 998)
+  ;; in mu4e with format=flowed, this gives me feedback where the soft-wraps are
+  (visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
   :config
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq mu4e-context-policy 'pick-first)
   (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
   (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
-  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode)
-  (require 'smtpmail)
-  (setq message-send-mail-function 'smtpmail-send-it
-	;; starttls-use-gnutls t
-	;; smtpmail-starttls-credentials '(("smtp.zoho.eu" 587 nil nil))
-	smtpmail-auth-credentials '(("smtp.zoho.eu" 465 "dimitri@lozeve.com" nil))
-	smtpmail-default-smtp-server "smtp.zoho.eu"
-	smtpmail-smtp-server "smtp.zoho.eu"
-	smtpmail-stream-type 'ssl
-	smtpmail-smtp-service 465))
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
 
 (use-package vterm
   :straight t
