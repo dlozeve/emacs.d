@@ -689,20 +689,32 @@
   (require 'org-ref-isbn)
   (require 'org-ref-arxiv)
 
-  (setq bibtex-autokey-year-length 4))
+  (setq bibtex-autokey-year-length 4)
 
-(defun dl/formatted-citation-at-point ()
-  "Kill the formatted citation for the reference at point using Pandoc."
-  (interactive)
-  (let* ((bibfile (expand-file-name (car (org-ref-find-bibliography))))
-	 (cslfile (concat (file-name-directory bibfile) "chicago-author-date.csl")))
-    (kill-new
-     (shell-command-to-string
-      (format
-       "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
-       (org-ref-get-bibtex-key-under-cursor)
-       bibfile
-       cslfile)))))
+  (defun dl/formatted-citation-at-point ()
+    "Kill the formatted citation for the reference at point using Pandoc."
+    (interactive)
+    (let* ((bibfile (expand-file-name (car (org-ref-find-bibliography))))
+	   (cslfile (concat (file-name-directory bibfile) "chicago-author-date.csl")))
+      (kill-new
+       (shell-command-to-string
+	(format
+	 "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
+	 (org-ref-get-bibtex-key-under-cursor)
+	 bibfile
+	 cslfile)))))
+
+  (defun dl/formatted-citation-from-doi (doi)
+    "Kill the formatted citation for the given DOI."
+    (interactive
+     (list (read-string
+            "DOI: "
+            ;; now set initial input
+            (doi-utils-maybe-doi-from-region-or-current-kill))))
+    (let ((url-mime-accept-string "text/x-bibliography; style=chicago-author-date"))
+      (with-temp-buffer
+	(url-insert-file-contents (format "https://doi.org/%s" doi))
+	(kill-new (buffer-string))))))
 
 (use-package org-roam
   :straight t
