@@ -301,7 +301,6 @@
                          (lsp) ; or lsp-deferred
 			 (local-unset-key (kbd "C-f"))))
   :config
-  (setq lsp-pyright-use-library-code-for-types nil)
   (flycheck-add-next-checker 'lsp 'python-pylint))
 
 (use-package pyvenv
@@ -402,12 +401,10 @@
 (use-package rust-mode
   :straight t)
 
-;; Use APL font face in current buffer
-(defun my-buffer-face-mode-apl ()
-  "Use the APL font in current buffer."
-  (interactive)
-  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
-  (buffer-face-mode))
+(use-package zig-mode
+  :straight t
+  :config
+  (setq zig-format-on-save nil))
 
 (use-package matlab
   :straight matlab-mode
@@ -432,6 +429,13 @@
   ;; 			   (:underline '(:color "blue3" :style wave)))))
   )
 
+;; Use APL font face in current buffer
+(defun my-buffer-face-mode-apl ()
+  "Use the APL font in current buffer."
+  (interactive)
+  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
+  (buffer-face-mode))
+
 (use-package dyalog-mode
   :straight t
   :hook (dyalog-mode . my-buffer-face-mode-apl)
@@ -442,12 +446,24 @@
   :straight t
   :config
   (defface gnu-apl-default
-    '((t (:height 1.2 :family "APL385 Unicode"))) t)
+    '((t (:height 120 :family "APL385 Unicode"))) t)
   (defun em-gnu-apl-init ()
     (setq buffer-face-mode-face 'gnu-apl-default)
     (buffer-face-mode))
   (add-hook 'gnu-apl-interactive-mode-hook 'em-gnu-apl-init)
   (add-hook 'gnu-apl-mode-hook 'em-gnu-apl-init))
+
+(use-package bqn-mode
+  :straight (:host github :repo "mlochbaum/BQN" :files ("editors/emacs/*.el"))
+  :after gnu-apl-mode
+  :custom (bqn-key-prefix ?ù)
+  :config
+  (defface bqn-default
+    '((t (:height 140 :family "BQN386 Unicode"))) t)
+  (defun bqn-init ()
+    (setq buffer-face-mode-face 'bqn-default)
+    (buffer-face-mode))
+  (add-hook 'bqn-mode-hook 'bqn-init))
 
 (use-package tex-site
   :defer t
@@ -549,6 +565,8 @@
   (setq org-src-tab-acts-natively t)
   ;; full contents opened by default
   (setq org-startup-folded nil)
+  ;; only one empty line is enough to separate headings when folded
+  (setq org-cycle-separator-lines 1)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
   (add-hook 'org-mode-hook 'org-fragtog-mode)
