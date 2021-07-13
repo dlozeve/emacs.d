@@ -174,12 +174,6 @@
   :straight t
   :bind (("<f5>" . deadgrep)))
 
-(use-package ace-window
-  :straight t
-  :config
-  (global-set-key (kbd "M-o") 'ace-window)
-  (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l)))
-
 (use-package magit
   :straight t
   :bind (("C-x g" . magit-status)
@@ -398,9 +392,6 @@
       (let ((comint-buffer-maximum-size 0))
         (comint-truncate-buffer)))))
 
-(use-package rust-mode
-  :straight t)
-
 (use-package zig-mode
   :straight t
   :config
@@ -487,13 +478,6 @@
   :straight t
   :bind ("C-c C-f" . format-all-buffer))
 
-(use-package restclient
-  :straight t
-  :defer t
-  :mode (("\\.http\\'" . restclient-mode))
-  :bind (:map restclient-mode-map
-              ("C-c C-f" . json-mode-beautify)))
-
 (use-package elfeed
   :straight t
   :bind ("C-c f" . elfeed)
@@ -512,17 +496,6 @@
   :magic ("%PDF" . pdf-view-mode)
   :config
   (pdf-tools-install))
-
-(use-package nov
-  :straight t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  (setq nov-text-width 100))
-
-(use-package twittering-mode
-  :straight t
-  :config
-  (setq twittering-reverse-mode nil))
 
 (use-package mathpix.el
   :straight (:host github :repo "jethrokuan/mathpix.el")
@@ -853,13 +826,6 @@
   (define-key vterm-mode-map (kbd "<C-backspace>")
     (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
-(defun my-insert-char ()
-  "Search for a unicode character and insert it."
-  (interactive)
-  (with-temp-buffer
-    (call-interactively 'insert-char)
-    (kill-ring-save (point-min) (point-max))))
-
 
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
@@ -873,10 +839,6 @@
 
 (when (file-exists-p custom-file)
   (load custom-file))
-
-;;(setq initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n")
-;;(setq initial-scratch-message ";;                 ____ \\__ \\ \n;;                 \\__ \\__/ / __\n;;                 __/ ____ \\ \\ \\    ____\n;;                / __ \\__ \\ \\/ / __ \\__ \\ \n;;           ____ \\ \\ \\__/ / __ \\/ / __/ / __\n;;      ____ \\__ \\ \\/ ____ \\/ / __/ / __ \\ \\ \\ \n;;      \\__ \\__/ / __ \\__ \\__/ / __ \\ \\ \\ \\/\n;;      __/ ____ \\ \\ \\__/ ____ \\ \\ \\ \\/ / __\n;;     / __ \\__ \\ \\/ ____ \\__ \\ \\/ / __ \\/ /\n;;     \\ \\ \\__/ / __ \\__ \\__/ / __ \\ \\ \\__/\n;;      \\/ ____ \\/ / __/ ____ \\ \\ \\ \\/ ____\n;;         \\__ \\__/ / __ \\__ \\ \\/ / __ \\__ \\ \n;;         __/ ____ \\ \\ \\__/ / __ \\/ / __/ / __\n;;        / __ \\__ \\ \\/ ____ \\/ / __/ / __ \\/ /\n;;        \\/ / __/ / __ \\__ \\__/ / __ \\/ / __/\n;;        __/ / __ \\ \\ \\__/ ____ \\ \\ \\__/ / __\n;;       / __ \\ \\ \\ \\/ ____ \\__ \\ \\/ ____ \\/ /\n;;       \\ \\ \\ \\/ / __ \\__ \\__/ / __ \\__ \\__/\n;;        \\/ / __ \\/ / __/ ____ \\ \\ \\__/\n;;           \\ \\ \\__/ / __ \\__ \\ \\/\n;;            \\/      \\ \\ \\__/ / __\n;;                     \\/ ____ \\/ /\n;;                        \\__ \\__/\n;;                        __/\n\n\n")
-;;(setq initial-scratch-message ";;            ____\n;;           /.../\\\n;;          /.../--\\ \n;;         /.../----\\ \n;;        /.../------\\\n;;       /.../---/\\---\\ \n;;      /.../---/\\\\\\---\\\n;;     /.../---/\\\\\\\\\\---\\\n;;    /.../===/__\\\\\\\\\\---\\\n;;   /............\\\\\\\\\\---\\\n;;  /..............\\\\\\\\\\---\\\n;;  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\--/\n;;   \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/\n\n\n")
 
 
 ;;; init.el ends here
