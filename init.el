@@ -140,35 +140,30 @@
     (exec-path-from-shell-copy-env "GAMBIT")
     (exec-path-from-shell-copy-env "GERBIL_HOME")))
 
-(use-package ivy
+(use-package selectrum
   :straight t
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq enable-recursive-minibuffers t)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume))
+  :init
+  (selectrum-mode +1))
 
-(use-package swiper
-  :straight t
-  :config
-  (global-set-key "\C-s" 'swiper))
+(use-package prescient
+  :straight t)
 
-(use-package counsel
+(use-package selectrum-prescient
   :straight t
-  :config
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  (global-set-key (kbd "C-c g") 'counsel-git)
-  (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  (global-set-key (kbd "C-c a") 'counsel-ag)
-  (global-set-key (kbd "C-x l") 'counsel-locate)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+  :after (selectrum prescient)
+  :init
+  (selectrum-prescient-mode +1))
+
+(use-package consult
+  :straight t
+  :bind (("C-s" . consult-line)))
+
+(use-package marginalia
+  :straight t
+  :bind (:map minibuffer-local-map
+	 ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode +1))
 
 (use-package deadgrep
   :straight t
@@ -214,7 +209,7 @@
 (use-package projectile
   :straight t
   :init
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'default)
   :config
   (setq projectile-enable-caching t)
   (setq projectile-tags-command "ctags-universal -Re")
@@ -283,10 +278,6 @@
   :config
   (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-position 'top))
-
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol
-  :straight t)
 
 (use-package lsp-pyright
   :straight t
@@ -725,16 +716,11 @@
   :config
   (setq org-roam-graph-executable "dot")
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
-  (setq org-roam-completion-system 'ivy)
+  (setq org-roam-completion-system 'default)
   (setq org-roam-link-use-custom-faces 'everywhere)
   (set-face-attribute 'org-roam-link nil :foreground "lime green")
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/"))
-
-(use-package org-roam-bibtex
-  :straight t
-  :after org-roam
-  :hook (org-roam-mode . org-roam-bibtex-mode))
 
 (use-package deft
   :straight t
