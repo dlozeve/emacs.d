@@ -59,11 +59,11 @@
 (setq c-default-style "linux")
 
 (let ((my-font "Iosevka")
-      (my-height 110))
+      (my-height 90))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
 
-(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 130)
+(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 100)
 
 (defun unfill-paragraph ()
   (interactive)
