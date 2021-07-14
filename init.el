@@ -310,7 +310,7 @@
   (add-hook 'haskell-mode-hook 'dante-mode)
   (add-hook 'haskell-mode-hook 'flycheck-mode))
 
-(use-package lispy
+(use-package paredit
   :straight t
   :hook ((emacs-lisp-mode
 	  eval-expression-minibuffer-setup
@@ -322,7 +322,7 @@
 	  slime-repl-mode
 	  racket-mode
 	  racket-repl-mode
-	  gerbil-mode) . lispy-mode))
+	  gerbil-mode) . enable-paredit-mode))
 
 (use-package slime
   :straight t
