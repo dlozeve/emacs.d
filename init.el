@@ -59,11 +59,11 @@
 (setq c-default-style "linux")
 
 (let ((my-font "Iosevka")
-      (my-height 90))
+      (my-height 120))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
 
-(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 100)
+(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 140)
 
 (defun unfill-paragraph ()
   (interactive)
@@ -498,7 +498,7 @@
 ;; Org-mode
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
-  "Find the planner/GTD file."
+  "Find the planner file."
   (interactive)
   (find-file "~/notes/planner.org"))
 
@@ -516,24 +516,22 @@
   :straight t
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
-	 ("C-c b" . org-iswitchb)
 	 ("C-c c" . org-capture))
   :config
   (setq org-agenda-files (list "~/notes/planner.org"))
   (setq org-default-notes-file "~/notes/planner.org")
-  ;; autorise les listes avec numérotation en a. b. a) b), etc.
+  ;; List numbering with a. b. a) b), etc.
   (setq org-list-allow-alphabetical t)
-  ;; fontify code in code blocks
+  ;; Fontify code in code blocks
   (setq org-src-fontify-natively t)
-  ;; tabs in src blocks
+  ;; Tabs in src blocks
   (setq org-src-tab-acts-natively t)
-  ;; full contents opened by default
+  ;; Full contents opened by default
   (setq org-startup-folded nil)
-  ;; only one empty line is enough to separate headings when folded
+  ;; Only one empty line is enough to separate headings when folded
   (setq org-cycle-separator-lines 1)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
-  (add-hook 'org-mode-hook 'org-fragtog-mode)
 
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/notes")
@@ -561,8 +559,6 @@
 
   (setq org-clock-persist 'history)
   (org-clock-persistence-insinuate)
-
-  (require 'ox-md nil t)
 
   (setq org-capture-templates
 	(quote
@@ -607,44 +603,56 @@
 
   (setq org-confirm-babel-evaluate nil)
   (setq org-src-preserve-indentation nil
-	org-edit-src-content-indentation 0)
+	org-edit-src-content-indentation 0))
 
-  (require 'ob-plantuml)
-  (setq org-plantuml-jar-path (expand-file-name "~/build/plantuml.jar"))
-
-  ;; System locale to use for formatting time values.  Make sure that
-  ;; the weekdays in the time stamps of your Org mode files and in the
-  ;; agenda appear in English.
-  (setq system-time-locale "C")
-
-  (with-eval-after-load "ox-latex"
-    (add-to-list 'org-latex-classes
-		 '("koma-article" "\\documentclass{scrartcl}"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-    (add-to-list 'org-latex-packages-alist
-		 '("AUTO" "babel" t ("pdflatex")))
-    (add-to-list 'org-latex-packages-alist
-		 '("AUTO" "polyglossia" t ("xelatex" "lualatex"))))
-
+(use-package ox-latex
+  :after (org)
+  :config
+  (add-to-list 'org-latex-classes
+	       '("koma-article" "\\documentclass{scrartcl}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list 'org-latex-packages-alist
+	       '("AUTO" "babel" t ("pdflatex")))
+  (add-to-list 'org-latex-packages-alist
+	       '("AUTO" "polyglossia" t ("xelatex" "lualatex")))
   (setq org-latex-pdf-process
 	'("latexmk -shell-escape -lualatex -bibtex -pdf %f"))
   (setq org-latex-default-class "koma-article"))
 
 (use-package ox-pandoc
   :straight t
+  :after (org)
   :config
   (setq org-pandoc-options '((standalone . t)
 			     (bibliography . "~/notes/bibliography/bibliography.bib"))))
 
+(use-package ox-gfm
+  :straight t
+  :after (org)
+  :config
+  (eval-after-load "org"
+    '(require 'ox-gfm nil t)))
+
+(use-package ox-md
+  :after (org))
+
+(use-package ob-plantuml
+  :after (org)
+  :config
+  (setq org-plantuml-jar-path (expand-file-name "~/build/plantuml.jar")))
+
 (use-package org-fragtog
-  :straight t)
+  :straight t
+  :after (org)
+  :hook (org-mode . org-fragtog-mode))
 
 (use-package org-ref
   :straight t
+  :after (org)
   :config
   (setq reftex-default-bibliography '("~/notes/bibliography/bibliography.bib"))
   (setq org-ref-bibliography-notes "~/notes/bibliography/notes.org"
@@ -653,19 +661,7 @@
 
   (setq org-ref-completion-library 'org-ref-helm-bibtex)
   (setq bibtex-dialect 'biblatex)
-
-  (add-to-list 'org-ref-formatted-citation-formats
-	       '("custom"
-		 ("article" . "${author}, ${title}, ${journal}, ${volume}(${number}), ${pages} (${year}). ${doi} ${url}")
-		 ("inproceedings" . "${author}, ${title}, In ${editor}, ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}. ${url}")
-		 ("book" . "${author}, ${title} (${year}), ${address}: ${publisher}. ${url}")
-		 ("phdthesis" . "${author}, ${title} (Doctoral dissertation) (${year}). ${school}, ${address}. ${url}")
-		 ("inbook" . "${author}, ${title}, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}. ${url}")
-		 ("incollection" . "${author}, ${title}, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}. ${url}")
-		 ("proceedings" . "${editor} (Eds.), ${booktitle} (${year}). ${address}: ${publisher}. ${url}")
-		 ("unpublished" . "${author}, ${title} (${year}). Unpublished manuscript. ${url}")
-		 (nil . "${author}, ${title} (${year}). ${url}")))
-  (setq org-ref-formatted-citation-backend "custom")
+  (setq org-ref-formatted-citation-backend "text")
 
   (require 'doi-utils)
   (require 'org-ref-isbn)
@@ -700,6 +696,7 @@
 
 (use-package org-roam
   :straight t
+  :after (org)
   :hook (after-init . org-roam-mode)
   :custom
   (org-roam-directory "~/notes/notes")
@@ -731,13 +728,6 @@
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
   (deft-directory "~/notes/notes"))
-
-(use-package ox-gfm
-  :straight t
-  :after (org)
-  :config
-  (eval-after-load "org"
-    '(require 'ox-gfm nil t)))
 
 (use-package graphviz-dot-mode
   :straight t
