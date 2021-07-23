@@ -284,9 +284,7 @@
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
                          (lsp) ; or lsp-deferred
-			 (local-unset-key (kbd "C-f"))))
-  :config
-  (flycheck-add-next-checker 'lsp 'python-pylint))
+			 (local-unset-key (kbd "C-f")))))
 
 (use-package pyvenv
   :straight t)
@@ -423,17 +421,6 @@
   :hook (dyalog-mode . my-buffer-face-mode-apl)
   :custom
   (dyalog-fix-whitespace-before-save t))
-
-(use-package gnu-apl-mode
-  :straight t
-  :config
-  (defface gnu-apl-default
-    '((t (:height 120 :family "APL385 Unicode"))) t)
-  (defun em-gnu-apl-init ()
-    (setq buffer-face-mode-face 'gnu-apl-default)
-    (buffer-face-mode))
-  (add-hook 'gnu-apl-interactive-mode-hook 'em-gnu-apl-init)
-  (add-hook 'gnu-apl-mode-hook 'em-gnu-apl-init))
 
 (use-package bqn-mode
   :straight (:host github :repo "mlochbaum/BQN" :files ("editors/emacs/*.el"))
@@ -696,7 +683,7 @@
 
 (use-package org-roam
   :straight t
-  :after (org)
+  :after org
   :custom
   (org-roam-directory (file-truename "~/notes/notes"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -707,14 +694,18 @@
 	 ;; Dailies
 	 ("C-c n j" . org-roam-dailies-capture-today)
 	 ("C-c n t" . org-roam-dailies-find-today))
-  :config
-  (org-roam-setup)
+  :init
   (setq org-roam-v2-ack t)
+  (org-roam-setup)
+  (setq org-roam-completion-system 'default)
+  :config
   (setq org-roam-graph-executable "dot")
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
-  (setq org-roam-completion-system 'default)
   (require 'org-roam-protocol)
-  (setq org-roam-dailies-directory "daily/"))
+  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-dailies-capture-templates
+	'(("d" "default" entry "* %?"
+	   :if-new (file+datetree "%<%Y-W%V>.org" day)))))
 
 (use-package deft
   :straight t
@@ -724,7 +715,9 @@
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
   (deft-default-extension "org")
-  (deft-directory "~/notes/notes"))
+  (deft-directory "~/notes/notes")
+  (deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
+  (deft-use-filename-as-title t))
 
 (use-package graphviz-dot-mode
   :straight t
