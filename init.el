@@ -276,7 +276,7 @@
   (setq gc-cons-threshold 100000000)
   (setq lsp-completion-provider :capf)
   (setq lsp-file-watch-threshold nil)
-  (setq lsp-zig-zls-executable (expand-file-name "~/build/zls/zig-out/bin/zls")))
+  (setq lsp-zig-zls-executable "zls"))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -670,7 +670,7 @@
       (kill-new
        (shell-command-to-string
 	(format
-	 "echo cite:%s | pandoc --filter=pandoc-citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
+	 "echo cite:%s | pandoc --citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
 	 (org-ref-get-bibtex-key-under-cursor)
 	 bibfile
 	 cslfile)))))
