@@ -561,15 +561,19 @@
 	   ((agenda ""
 		    ((org-agenda-span 7)
 		     (org-agenda-start-on-weekday 1)
-		     (org-agenda-prefix-format " → %t%s ")
-		     (org-agenda-repeating-timestamp-show-all t)))
+		     (org-agenda-prefix-format "  %t%s ")
+		     (org-agenda-repeating-timestamp-show-all t)
+		     (org-agenda-hide-tags-regexp "\\work")))
 	    (tags-todo "work"
-		       ((org-agenda-prefix-format "[ ] ")
+		       ((org-agenda-prefix-format "")
 			(org-agenda-sorting-strategy '(tag-up priority-down))))
 	    (tags-todo "personal"
-		       ((org-agenda-prefix-format "[ ] ")
+		       ((org-agenda-prefix-format "")
 			(org-agenda-sorting-strategy '(tag-up priority-down)))))
-	   ((org-agenda-remove-tags t))
+	   ((org-agenda-remove-tags 'prefix)
+	    (org-agenda-todo-ignore-scheduled 'future)
+	    (org-agenda-todo-ignore-deadlines 'future)
+	    (org-agenda-tags-todo-honor-ignore-options t))
 	   ("fortnight.html"))
 	  ("n" "Agenda and all TODOs"
 	   ((agenda "" nil)
