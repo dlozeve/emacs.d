@@ -732,9 +732,9 @@
 	 ("C-c n t" . org-roam-dailies-find-today))
   :init
   (setq org-roam-v2-ack t)
-  (org-roam-setup)
   (setq org-roam-completion-system 'default)
   :config
+  (org-roam-db-autosync-mode)
   (setq org-roam-graph-executable "dot")
   (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
   (require 'org-roam-protocol)
