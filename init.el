@@ -45,15 +45,15 @@
 ;; agenda appear in English.
 (setq system-time-locale "C")
 
-;; replace buffer-menu with ibuffer
-(global-set-key (kbd "C-x C-b") #'ibuffer)
-
-(global-set-key (kbd "M-z") #'zap-up-to-char)
-
 ;; Better than default: act on the region if active
-(global-set-key (kbd "M-c") 'capitalize-dwim)
-(global-set-key (kbd "M-l") 'downcase-dwim)
-(global-set-key (kbd "M-u") 'upcase-dwim)
+(bind-key [remap upcase-word] #'upcase-dwim)
+(bind-key [remap downcase-word] #'downcase-dwim)
+(bind-key [remap capitalize-word] #'capitalize-dwim)
+(bind-key [remap count-words-region] #'count-words)
+
+(bind-key [remap just-one-space] #'cycle-spacing)
+(bind-key [remap zap-to-char] #'zap-up-to-char)
+(bind-key [remap buffer-menu] #'ibuffer)
 
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
@@ -176,7 +176,7 @@
   :straight t
   :bind
   (("C-;" . embark-act)         ;; pick some comfortable binding
-   ("M-;" . embark-dwim)
+   ;("M-;" . embark-dwim)
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
   ;; Optionally replace the key help with a completing-read interface
