@@ -45,16 +45,6 @@
 ;; agenda appear in English.
 (setq system-time-locale "C")
 
-;; Better than default: act on the region if active
-(bind-key [remap upcase-word] #'upcase-dwim)
-(bind-key [remap downcase-word] #'downcase-dwim)
-(bind-key [remap capitalize-word] #'capitalize-dwim)
-(bind-key [remap count-words-region] #'count-words)
-
-(bind-key [remap just-one-space] #'cycle-spacing)
-(bind-key [remap zap-to-char] #'zap-up-to-char)
-(bind-key [remap buffer-menu] #'ibuffer)
-
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
 
@@ -91,6 +81,16 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+;; Better than default: act on the region if active
+(bind-key [remap upcase-word] #'upcase-dwim)
+(bind-key [remap downcase-word] #'downcase-dwim)
+(bind-key [remap capitalize-word] #'capitalize-dwim)
+(bind-key [remap count-words-region] #'count-words)
+
+(bind-key [remap just-one-space] #'cycle-spacing)
+(bind-key [remap zap-to-char] #'zap-up-to-char)
+(bind-key [remap buffer-menu] #'ibuffer)
 
 ;;; Built-in packages
 (use-package paren
