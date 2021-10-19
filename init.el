@@ -674,24 +674,42 @@
   :after (org)
   :hook (org-mode . org-fragtog-mode))
 
+(use-package citeproc
+  :straight t)
+
 (use-package org-ref
   :straight t
-  :after (org)
+  :after (org citeproc)
   :config
+  (setq bibtex-completion-bibliography '("~/notes/bibliography/bibliography.bib")
+	bibtex-completion-library-path "~/notes/bibliography/files/"
+	bibtex-completion-additional-search-fields '(keywords)
+	bibtex-completion-display-formats
+	'((article       . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+	  (inbook        . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+	  (incollection  . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+	  (inproceedings . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+	  (t             . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*}")))
   (setq reftex-default-bibliography '("~/notes/bibliography/bibliography.bib"))
-  (setq org-ref-bibliography-notes "~/notes/bibliography/notes.org"
-	org-ref-default-bibliography '("~/notes/bibliography/bibliography.bib")
-	org-ref-pdf-directory "~/notes/bibliography/files/")
 
-  (setq org-ref-completion-library 'org-ref-helm-bibtex)
-  (setq bibtex-dialect 'biblatex)
-  (setq org-ref-formatted-citation-backend "text")
+  (require 'bibtex)
+  (setq bibtex-dialect 'biblatex)  
+  (setq bibtex-autokey-year-length 4
+	bibtex-autokey-name-year-separator ""
+	bibtex-autokey-year-title-separator "_"
+	bibtex-autokey-titleword-separator "_"
+	bibtex-autokey-titlewords 2
+	bibtex-autokey-titlewords-stretch 1
+	bibtex-autokey-titleword-length 5)
+
+  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
+
+  (require 'org-ref)
 
   (require 'doi-utils)
   (require 'org-ref-isbn)
   (require 'org-ref-arxiv)
-
-  (setq bibtex-autokey-year-length 4)
+  (require 'org-ref-isbn)
 
   (defun dl/formatted-citation-at-point ()
     "Kill the formatted citation for the reference at point using Pandoc."
