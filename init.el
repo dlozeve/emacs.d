@@ -48,7 +48,7 @@
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
 
-(let ((my-font "Iosevka")
+(let ((my-font "Iosevka Term")
       (my-height 120))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
