@@ -627,7 +627,8 @@
 
   (setq org-confirm-babel-evaluate nil)
   (setq org-src-preserve-indentation nil
-	org-edit-src-content-indentation 0))
+	org-edit-src-content-indentation 0)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)))
 
 (use-package ox-latex
   :after (org)
@@ -678,7 +679,7 @@
   :straight t)
 
 (use-package org-ref
-  :straight t
+  :straight (:host github :repo "jkitchin/org-ref" :files ("*.el" "*.org" "citeproc" :defaults))
   :after (org citeproc)
   :config
   (setq bibtex-completion-bibliography '("~/notes/bibliography/bibliography.bib")
@@ -693,7 +694,7 @@
   (setq reftex-default-bibliography '("~/notes/bibliography/bibliography.bib"))
 
   (require 'bibtex)
-  (setq bibtex-dialect 'biblatex)  
+  (setq bibtex-dialect 'biblatex)
   (setq bibtex-autokey-year-length 4
 	bibtex-autokey-name-year-separator ""
 	bibtex-autokey-year-title-separator "_"
