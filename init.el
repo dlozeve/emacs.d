@@ -383,12 +383,6 @@
   :defer t
   :mode (("\\.ss\\'"  . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
-  :bind (:map comint-mode-map
-              (("C-S-n" . comint-next-input)
-               ("C-S-p" . comint-previous-input)
-               ("C-S-l" . clear-comint-buffer))
-              :map gerbil-mode-map
-              (("C-S-l" . clear-comint-buffer)))
   :init
   (setf gambit (getenv "GAMBIT"))
   (setf gerbil (getenv "GERBIL_HOME"))
@@ -397,22 +391,12 @@
   :hook
   ((inferior-scheme-mode-hook . gambit-inferior-mode))
   :config
-  (require 'gambit (concat gambit "/share/emacs/site-lisp/gambit.el"))
-  (setf scheme-program-name (concat gerbil "/bin/gxi"))
+  (require 'gambit (concat gambit "/misc/gambit.el"))
+  (setf scheme-program-name "gxi")
 
   (let ((tags (locate-dominating-file default-directory "TAGS")))
     (when tags (visit-tags-table tags)))
-  (visit-tags-table (concat gerbil "/src/TAGS"))
-
-  (when (package-installed-p 'smartparens)
-    (sp-pair "'" nil :actions :rem)
-    (sp-pair "`" nil :actions :rem))
-
-  (defun clear-comint-buffer ()
-    (interactive)
-    (with-current-buffer "*scheme*"
-      (let ((comint-buffer-maximum-size 0))
-        (comint-truncate-buffer)))))
+  (visit-tags-table (concat gerbil "/src/TAGS")))
 
 (use-package zig-mode
   :straight t
