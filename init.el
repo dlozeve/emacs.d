@@ -448,7 +448,7 @@
   :custom (bqn-key-prefix ?ù)
   :config
   (defface bqn-default
-    '((t (:height 140 :family "BQN386 Unicode"))) t)
+    '((t (:height 140 :family "BQN386 Unicode"))) "BQN default face.")
 
   (defun bqn-init ()
     (setq buffer-face-mode-face 'bqn-default)
