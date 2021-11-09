@@ -65,6 +65,14 @@
   (let ((fill-column (point-max)))
     (fill-region (region-beginning) (region-end) nil)))
 
+(defun random-todo ()
+  (interactive)
+  (let ((points nil))
+    (goto-char (point-min))
+    (while (search-forward-regexp "\*\sTODO" nil t)
+      (setq points (cons (1+ (match-end 0)) points)))
+    (goto-char (seq-random-elt points))))
+
 ;; Straight.el setup
 (setq straight-repository-branch "develop")
 (defvar bootstrap-version)
@@ -561,6 +569,8 @@
   (setq org-startup-folded nil)
   ;; Only one empty line is enough to separate headings when folded
   (setq org-cycle-separator-lines 1)
+  ;; Refile to paths in the file (level1/level2/level3)
+  (setq org-refile-use-outline-path t)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
