@@ -389,7 +389,7 @@
   (autoload 'gerbil-mode
     (concat gerbil "/etc/gerbil-mode.el") "Gerbil editing mode." t)
   :hook
-  ((inferior-scheme-mode-hook . gambit-inferior-mode))
+  ((inferior-scheme-mode . gambit-inferior-mode))
   :config
   (require 'gambit (concat gambit "/misc/gambit.el"))
   (setf scheme-program-name "gxi")
