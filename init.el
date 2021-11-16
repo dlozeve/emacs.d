@@ -767,10 +767,8 @@
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n g" . org-roam-graph)
 	 ("C-c n i" . org-roam-node-insert)
-	 ("C-c n c" . org-roam-capture)
-	 ;; Dailies
-	 ("C-c n j" . org-roam-dailies-capture-today)
-	 ("C-c n t" . org-roam-dailies-find-today))
+	 ("C-c n c" . org-roam-capture))
+  :bind-keymap ("C-c n d" . org-roam-dailies-map)
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-completion-system 'default)
@@ -781,8 +779,10 @@
   (require 'org-roam-protocol)
   (setq org-roam-dailies-directory "daily/")
   (setq org-roam-dailies-capture-templates
-	'(("d" "default" entry "* %?"
-	   :if-new (file+datetree "%<%Y-W%V>.org" day)))))
+	'(("d" "default" entry "* %U %?"
+	   :empty-lines-before 1
+	   :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
+")))))
 
 (use-package org-roam-ui
   :straight
@@ -801,7 +801,7 @@
 (use-package deft
   :straight t
   :after org
-  :bind ("C-c n d" . deft)
+  :bind ("C-c n s" . deft)
   :custom
   (deft-recursive t)
   (deft-use-filter-string-for-filename t)
