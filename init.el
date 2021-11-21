@@ -385,6 +385,10 @@
 (use-package racket-mode
   :straight t)
 
+(use-package geiser-chicken
+  :straight t
+  :custom (geiser-chicken-binary "chicken-csi"))
+
 (use-package gerbil-mode
   :when (getenv "GERBIL_HOME")
   :straight nil
