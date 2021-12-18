@@ -771,8 +771,11 @@
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n g" . org-roam-graph)
 	 ("C-c n i" . org-roam-node-insert)
-	 ("C-c n c" . org-roam-capture))
-  :bind-keymap ("C-c n d" . org-roam-dailies-map)
+	 ("C-c n c" . org-roam-capture)
+	 ("C-c n d n" . org-roam-dailies-capture-today)
+	 ("C-c n d t" . org-roam-dailies-goto-today)
+	 ("C-c n d d" . org-roam-dailies-capture-date)
+	 ("C-c n d g" . org-roam-dailies-goto-date))
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-completion-system 'default)
