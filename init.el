@@ -338,6 +338,9 @@
   :config
   (julia-repl-set-terminal-backend 'vterm))
 
+(use-package ess
+  :straight t)
+
 (use-package dante
   :straight t
   :after haskell-mode
