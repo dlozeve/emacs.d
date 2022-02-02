@@ -718,11 +718,17 @@
   :no-require
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
+  (org-cite-export-processors '((beamer biblatex)
+				(latex biblatex)
+				(t csl)))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
   (citar-at-point-function 'embark-act)
+  (citar-format-reference-function 'citar-citeproc-format-reference)
+  (citar-citeproc-csl-styles-dir "~/notes/bibliography/")
+  (citar-citeproc-csl-locales-dir "~/notes/bibliography/")
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
