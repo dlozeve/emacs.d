@@ -703,64 +703,29 @@
 (use-package citeproc
   :straight t)
 
-(use-package org-ref
-  :straight (:host github :repo "jkitchin/org-ref" :files ("*.el" "*.org" "citeproc" :defaults))
-  :after (org citeproc)
+(use-package bibtex
   :config
-  (setq bibtex-completion-bibliography '("~/notes/bibliography/bibliography.bib")
-	bibtex-completion-library-path "~/notes/bibliography/files/"
-	bibtex-completion-additional-search-fields '(keywords)
-	bibtex-completion-display-formats
-	'((article       . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-	  (inbook        . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-	  (incollection  . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-	  (inproceedings . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-	  (t             . "${=has-pdf=:1} ${year:4} ${author:36} ${title:*}")))
-  (setq reftex-default-bibliography '("~/notes/bibliography/bibliography.bib"))
-
-  (require 'bibtex)
-  (setq bibtex-dialect 'biblatex)
-  (setq bibtex-autokey-year-length 4
+  (setq bibtex-dialect 'biblatex
+	bibtex-autokey-year-length 4
 	bibtex-autokey-name-year-separator ""
 	bibtex-autokey-year-title-separator "_"
 	bibtex-autokey-titleword-separator "_"
 	bibtex-autokey-titlewords 2
-	bibtex-autokey-titlewords-stretch 1
-	bibtex-autokey-titleword-length 5)
+	bibtex-autokey-titlewords-stretch 1))
 
-  (define-key org-mode-map (kbd "C-c ]") 'org-ref-insert-link)
-
-  (require 'org-ref)
-
-  (require 'doi-utils)
-  (require 'org-ref-isbn)
-  (require 'org-ref-arxiv)
-  (require 'org-ref-isbn)
-
-  (defun dl/formatted-citation-at-point ()
-    "Kill the formatted citation for the reference at point using Pandoc."
-    (interactive)
-    (let* ((bibfile (expand-file-name (car (org-ref-find-bibliography))))
-	   (cslfile (concat (file-name-directory bibfile) "chicago-author-date.csl")))
-      (kill-new
-       (shell-command-to-string
-	(format
-	 "echo cite:%s | pandoc --citeproc --bibliography=%s --csl=%s -f org -t markdown_strict | tail -n +3 | tr '\n' ' '"
-	 (org-ref-get-bibtex-key-under-cursor)
-	 bibfile
-	 cslfile)))))
-
-  (defun dl/formatted-citation-from-doi (doi)
-    "Kill the formatted citation for the given DOI."
-    (interactive
-     (list (read-string
-            "DOI: "
-            ;; now set initial input
-            (doi-utils-maybe-doi-from-region-or-current-kill))))
-    (let ((url-mime-accept-string "text/x-bibliography; style=chicago-author-date"))
-      (with-temp-buffer
-	(url-insert-file-contents (format "https://doi.org/%s" doi))
-	(kill-new (buffer-string))))))
+(use-package citar
+  :straight t
+  :no-require
+  :custom
+  (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+  (citar-bibliography org-cite-global-bibliography)
+  (citar-at-point-function 'embark-act)
+  ;; optional: org-cite-insert is also bound to C-c C-x C-@
+  :bind
+  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
 (use-package org-roam
   :straight t
