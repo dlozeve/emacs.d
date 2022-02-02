@@ -149,19 +149,16 @@
     (exec-path-from-shell-copy-env "GAMBIT")
     (exec-path-from-shell-copy-env "GERBIL_HOME")))
 
-(use-package selectrum
+(use-package vertico
+  :straight t
+  :init (vertico-mode))
+
+(use-package orderless
   :straight t
   :init
-  (selectrum-mode +1))
-
-(use-package prescient
-  :straight t)
-
-(use-package selectrum-prescient
-  :straight t
-  :after (selectrum prescient)
-  :init
-  (selectrum-prescient-mode +1))
+  (setq completion-styles '(orderless)
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package consult
   :straight t
