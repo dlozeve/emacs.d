@@ -327,6 +327,13 @@
 (use-package pyvenv
   :straight t)
 
+(use-package jupyter
+  :straight t
+  :config
+  ;; https://github.com/nnicandro/emacs-jupyter/issues/380#issuecomment-1014026589
+  (defun jupyter-ansi-color-apply-on-region (begin end)
+    (ansi-color-apply-on-region begin end t)))
+
 (use-package julia-mode
   :straight t)
 
@@ -641,6 +648,7 @@
    '((R . t)
      (emacs-lisp . t)
      (python . t)
+     (jupyter . t)
      (awk . t)
      (C . t)
      (ditaa . t)
@@ -651,6 +659,8 @@
      (shell . t)))
 
   (setq org-confirm-babel-evaluate nil)
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+
   (setq org-src-preserve-indentation nil
 	org-edit-src-content-indentation 0)
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)))
