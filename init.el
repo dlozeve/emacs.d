@@ -141,7 +141,7 @@
 (use-package exec-path-from-shell
   :straight t
   :config
-  (when (memq window-system '(mac ns x))
+  (when (memq window-system '(mac ns x pgtk))
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
     (exec-path-from-shell-copy-env "PYENV_ROOT")
@@ -151,14 +151,17 @@
 
 (use-package vertico
   :straight t
-  :init (vertico-mode))
+  :init
+  (vertico-mode +1))
 
 (use-package orderless
   :straight t
   :init
   (setq completion-styles '(orderless)
 	completion-category-defaults nil
-	completion-category-overrides '((file (styles partial-completion)))))
+	completion-category-overrides '((file (styles basic-remote
+						      partial-completion
+						      orderless)))))
 
 (use-package consult
   :straight t
@@ -173,7 +176,7 @@
 (use-package marginalia
   :straight t
   :bind (:map minibuffer-local-map
-	 ("M-A" . marginalia-cycle))
+	      ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode +1))
 
