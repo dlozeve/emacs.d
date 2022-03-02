@@ -159,8 +159,7 @@
   :init
   (setq completion-styles '(orderless)
 	completion-category-defaults nil
-	completion-category-overrides '((file (styles basic-remote
-						      partial-completion
+	completion-category-overrides '((file (styles partial-completion
 						      orderless)))))
 
 (use-package consult
