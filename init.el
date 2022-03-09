@@ -540,6 +540,36 @@
   :config
   (pdf-tools-install))
 
+(defun dl/view-exif-data (file)
+  "View EXIF data of FILE."
+  (interactive "fFile: ")
+  (let ((buf-name (concat "*EXIF " file "*")))
+    ;; If the buffer already exists, kill it.
+    (when (get-buffer buf-name)
+      (kill-buffer buf-name))
+    ;; Create a new buffer and window.
+    (let ((buf (get-buffer-create buf-name))
+	  (window (split-window nil)))
+      (call-process image-dired-cmd-write-exif-data-program
+		    nil buf t
+		    (expand-file-name file))
+      (with-current-buffer buf
+	(goto-char (point-min))
+	;; Read-only, q to close the window, C-u q to close and kill.
+	(special-mode))
+      (set-window-buffer window buf))))
+
+(defun dl/set-exif-data (file tag-name tag-value)
+  "In FILE, set EXIF tag TAG-NAME to value TAG-VALUE."
+  (interactive "fFile: \nsTag: \nsValue: ")
+  (let ((options '("-%t=%v" "-overwrite_original" "%f"))
+	(spec (list
+	       (cons ?f (expand-file-name file))
+	       (cons ?t tag-name)
+	       (cons ?v tag-value))))
+    (apply #'call-process "exiftool" nil nil nil
+	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
+
 (use-package mathpix.el
   :straight (:host github :repo "jethrokuan/mathpix.el")
   ;; You also need to configure `mathpix-app-id` and
