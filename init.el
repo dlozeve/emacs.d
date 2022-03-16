@@ -550,7 +550,7 @@
     ;; Create a new buffer and window.
     (let ((buf (get-buffer-create buf-name))
 	  (window (split-window nil)))
-      (call-process image-dired-cmd-write-exif-data-program
+      (call-process "exiftool"
 		    nil buf t
 		    (expand-file-name file))
       (with-current-buffer buf
