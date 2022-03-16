@@ -35,6 +35,9 @@
 ;; Newline at end of file
 (setq require-final-newline t)
 
+;; TAB cycle if there are only few candidates
+(setq completion-cycle-threshold 3)
+
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -159,6 +162,7 @@
   :init
   (setq completion-styles '(orderless)
 	completion-category-defaults nil
+	completion-category-overrides nil
 	completion-category-overrides '((file (styles partial-completion
 						      orderless)))))
 
@@ -204,6 +208,22 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package corfu
+  :straight t
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+  :init
+  (corfu-global-mode))
 
 (use-package deadgrep
   :straight t
@@ -295,22 +315,21 @@
   :hook ((rust-mode . lsp)
 	 (c-mode . lsp)
 	 (python-mode . lsp))
-  :config
-  (setq lsp-clients-clangd-args
-	'("-j=2"
-	  "--background-index"
-	  "--clang-tidy"
-	  "--completion-style=bundled"
-	  "--pch-storage=memory"
-	  "--header-insertion=never"
-	  "--header-insertion-decorators=0"
-	  "--suggest-missing-includes"))
+  :custom
+  (lsp-clients-clangd-args '("-j=2"
+			     "--background-index"
+			     "--clang-tidy"
+			     "--completion-style=bundled"
+			     "--pch-storage=memory"
+			     "--header-insertion=never"
+			     "--header-insertion-decorators=0"
+			     "--suggest-missing-includes"))
   ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
-  (setq gc-cons-threshold 100000000)
-  (setq lsp-completion-provider :capf)
-  (setq lsp-file-watch-threshold nil)
-  (setq lsp-zig-zls-executable "zls"))
+  (read-process-output-max (* 1024 1024)) ;; 1mb
+  (gc-cons-threshold 100000000)
+  (lsp-completion-provider :none)
+  (lsp-file-watch-threshold nil)
+  (lsp-zig-zls-executable "zls"))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
