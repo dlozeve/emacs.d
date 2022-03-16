@@ -103,6 +103,8 @@
 (bind-key [remap zap-to-char] #'zap-up-to-char)
 (bind-key [remap buffer-menu] #'ibuffer)
 
+(bind-key "M-o" #'other-window)
+
 ;;; Built-in packages
 (use-package paren
   :config
