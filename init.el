@@ -350,14 +350,6 @@
 (use-package ess
   :straight t)
 
-(use-package dante
-  :straight t
-  :after haskell-mode
-  :commands 'dante-mode
-  :init
-  (add-hook 'haskell-mode-hook 'dante-mode)
-  (add-hook 'haskell-mode-hook 'flycheck-mode))
-
 (use-package paredit
   :straight t
   :hook ((emacs-lisp-mode
