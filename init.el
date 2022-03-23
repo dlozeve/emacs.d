@@ -340,6 +340,15 @@
   (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-position 'top))
 
+(use-package haskell-mode
+  :straight t)
+
+(use-package lsp-haskell
+  :straight t
+  :after haskell-mode
+  :hook ((haskell-mode . lsp)
+	 (haskell-literate-mode . lsp)))
+
 (use-package lsp-pyright
   :straight t
   :hook (python-mode . (lambda ()
