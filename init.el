@@ -290,6 +290,9 @@
 (use-package dockerfile-mode
   :straight t)
 
+(use-package terraform-mode
+  :straight t)
+
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
