@@ -266,11 +266,6 @@
                  (eq old-tick (buffer-chars-modified-tick)))
         (ignore-errors (yas-next-field))))))
 
-(use-package flycheck
-  :straight t
-  :config
-  (add-hook 'after-init-hook #'global-flycheck-mode))
-
 (use-package yaml-mode
   :straight t)
 
