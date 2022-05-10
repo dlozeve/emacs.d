@@ -50,6 +50,9 @@
 
 (setq-default c-basic-offset 2)
 (setq c-default-style "linux")
+(setq-default c-doc-comment-style
+              '((c-mode    . doxygen)
+                (c++-mode  . doxygen)))
 
 (let ((my-font "Iosevka Term")
       (my-height 120))
