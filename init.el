@@ -750,6 +750,9 @@
 (use-package ox-md
   :after (org))
 
+(use-package ox-reveal
+  :straight t)
+
 (use-package ob-plantuml
   :after (org)
   :config
