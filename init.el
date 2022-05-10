@@ -268,16 +268,6 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(use-package projectile
-  :straight t
-  :init
-  (setq projectile-completion-system 'default)
-  :config
-  (setq projectile-enable-caching t)
-  (setq projectile-tags-command "ctags-universal -Re")
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
-
 (use-package yaml-mode
   :straight t)
 
