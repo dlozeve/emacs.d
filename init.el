@@ -821,6 +821,11 @@
 	   :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
 ")))))
 
+(use-package org-roam-bibtex
+  :straight t
+  :after (org-roam citar)
+  :hook (org-roam-mode . org-roam-bibtex-mode))
+
 (use-package org-roam-ui
   :straight
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
