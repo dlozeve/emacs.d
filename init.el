@@ -228,7 +228,7 @@
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
   :init
-  (corfu-global-mode))
+  (global-corfu-mode))
 
 (use-package deadgrep
   :straight t
@@ -426,7 +426,7 @@
   ((inferior-scheme-mode . gambit-inferior-mode))
   :config
   (require 'gambit (concat gambit "/misc/gambit.el"))
-  (setf scheme-program-name "gxi")
+  (setf scheme-program-name (concat gerbil "/bin/gxi"))
 
   (let ((tags (locate-dominating-file default-directory "TAGS")))
     (when tags (visit-tags-table tags)))
@@ -787,6 +787,7 @@
   (citar-format-reference-function 'citar-citeproc-format-reference)
   (citar-citeproc-csl-styles-dir "~/notes/bibliography/")
   (citar-citeproc-csl-locales-dir "~/notes/bibliography/")
+  (citar-notes-paths '("~/notes/notes"))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
@@ -851,8 +852,6 @@
   :config
   (setq graphviz-dot-indent-width 4)
   (setq graphviz-dot-preview-extension "svg"))
-
-(use-package company-graphviz-dot)
 
 (use-package hledger-mode
   :straight t
