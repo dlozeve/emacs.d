@@ -281,6 +281,10 @@
 (use-package terraform-mode
   :straight t)
 
+(use-package flycheck
+  :straight t
+  :init (global-flycheck-mode))
+
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
@@ -328,8 +332,13 @@
   :commands lsp-ui-mode
   :straight t
   :config
-  (setq lsp-ui-sideline-show-hover nil)
-  (setq lsp-ui-doc-position 'top))
+  (setq lsp-ui-sideline-show-diagnostics t
+	lsp-ui-sideline-show-code-actions t
+	lsp-ui-sideline-show-hover nil)
+  (setq lsp-ui-doc-enable t
+	lsp-ui-doc-position 'top
+	lsp-ui-doc-show-with-mouse t
+	lsp-ui-doc-show-with-cursor t))
 
 (use-package haskell-mode
   :straight t)
