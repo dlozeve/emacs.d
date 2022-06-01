@@ -702,14 +702,12 @@
    '((R . t)
      (emacs-lisp . t)
      (python . t)
-     (jupyter . t)
      (awk . t)
      (C . t)
      (ditaa . t)
      (dot . t)
      (latex . t)
      (lisp . t)
-     (plantuml . t)
      (shell . t)))
 
   (setq org-confirm-babel-evaluate nil)
@@ -757,10 +755,9 @@
 (use-package ox-reveal
   :straight t)
 
-(use-package ob-plantuml
-  :after (org)
-  :config
-  (setq org-plantuml-jar-path (expand-file-name "~/build/plantuml.jar")))
+(use-package ob-mermaid
+  :straight t
+  :after (org))
 
 (use-package org-fragtog
   :straight t
