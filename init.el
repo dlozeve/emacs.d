@@ -427,12 +427,15 @@
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
-(use-package racket-mode
+(use-package geiser-racket
   :straight t)
 
 (use-package geiser-chicken
   :straight t
   :custom (geiser-chicken-binary "chicken-csi"))
+
+(use-package geiser-gambit
+  :straight t)
 
 (use-package gerbil-mode
   :when (getenv "GERBIL_HOME")
