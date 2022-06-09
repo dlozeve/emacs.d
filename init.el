@@ -136,10 +136,24 @@
 ;;   :config
 ;;   (load-theme 'base16-default-dark t))
 
-(use-package color-theme-sanityinc-tomorrow
-  :straight t
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :straight t
+;;   :config
+;;   (load-theme 'sanityinc-tomorrow-night t))
+
+(use-package emacs
+  :init
+  (setq modus-themes-italic-constructs t
+	modus-themes-bold-constructs t
+	modus-themes-syntax '(green-strings alt-syntax)
+	modus-themes-links '(neutral-underline)
+	modus-themes-mode-line '(borderless)
+	modus-themes-lang-checkers '(faint)
+	modus-themes-org-blocks '(gray-background)
+	modus-themes-org-agenda '((event . (accented))))
   :config
-  (load-theme 'sanityinc-tomorrow-night t))
+  (load-theme 'modus-vivendi)
+  :bind ("<f12>" . modus-themes-toggle))
 
 (use-package mood-line
   :straight t
