@@ -647,15 +647,22 @@
   ;; Full contents opened by default
   (setq org-startup-folded nil)
   ;; Only one empty line is enough to separate headings when folded
-  (setq org-cycle-separator-lines 1)
+  (setq org-cycle-separator-lines 2)
   ;; Refile to paths in the file (level1/level2/level3)
   (setq org-refile-use-outline-path t)
+  (setq org-special-ctrl-a/e t)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
   ;; Set to the location of your Org files on your local system
   (setq org-directory "~/notes")
 
+  (setq org-agenda-block-separator ?─
+	org-agenda-time-grid '((daily today require-timed)
+			       (800 1000 1200 1400 1600 1800 2000)
+			       " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+	org-agenda-current-time-string
+	"⭠ now ─────────────────────────────────────────────────")
   (setq org-agenda-custom-commands
 	(quote
 	 (("z" "Agenda and TODOs"
@@ -839,7 +846,8 @@
 	'(("d" "default" entry "* %U %?"
 	   :empty-lines-before 1
 	   :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
-")))))
+"))))
+  (require 'org-roam-export))
 
 (use-package org-roam-bibtex
   :straight t
