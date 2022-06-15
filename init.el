@@ -61,6 +61,14 @@
 
 (set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 140)
 
+;; Better renaming rules for buffers with the same name
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-separator "/")
+;; rename after killing uniquified
+(setq uniquify-after-kill-buffer-p t)
+;; don't muck with special buffers
+(setq uniquify-ignore-buffers-re "^\\*")
+
 (defun unfill-paragraph ()
   (interactive)
   (let ((fill-column (point-max)))
@@ -80,7 +88,8 @@
     (goto-char (seq-random-elt points))))
 
 ;; Straight.el setup
-(setq straight-repository-branch "develop")
+(setq straight-repository-branch "develop"
+      straight-use-package-by-default t)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -117,16 +126,6 @@
 (use-package hl-line
   :config
   (global-hl-line-mode -1))
-
-;; Better renaming rules for buffers with the same name
-(use-package uniquify
-  :config
-  (setq uniquify-buffer-name-style 'forward)
-  (setq uniquify-separator "/")
-  ;; rename after killing uniquified
-  (setq uniquify-after-kill-buffer-p t)
-  ;; don't muck with special buffers
-  (setq uniquify-ignore-buffers-re "^\\*"))
 
 ;; Theme
 ;; (use-package base16-theme
@@ -739,25 +738,25 @@
 
   (setq org-src-preserve-indentation nil
 	org-edit-src-content-indentation 0)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
-(use-package ox-latex
-  :after (org)
-  :config
+  (require 'ox-latex)
   (add-to-list 'org-latex-classes
 	       '("koma-article" "\\documentclass{scrartcl}"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (add-to-list 'org-latex-packages-alist
 	       '("AUTO" "babel" t ("pdflatex")))
   (add-to-list 'org-latex-packages-alist
 	       '("AUTO" "polyglossia" t ("xelatex" "lualatex")))
   (setq org-latex-pdf-process
 	'("latexmk -shell-escape -lualatex -bibtex -pdf %f"))
-  (setq org-latex-default-class "koma-article"))
+  (setq org-latex-default-class "koma-article")
+
+  (require 'ox-md))
 
 (use-package ox-pandoc
   :straight t
@@ -772,9 +771,6 @@
   :config
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
-
-(use-package ox-md
-  :after (org))
 
 (use-package ox-reveal
   :straight t)
