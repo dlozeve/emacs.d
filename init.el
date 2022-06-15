@@ -799,12 +799,11 @@
 
 (use-package citar
   :straight t
-  :no-require
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
-  (org-cite-export-processors '((beamer biblatex)
-				(latex biblatex)
-				(t csl)))
+  (org-cite-export-processors '((beamer . biblatex)
+				(latex . biblatex)
+				(t . (csl "~/notes/bibliography/chicago-author-date.csl"))))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
