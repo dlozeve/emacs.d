@@ -738,7 +738,7 @@
 
   (setq org-src-preserve-indentation nil
 	org-edit-src-content-indentation 0)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1))
 
   (require 'ox-latex)
   (add-to-list 'org-latex-classes
