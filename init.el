@@ -348,6 +348,8 @@
   (setq lsp-ui-sideline-show-diagnostics t
 	lsp-ui-sideline-show-code-actions t
 	lsp-ui-sideline-show-hover nil)
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   (setq lsp-ui-doc-enable t
 	lsp-ui-doc-position 'top
 	lsp-ui-doc-show-with-mouse t
@@ -651,8 +653,11 @@
   ;; Only one empty line is enough to separate headings when folded
   (setq org-cycle-separator-lines 2)
   ;; Refile to paths in the file (level1/level2/level3)
+  (setq org-refile-targets '((nil :maxlevel . 5)))
   (setq org-refile-use-outline-path t)
-  (setq org-special-ctrl-a/e t)
+  (setq org-outline-path-complete-in-steps nil)
+
+  (setq org-special-ctrl-a/e nil)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
 
