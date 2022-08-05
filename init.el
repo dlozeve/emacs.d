@@ -822,6 +822,12 @@
   :bind
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
+(use-package citar-embark
+  :straight nil
+  :after citar embark
+  :no-require
+  :config (citar-embark-mode))
+
 (use-package org-roam
   :straight t
   :after org
