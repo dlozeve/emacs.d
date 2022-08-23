@@ -823,7 +823,7 @@
   (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
 
 (use-package citar-embark
-  :straight nil
+  :straight t
   :after citar embark
   :no-require
   :config (citar-embark-mode))
