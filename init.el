@@ -736,7 +736,8 @@
      (dot . t)
      (latex . t)
      (lisp . t)
-     (shell . t)))
+     (shell . t)
+     (sqlite . t)))
 
   (setq org-confirm-babel-evaluate nil)
   (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
@@ -911,7 +912,7 @@
   (setq vterm-kill-buffer-on-exit t)
   (global-set-key (kbd "C-x RET RET") 'vterm-other-window)
   (define-key vterm-mode-map (kbd "<C-backspace>")
-    (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
+	      (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
 
 ;; configuration file for secrets (API keys, etc)
