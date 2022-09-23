@@ -610,6 +610,13 @@
     (apply #'call-process "exiftool" nil nil nil
 	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
 
+(use-package nov
+  :straight t
+  :custom
+  (nov-text-width 80)
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
 (use-package mathpix.el
   :straight (:host github :repo "jethrokuan/mathpix.el")
   ;; You also need to configure `mathpix-app-id` and
