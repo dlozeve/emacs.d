@@ -366,6 +366,9 @@
   :hook ((haskell-mode . lsp)
 	 (haskell-literate-mode . lsp)))
 
+(use-package rust-mode
+  :straight t)
+
 (use-package lsp-pyright
   :straight t
   :hook (python-mode . (lambda ()
