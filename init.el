@@ -604,15 +604,11 @@
   (interactive)
   (find-file "~/notes/planner.org"))
 
-(defun journal ()
-  "Find the journal file."
-  (interactive)
-  (find-file "~/notes/journal.org"))
-
 (defun bib ()
   "Find the bibliography file."
   (interactive)
-  (find-file "~/notes/bibliography/bibliography.bib"))
+  (find-file "~/notes/bibliography/bibliography.bib")
+  (end-of-buffer))
 
 (use-package org
   :straight t
