@@ -625,13 +625,6 @@
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
-(use-package mathpix.el
-  :straight (:host github :repo "jethrokuan/mathpix.el")
-  ;; You also need to configure `mathpix-app-id` and
-  ;; `mathpix-app-key`, for instance in secrets.el
-  :bind
-  ("C-x m" . mathpix-screenshot))
-
 ;; Org-mode
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
