@@ -467,11 +467,6 @@
     (when tags (visit-tags-table tags)))
   (visit-tags-table (concat gerbil "/src/TAGS")))
 
-(use-package zig-mode
-  :straight t
-  :config
-  (setq zig-format-on-save nil))
-
 (use-package matlab
   :straight matlab-mode
   :config
