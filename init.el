@@ -467,29 +467,6 @@
     (when tags (visit-tags-table tags)))
   (visit-tags-table (concat gerbil "/src/TAGS")))
 
-(use-package matlab
-  :straight matlab-mode
-  :config
-  ;; This is a simple script to set the required environment variables
-  ;; before launching Matlab in Emacs. This prevents an issue where
-  ;; all plot windows are blank. See Arch wiki for more details.
-
-  ;; #!/usr/bin/env bash
-  ;; export _JAVA_AWT_WM_NONREPARENTING=1
-  ;; /usr/local/bin/matlab "$@"
-  (setq matlab-shell-command "~/.local/bin/run_matlab")
-  (setq matlab-shell-command-switches '("-nodesktop"))
-  ;; :custom-face
-  ;; (linemark-stop-face ((t (:background 'unspecified)
-  ;; 			  (:underline '(:color "red3" :style wave)))))
-  ;; (linemark-caution-face ((t (:background 'unspecified)
-  ;; 			     (:underline '(:color "yellow4" :style wave)))))
-  ;; (linemark-go-face ((t (:background 'unspecified)
-  ;; 			(:underline '(:color "green4" :style wave)))))
-  ;; (linemark-funny-face ((t (:background 'unspecified)
-  ;; 			   (:underline '(:color "blue3" :style wave)))))
-  )
-
 ;; Use APL font face in current buffer
 (defun my-buffer-face-mode-apl ()
   "Use the APL font in current buffer."
