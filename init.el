@@ -324,8 +324,7 @@
 (use-package lsp-mode
   :commands lsp
   :straight t
-  :hook ((rust-mode . lsp)
-	 (c-mode . lsp)
+  :hook ((c-mode . lsp)
 	 (python-mode . lsp))
   :custom
   (lsp-clients-clangd-args '("-j=2"
@@ -373,7 +372,7 @@
   :straight t
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
-                         (lsp) ; or lsp-deferred
+                         (lsp)		; or lsp-deferred
 			 (local-unset-key (kbd "C-f")))))
 
 (use-package pyvenv
@@ -756,7 +755,9 @@
 
   (setq org-src-preserve-indentation nil
 	org-edit-src-content-indentation 0)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1))
+  (setq
+   org-startup-with-latex-preview t
+   org-format-latex-options (plist-put org-format-latex-options :scale 1))
 
   (require 'ox-latex)
   (add-to-list 'org-latex-classes
