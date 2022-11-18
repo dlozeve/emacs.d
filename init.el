@@ -245,6 +245,10 @@
   (setq tab-always-indent 'complete)
   (global-corfu-mode))
 
+(use-package expand-region
+  :straight t
+  :bind ("C-=" . er/expand-region))
+
 (use-package deadgrep
   :straight t
   :bind (("<f5>" . deadgrep)))
