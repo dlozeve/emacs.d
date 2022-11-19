@@ -446,6 +446,9 @@
 (use-package geiser-gambit
   :straight t)
 
+(use-package geiser-guile
+  :straight t)
+
 (use-package gerbil-mode
   :when (getenv "GERBIL_HOME")
   :straight nil
