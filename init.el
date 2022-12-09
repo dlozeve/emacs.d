@@ -895,6 +895,13 @@
   (define-key vterm-mode-map (kbd "<C-backspace>")
 	      (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
+(use-package atomic-chrome
+  :straight t
+  :config
+  (setq atomic-chrome-default-major-mode 'markdown-mode)
+  (setq atomic-chrome-url-major-mode-alist
+	'(("github\\.com" . gfm-mode)))
+  (setq atomic-chrome-buffer-open-style 'frame))
 
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
