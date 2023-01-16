@@ -397,6 +397,11 @@
   :config
   (julia-repl-set-terminal-backend 'vterm))
 
+(use-package lsp-julia
+  :straight t
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.8"))
+
 (use-package ess
   :straight t)
 
