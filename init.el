@@ -382,9 +382,14 @@
 (use-package jupyter
   :straight t
   :config
+  (setq org-babel-default-header-args:jupyter-python
+	'((:async . "yes")
+          (:session . "py")
+	  (:kernel . "python3")))
   ;; https://github.com/nnicandro/emacs-jupyter/issues/380#issuecomment-1014026589
-  (defun jupyter-ansi-color-apply-on-region (begin end)
-    (ansi-color-apply-on-region begin end t)))
+  ;; (defun jupyter-ansi-color-apply-on-region (begin end)
+  ;;   (ansi-color-apply-on-region begin end t))
+  )
 
 (use-package julia-mode
   :straight t)
@@ -718,7 +723,8 @@
      (latex . t)
      (lisp . t)
      (shell . t)
-     (sqlite . t)))
+     (sqlite . t)
+     (jupyter . t)))
 
   (setq org-confirm-babel-evaluate nil)
   (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
