@@ -144,13 +144,10 @@
   :init
   (setq modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
-	modus-themes-syntax '(green-strings alt-syntax)
-	modus-themes-links '(neutral-underline)
-	modus-themes-mode-line '(borderless)
-	modus-themes-lang-checkers '(faint)
-	modus-themes-org-blocks '(gray-background)
-	modus-themes-org-agenda '((event . (accented))))
+	modus-themes-mixed-fonts t
+	modus-themes-org-blocks '(gray-background))
   :config
+  ;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-faint)
   (load-theme 'modus-vivendi)
   :bind ("<f12>" . modus-themes-toggle))
 
