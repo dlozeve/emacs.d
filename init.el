@@ -689,6 +689,9 @@
 	 (("t" "Task" entry
 	   (file+olp "~/notes/planner.org" "Inbox")
 	   "** TODO %?")
+	  ("n" "Note" entry
+	   (file+olp "~/notes/planner.org" "Inbox")
+	   "** %?")
 	  ("e" "Event" entry
 	   (file+olp "~/notes/planner.org" "Inbox")
 	   "** %?"))))
