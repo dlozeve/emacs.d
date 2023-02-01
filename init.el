@@ -822,7 +822,7 @@
   :config (citar-embark-mode))
 
 (use-package org-roam
-  :straight t
+  :straight (:type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam" :branch "main")
   :after org
   :custom
   (org-roam-directory (file-truename "~/notes/notes"))
@@ -881,6 +881,12 @@
   (deft-directory "~/notes/notes")
   (deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
   (deft-use-filename-as-title t))
+
+(defun dl/org-roam-rg-search ()
+  "Search org-roam directory using consult-ripgrep.  With live-preview."
+  (interactive)
+  (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
+    (consult-ripgrep org-roam-directory)))
 
 (use-package graphviz-dot-mode
   :straight t
