@@ -322,59 +322,11 @@
   (setq langtool-java-classpath
 	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
 
-(use-package lsp-mode
-  :commands lsp
-  :straight t
-  :hook ((c-mode . lsp)
-	 (python-mode . lsp))
-  :custom
-  (lsp-clients-clangd-args '("-j=2"
-			     "--background-index"
-			     "--clang-tidy"
-			     "--completion-style=bundled"
-			     "--pch-storage=memory"
-			     "--header-insertion=never"
-			     "--header-insertion-decorators=0"
-			     "--suggest-missing-includes"))
-  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-  (read-process-output-max (* 1024 1024)) ;; 1mb
-  (gc-cons-threshold 100000000)
-  (lsp-completion-provider :none)
-  (lsp-file-watch-threshold nil)
-  (lsp-zig-zls-executable "zls"))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :straight t
-  :config
-  (setq lsp-ui-sideline-show-diagnostics t
-	lsp-ui-sideline-show-code-actions t
-	lsp-ui-sideline-show-hover nil)
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-  (setq lsp-ui-doc-enable t
-	lsp-ui-doc-position 'top
-	lsp-ui-doc-show-with-mouse t
-	lsp-ui-doc-show-with-cursor t))
-
 (use-package haskell-mode
   :straight t)
 
-(use-package lsp-haskell
-  :straight t
-  :after haskell-mode
-  :hook ((haskell-mode . lsp)
-	 (haskell-literate-mode . lsp)))
-
 (use-package rust-mode
   :straight t)
-
-(use-package lsp-pyright
-  :straight t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp)		; or lsp-deferred
-			 (local-unset-key (kbd "C-f")))))
 
 (use-package pyvenv
   :straight t)
@@ -401,11 +353,6 @@
   (setenv "JULIA_NUM_THREADS" "6")
   :config
   (julia-repl-set-terminal-backend 'vterm))
-
-(use-package lsp-julia
-  :straight t
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.8"))
 
 (use-package ess
   :straight t)
