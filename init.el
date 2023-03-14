@@ -288,6 +288,9 @@
 (use-package json-mode
   :straight t)
 
+(use-package markdown-mode
+  :straight t)
+
 (use-package cmake-mode
   :straight t)
 
