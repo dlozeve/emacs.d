@@ -455,7 +455,7 @@
   (add-hook 'bqn-mode-hook 'bqn-init)
 
   (setq bqn-interpreter-path "~/build/CBQN/BQN")
-  (setq bqn-keyboard-map
+  (setq bqn-keymap-mode-reference
       "
   ┌───────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
   ┊(AltGr)┊~ ¬ ┊# ⍟ ┊{ ⊣ ┊[ ← ┊|   ┊` ˜	┊\\   ┊^ ⎊ ┊@   ┊] → ┊} ⊢ ┊
