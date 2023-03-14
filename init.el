@@ -617,7 +617,7 @@
 		     (org-agenda-hide-tags-regexp "\\work")))
 	    (tags-todo "work"
 		       ((org-agenda-prefix-format "")
-			(org-agenda-sorting-strategy '(tag-up priority-down))))
+			(org-agenda-sorting-strategy '(priority-down tag-up))))
 	    (tags-todo "personal"
 		       ((org-agenda-prefix-format "")
 			(org-agenda-sorting-strategy '(tag-up priority-down)))))
