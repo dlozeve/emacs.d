@@ -255,10 +255,6 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch)))
 
-(use-package forge
-  :straight t
-  :after magit)
-
 (use-package yasnippet
   :straight t
   :diminish yas-minor-mode
