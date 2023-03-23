@@ -296,10 +296,6 @@
 (use-package terraform-mode
   :straight t)
 
-(use-package flycheck
-  :straight t
-  :init (global-flycheck-mode))
-
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
