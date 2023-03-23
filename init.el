@@ -443,6 +443,9 @@
 (use-package bqn-mode
   :straight (:host github :repo "museoa/bqn-mode")
   :after gnu-apl-mode
+  :bind (:map bqn-mode-map
+	      (("C-c d" . bqn-help-symbol-info-at-point)
+	       ("C-c C-d" . bqn-help-symbol-info-at-point)))
   :custom (bqn-key-prefix ?ù)
   :config
   (defface bqn-default
@@ -452,11 +455,8 @@
     (setq buffer-face-mode-face 'bqn-default)
     (buffer-face-mode))
 
-  (add-hook 'bqn-mode-hook 'bqn-init)
-
-  (setq bqn-interpreter-path "~/build/CBQN/BQN")
   (setq bqn-keymap-mode-reference
-      "
+	"
   ┌───────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
   ┊(AltGr)┊~ ¬ ┊# ⍟ ┊{ ⊣ ┊[ ← ┊|   ┊` ˜	┊\\   ┊^ ⎊ ┊@   ┊] → ┊} ⊢ ┊
 ┌─┴──┬────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼─────────┐
@@ -474,6 +474,9 @@
 └───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
                              Space: ‿
 ")
+
+  (add-hook 'bqn-mode-hook 'bqn-init)
+  (add-hook 'bqn-comint-mode-hook 'bqn-init)
   (add-hook 'bqn-keymap-mode-hook 'bqn-init))
 
 (use-package tex-site
