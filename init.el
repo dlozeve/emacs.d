@@ -278,6 +278,11 @@
                  (eq old-tick (buffer-chars-modified-tick)))
         (ignore-errors (yas-next-field))))))
 
+(use-package eldoc-box
+  :straight t
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
+
 (use-package yaml-mode
   :straight t)
 
