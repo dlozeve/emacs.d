@@ -513,6 +513,12 @@
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
 
+(use-package mastodon
+  :straight t
+  :config
+  (setq mastodon-instance-url "https://mathstodon.xyz"
+	mastodon-active-user "dlzv"))
+
 (use-package pdf-tools
   :straight t
   :load-path "site-lisp/pdf-tools/lisp"
