@@ -761,19 +761,23 @@
 	bibtex-autokey-titlewords 2
 	bibtex-autokey-titlewords-stretch 1))
 
+(use-package oc
+  :straight nil
+  :init
+  (require 'oc-csl)
+  (require 'oc-biblatex))
+
 (use-package citar
   :straight t
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
   (org-cite-export-processors '((beamer . biblatex)
 				(latex . biblatex)
-				(t . (csl "~/notes/bibliography/chicago-author-date.csl"))))
+				(t . (csl "chicago-author-date.csl"))))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
-  (citar-at-point-function 'embark-act)
-  (citar-format-reference-function 'citar-citeproc-format-reference)
   (citar-citeproc-csl-styles-dir "~/notes/bibliography/")
   (citar-citeproc-csl-locales-dir "~/notes/bibliography/")
   (citar-notes-paths '("~/notes/notes"))
@@ -784,7 +788,8 @@
 (use-package citar-embark
   :straight t
   :after citar embark
-  :no-require
+  :init
+  (setq citar-at-point-function 'embark-act)
   :config (citar-embark-mode))
 
 (use-package org-roam
