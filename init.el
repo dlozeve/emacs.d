@@ -360,7 +360,12 @@
   (julia-repl-set-terminal-backend 'vterm))
 
 (use-package ess
-  :straight t)
+  :straight t
+  :config
+  (defun my-ess-startup-directory-function ()
+    "Force ESS to use `default-directory' as its startup directory."
+    default-directory)
+  (setq ess-startup-directory-function 'my-ess-startup-directory-function))
 
 (use-package paredit
   :straight t
