@@ -278,6 +278,11 @@
                  (eq old-tick (buffer-chars-modified-tick)))
         (ignore-errors (yas-next-field))))))
 
+(use-package eglot
+  :straight nil
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil))
+
 (use-package eldoc-box
   :straight t
   :config
