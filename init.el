@@ -660,7 +660,7 @@
 	   "** %?")
 	  ("e" "Event" entry
 	   (file+olp "~/notes/planner.org" "Inbox")
-	   "** %?"))))
+	   "** %?\n%^T"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
 	(quote
