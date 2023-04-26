@@ -306,6 +306,9 @@
 (use-package terraform-mode
   :straight t)
 
+(use-package mermaid-mode
+  :straight t)
+
 (use-package flyspell
   :config
   (setq ispell-program-name "hunspell")
