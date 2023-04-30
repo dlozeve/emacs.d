@@ -608,7 +608,9 @@
   :straight t)
 
 (use-package pyvenv
-  :straight t)
+  :straight t
+  :init
+  (setenv "WORKON_HOME" "~/.pyenv/versions"))
 
 (use-package julia-mode
   :straight t)
