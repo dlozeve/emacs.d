@@ -666,8 +666,7 @@
   :straight t)
 
 (use-package geiser-chicken
-  :straight t
-  :custom (geiser-chicken-binary "chicken-csi"))
+  :straight t)
 
 (use-package geiser-gambit
   :straight t)
