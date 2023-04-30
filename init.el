@@ -877,6 +877,67 @@
   (define-key vterm-mode-map (kbd "<C-backspace>")
 	      (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
 
+(use-package mu4e
+  :straight (:type git :host github :repo "djcb/mu"
+		   :pre-build (("./autogen.sh") ("make"))
+		   :files (:defaults "build/mu4e/*.el"))
+  :bind ("C-c m" . mu4e)
+  :custom
+  (mu4e-mu-binary (expand-file-name "build/mu/mu" (straight--repos-dir "mu")))
+  ;; Sync
+  (mu4e-get-mail-command "mbsync -a")
+  (mu4e-update-interval 300) ;; update every 5 min
+  ;; Behaviour
+  (message-kill-buffer-on-exit t)
+  (mu4e-confirm-quit nil)
+  (mu4e-attachment-dir "~/Downloads")
+  (mu4e-sent-messages-behavior 'delete)	;; don't save messages to Sent Messages, Gmail/IMAP takes care of this
+  (mail-user-agent 'mu4e-user-agent) ;; default program for sending mail in Emacs
+  ;; View and compose
+  (mu4e-use-fancy-chars nil)
+  (mu4e-view-show-addresses t)
+  (mu4e-view-show-images t)
+  (mu4e-headers-show-threads t)
+  (mu4e-compose-dont-reply-to-self t)
+  ;; enable format=flowed
+  ;; - mu4e sets up visual-line-mode and also fill (M-q) to do the right thing
+  ;; - each paragraph is a single long line; at sending, emacs will add the
+  ;;   special line continuation characters.
+  ;; - also see visual-line-fringe-indicators setting below
+  (mu4e-compose-format-flowed t)
+  ;; because it looks like email clients are basically ignoring format=flowed,
+  ;; let's complicate their lives too. send format=flowed with looong lines. :)
+  ;; https://www.ietf.org/rfc/rfc2822.txt
+  (fill-flowed-encode-column 998)
+  ;; in mu4e with format=flowed, this gives me feedback where the soft-wraps are
+  (visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+  :config
+  ;; Disable auto-save-mode so that drafts do not accumulate
+  (add-hook 'mu4e-compose-mode-hook #'(lambda () (auto-save-mode -1)))
+  (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq mu4e-contexts
+	`(,(make-mu4e-context
+	    :name "personal"
+	    :match-func (lambda (msg)
+			  (when msg
+			    (string-match-p "^/personal" (mu4e-message-field msg :maildir))))
+	    :vars '((user-mail-address . "dimitri@lozeve.com")
+		    (user-full-name . "Dimitri Lozeve")
+		    (mu4e-compose-signature . "Dimitri Lozeve\n")
+		    (mu4e-sent-folder . "/personal/sent")
+		    (mu4e-drafts-folder . "/personal/drafts")
+		    (mu4e-trash-folder . "/personal/trash")
+		    (smtpmail-auth-credentials . (("smtp.zoho.eu" 465 "dimitri@lozeve.com" nil)))
+		    (smtpmail-default-smtp-server . "smtp.zoho.eu")
+		    (smtpmail-smtp-server . "smtp.zoho.eu")
+		    (smtpmail-stream-type . ssl)
+		    (smtpmail-smtp-service . 465)))))
+  (setq mu4e-context-policy 'pick-first)
+  (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
+  (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
+  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
+
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
 
