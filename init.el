@@ -117,7 +117,8 @@
 
 (bind-key "M-o" #'other-window)
 
-;;; Built-in packages
+;;; Appearance
+
 (use-package paren
   :config
   (show-paren-mode 1))
@@ -126,19 +127,6 @@
 (use-package hl-line
   :config
   (global-hl-line-mode -1))
-
-;; Theme
-;; (use-package base16-theme
-;;   :straight t
-;;   :init
-;;   (setq base16-theme-256-color-source 'base16-shell)
-;;   :config
-;;   (load-theme 'base16-default-dark t))
-
-;; (use-package color-theme-sanityinc-tomorrow
-;;   :straight t
-;;   :config
-;;   (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package emacs
   :init
@@ -156,6 +144,8 @@
   :config
   (mood-line-mode t))
 
+;;; Environment variables
+
 (use-package exec-path-from-shell
   :straight t
   :config
@@ -166,6 +156,8 @@
     (exec-path-from-shell-copy-env "PYENV_ROOT")
     (exec-path-from-shell-copy-env "GAMBIT")
     (exec-path-from-shell-copy-env "GERBIL_HOME")))
+
+;;; Menus and completion
 
 (use-package vertico
   :straight t
@@ -242,341 +234,10 @@
   (setq tab-always-indent 'complete)
   (global-corfu-mode))
 
-(use-package expand-region
-  :straight t
-  :bind ("C-=" . er/expand-region))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Knowledge management: org-mode, org-roam, bibliography
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package deadgrep
-  :straight t
-  :bind (("<f5>" . deadgrep)))
-
-(use-package magit
-  :straight t
-  :bind (("C-x g" . magit-status)
-	 ("C-x M-g" . magit-dispatch)))
-
-(use-package yasnippet
-  :straight t
-  :diminish yas-minor-mode
-  :init
-  (use-package yasnippet-snippets :straight t :after yasnippet)
-  :hook ((prog-mode LaTeX-mode org-mode) . yas-minor-mode)
-  :bind
-  (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
-  (:map yas-keymap
-        (("TAB" . smarter-yas-expand-next-field)
-         ([(tab)] . smarter-yas-expand-next-field)))
-  :config
-  (yas-reload-all)
-  (defun smarter-yas-expand-next-field ()
-    "Try to `yas-expand' then `yas-next-field' at current cursor position."
-    (interactive)
-    (let ((old-point (point))
-          (old-tick (buffer-chars-modified-tick)))
-      (yas-expand)
-      (when (and (eq old-point (point))
-                 (eq old-tick (buffer-chars-modified-tick)))
-        (ignore-errors (yas-next-field))))))
-
-(use-package eglot
-  :straight nil
-  :config
-  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil))
-
-(use-package eldoc-box
-  :straight t
-  :config
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
-
-(use-package yaml-mode
-  :straight t)
-
-(use-package json-mode
-  :straight t)
-
-(use-package markdown-mode
-  :straight t)
-
-(use-package cmake-mode
-  :straight t)
-
-(use-package dockerfile-mode
-  :straight t)
-
-(use-package terraform-mode
-  :straight t)
-
-(use-package mermaid-mode
-  :straight t)
-
-(use-package flyspell
-  :config
-  (setq ispell-program-name "hunspell")
-  (setq ispell-local-dictionary "en_GB")
-  (setq ispell-local-dictionary-alist
-        ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
-        ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_GB") nil utf-8)))
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  ;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
-  (global-set-key (kbd "<f8>") 'ispell-word)
-  (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
-  (global-set-key (kbd "M-<f8>") 'flyspell-buffer)
-  (global-set-key (kbd "C-<f8>") 'flyspell-check-previous-highlighted-word))
-
-(use-package langtool
-  :straight t
-  :init
-  (setq langtool-java-classpath
-	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
-
-(use-package haskell-mode
-  :straight t)
-
-(use-package rust-mode
-  :straight t)
-
-(use-package pyvenv
-  :straight t)
-
-(use-package jupyter
-  :straight t
-  :config
-  (setq org-babel-default-header-args:jupyter-python
-	'((:async . "yes")
-          (:session . "py")
-	  (:kernel . "python3")))
-  ;; https://github.com/nnicandro/emacs-jupyter/issues/380#issuecomment-1014026589
-  ;; (defun jupyter-ansi-color-apply-on-region (begin end)
-  ;;   (ansi-color-apply-on-region begin end t))
-  )
-
-(use-package julia-mode
-  :straight t)
-
-(use-package julia-repl
-  :straight t
-  :hook (julia-mode . julia-repl-mode)
-  :init
-  (setenv "JULIA_NUM_THREADS" "6")
-  :config
-  (julia-repl-set-terminal-backend 'vterm))
-
-(use-package ess
-  :straight t
-  :config
-  (defun my-ess-startup-directory-function ()
-    "Force ESS to use `default-directory' as its startup directory."
-    default-directory)
-  (setq ess-startup-directory-function 'my-ess-startup-directory-function))
-
-(use-package paredit
-  :straight t
-  :hook ((emacs-lisp-mode
-	  eval-expression-minibuffer-setup
-	  ielm-mode
-	  lisp-mode
-	  lisp-interaction-mode
-	  scheme-mode
-	  inferior-scheme-mode
-	  slime-repl-mode
-	  racket-mode
-	  racket-repl-mode
-	  gerbil-mode) . enable-paredit-mode))
-
-(use-package slime
-  :straight t
-  :config
-  (require 'slime-autoloads)
-  (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
-  (setq slime-lisp-implementations
-	'((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)))
-  (setq slime-net-coding-system 'utf-8-unix)
-  ;; Stop SLIME's REPL from grabbing DEL,
-  ;; which is annoying when backspacing over a '('
-  (defun override-slime-repl-bindings-with-paredit ()
-    (define-key slime-repl-mode-map
-      (read-kbd-macro paredit-backward-delete-key) nil))
-  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
-  (setq lisp-indent-function 'lisp-indent-function)
-  ;; Use the offline hyperspec from the "clhs" quicklisp package:
-  ;; https://www.hexstreamsoft.com/libraries/clhs/
-  (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
-
-(use-package geiser-racket
-  :straight t)
-
-(use-package geiser-chicken
-  :straight t
-  :custom (geiser-chicken-binary "chicken-csi"))
-
-(use-package geiser-gambit
-  :straight t)
-
-(use-package geiser-guile
-  :straight t)
-
-(use-package gerbil-mode
-  :when (getenv "GERBIL_HOME")
-  :straight nil
-  :defer t
-  :mode (("\\.ss\\'"  . gerbil-mode)
-         ("\\.pkg\\'" . gerbil-mode))
-  :init
-  (setf gambit (getenv "GAMBIT"))
-  (setf gerbil (getenv "GERBIL_HOME"))
-  (autoload 'gerbil-mode
-    (concat gerbil "/etc/gerbil-mode.el") "Gerbil editing mode." t)
-  :hook
-  ((inferior-scheme-mode . gambit-inferior-mode))
-  :config
-  (require 'gambit (concat gambit "/misc/gambit.el"))
-  (setf scheme-program-name (concat gerbil "/bin/gxi"))
-
-  (let ((tags (locate-dominating-file default-directory "TAGS")))
-    (when tags (visit-tags-table tags)))
-  (visit-tags-table (concat gerbil "/src/TAGS")))
-
-;; Use APL font face in current buffer
-(defun my-buffer-face-mode-apl ()
-  "Use the APL font in current buffer."
-  (interactive)
-  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
-  (buffer-face-mode))
-
-(use-package dyalog-mode
-  :straight t
-  :hook (dyalog-mode . my-buffer-face-mode-apl)
-  :custom
-  (dyalog-fix-whitespace-before-save t))
-
-(use-package gnu-apl-mode
-  :straight t)
-
-(use-package bqn-mode
-  :straight (:host github :repo "museoa/bqn-mode")
-  :after gnu-apl-mode
-  :bind (:map bqn-mode-map
-	      (("C-c d" . bqn-help-symbol-info-at-point)
-	       ("C-c C-d" . bqn-help-symbol-info-at-point)))
-  :custom (bqn-key-prefix ?ù)
-  :config
-  (defface bqn-default
-    '((t (:height 140 :family "BQN386 Unicode"))) "BQN default face.")
-
-  (defun bqn-init ()
-    (setq buffer-face-mode-face 'bqn-default)
-    (buffer-face-mode))
-
-  (setq bqn-keymap-mode-reference
-	"
-  ┌───────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
-  ┊(AltGr)┊~ ¬ ┊# ⍟ ┊{ ⊣ ┊[ ← ┊|   ┊` ˜	┊\\   ┊^ ⎊ ┊@   ┊] → ┊} ⊢ ┊
-┌─┴──┬────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼─────────┐
-│    │1 ˘ │2 ¨ │3 ⁼ │4 ⌜ │5 ´ │6 ˝ │7   │8 ∞ │9 ¯ │0 • │°   │+ ⋆ │Backspace│
-│²   │& ⍎ │é   │\" ˙ │' ↩ │( ⟨ │- ÷ │è   │_ √ │ç   │à   │) ⟩ │= × │         │
-├────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──────┤
-│Tab    │A ↖ │Z ⋈ │E ⍷ │R 𝕣 │T ⍋ │Y   │U   │I ⊑ │O ⊒ │P ⍳ │¨   │£   │Enter │
-│       │a ⍉ │z ⥊ │e ∊ │r ↑ │t ∧ │y   │u ⊔ │i ⊏ │o ⊐ │p π │^ ⎊ │$ ◶ │      │
-├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┐     │
-│Caps    │Q ↙ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │M ≢ │% ⊘ │µ   │     │
-│Lock    │q ⌽ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │m ≡ │ù   │* ⍕ │     │
-├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴────┴─────┤
-│Shift      │W 𝕎 │X 𝕏 │C   │V ⍒ │B ⌈ │N   │? ⇐ │. ≍ │/ ≠ │§ ⎉ │Shift       │
-│           │w 𝕨 │x 𝕩 │c ↓ │v ∨ │b ⌊ │n   │, ∾ │; ⋄ │: · │! ⎉ │            │
-└───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
-                             Space: ‿
-")
-
-  (add-hook 'bqn-mode-hook 'bqn-init)
-  (add-hook 'bqn-comint-mode-hook 'bqn-init)
-  (add-hook 'bqn-keymap-mode-hook 'bqn-init))
-
-(use-package tex-site
-  :defer t
-  :straight auctex
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq TeX-engine 'luatex)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-
-  ;; Use pdf-tools to open PDF files
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-	TeX-source-correlate-start-server t)
-
-  ;; Update PDF buffers after successful LaTeX runs
-  (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer))
-
-(use-package format-all
-  :straight t
-  :bind ("C-c C-f" . format-all-buffer))
-
-(use-package elfeed
-  :straight t
-  :bind ("C-c f" . elfeed)
-  :config
-  (setq shr-width 100))
-
-(use-package elfeed-org
-  :straight t
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
-
-(use-package mastodon
-  :straight t
-  :config
-  (setq mastodon-instance-url "https://mathstodon.xyz"
-	mastodon-active-user "dlzv"))
-
-(use-package pdf-tools
-  :straight t
-  :load-path "site-lisp/pdf-tools/lisp"
-  :magic ("%PDF" . pdf-view-mode)
-  :config
-  (pdf-tools-install))
-
-(defun dl/view-exif-data (file)
-  "View EXIF data of FILE."
-  (interactive "fFile: ")
-  (let ((buf-name (concat "*EXIF " file "*")))
-    ;; If the buffer already exists, kill it.
-    (when (get-buffer buf-name)
-      (kill-buffer buf-name))
-    ;; Create a new buffer and window.
-    (let ((buf (get-buffer-create buf-name))
-	  (window (split-window nil)))
-      (call-process "exiftool"
-		    nil buf t
-		    (expand-file-name file))
-      (with-current-buffer buf
-	(goto-char (point-min))
-	;; Read-only, q to close the window, C-u q to close and kill.
-	(special-mode))
-      (set-window-buffer window buf))))
-
-(defun dl/set-exif-data (file tag-name tag-value)
-  "In FILE, set EXIF tag TAG-NAME to value TAG-VALUE."
-  (interactive "fFile: \nsTag: \nsValue: ")
-  (let ((options '("-%t=%v" "-overwrite_original" "%f"))
-	(spec (list
-	       (cons ?f (expand-file-name file))
-	       (cons ?t tag-name)
-	       (cons ?v tag-value))))
-    (apply #'call-process "exiftool" nil nil nil
-	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
-
-(use-package nov
-  :straight t
-  :custom
-  (nov-text-width 80)
-  :config
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
-
-;; Org-mode
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
   "Find the planner file."
@@ -695,8 +356,7 @@
      (latex . t)
      (lisp . t)
      (shell . t)
-     (sqlite . t)
-     (jupyter . t)))
+     (sqlite . t)))
 
   (setq org-confirm-babel-evaluate nil)
   (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
@@ -862,11 +522,347 @@
   (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
     (consult-ripgrep org-roam-directory)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Programming tools
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package expand-region
+  :straight t
+  :bind ("C-=" . er/expand-region))
+
+(use-package deadgrep
+  :straight t
+  :bind (("<f5>" . deadgrep)))
+
+(use-package magit
+  :straight t
+  :bind (("C-x g" . magit-status)
+	 ("C-x M-g" . magit-dispatch)))
+
+(use-package yasnippet
+  :straight t
+  :diminish yas-minor-mode
+  :init
+  (use-package yasnippet-snippets :straight t :after yasnippet)
+  :hook ((prog-mode LaTeX-mode org-mode) . yas-minor-mode)
+  :bind
+  (:map yas-minor-mode-map ("C-c C-n" . yas-expand-from-trigger-key))
+  (:map yas-keymap
+        (("TAB" . smarter-yas-expand-next-field)
+         ([(tab)] . smarter-yas-expand-next-field)))
+  :config
+  (yas-reload-all)
+  (defun smarter-yas-expand-next-field ()
+    "Try to `yas-expand' then `yas-next-field' at current cursor position."
+    (interactive)
+    (let ((old-point (point))
+          (old-tick (buffer-chars-modified-tick)))
+      (yas-expand)
+      (when (and (eq old-point (point))
+                 (eq old-tick (buffer-chars-modified-tick)))
+        (ignore-errors (yas-next-field))))))
+
+(use-package eglot
+  :straight nil
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil))
+
+(use-package eldoc-box
+  :straight t
+  :config
+  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
+
+(use-package format-all
+  :straight t
+  :bind ("C-c C-f" . format-all-buffer))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Programming languages modes
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package yaml-mode
+  :straight t)
+
+(use-package json-mode
+  :straight t)
+
+(use-package markdown-mode
+  :straight t)
+
+(use-package cmake-mode
+  :straight t)
+
+(use-package dockerfile-mode
+  :straight t)
+
+(use-package terraform-mode
+  :straight t)
+
+(use-package mermaid-mode
+  :straight t)
+
+(use-package haskell-mode
+  :straight t)
+
+(use-package rust-mode
+  :straight t)
+
+(use-package pyvenv
+  :straight t)
+
+(use-package julia-mode
+  :straight t)
+
+(use-package julia-repl
+  :straight t
+  :hook (julia-mode . julia-repl-mode)
+  :init
+  (setenv "JULIA_NUM_THREADS" "6")
+  :config
+  (julia-repl-set-terminal-backend 'vterm))
+
+(use-package ess
+  :straight t
+  :config
+  (defun my-ess-startup-directory-function ()
+    "Force ESS to use `default-directory' as its startup directory."
+    default-directory)
+  (setq ess-startup-directory-function 'my-ess-startup-directory-function))
+
+(use-package paredit
+  :straight t
+  :hook ((emacs-lisp-mode
+	  eval-expression-minibuffer-setup
+	  ielm-mode
+	  lisp-mode
+	  lisp-interaction-mode
+	  scheme-mode
+	  inferior-scheme-mode
+	  slime-repl-mode
+	  racket-mode
+	  racket-repl-mode
+	  gerbil-mode) . enable-paredit-mode))
+
+(use-package slime
+  :straight t
+  :config
+  (require 'slime-autoloads)
+  (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
+  (setq slime-lisp-implementations
+	'((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)))
+  (setq slime-net-coding-system 'utf-8-unix)
+  ;; Stop SLIME's REPL from grabbing DEL,
+  ;; which is annoying when backspacing over a '('
+  (defun override-slime-repl-bindings-with-paredit ()
+    (define-key slime-repl-mode-map
+      (read-kbd-macro paredit-backward-delete-key) nil))
+  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+  (setq lisp-indent-function 'lisp-indent-function)
+  ;; Use the offline hyperspec from the "clhs" quicklisp package:
+  ;; https://www.hexstreamsoft.com/libraries/clhs/
+  (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
+
+(use-package geiser-racket
+  :straight t)
+
+(use-package geiser-chicken
+  :straight t
+  :custom (geiser-chicken-binary "chicken-csi"))
+
+(use-package geiser-gambit
+  :straight t)
+
+(use-package geiser-guile
+  :straight t)
+
+(use-package gerbil-mode
+  :when (getenv "GERBIL_HOME")
+  :straight nil
+  :defer t
+  :mode (("\\.ss\\'"  . gerbil-mode)
+         ("\\.pkg\\'" . gerbil-mode))
+  :init
+  (setf gambit (getenv "GAMBIT"))
+  (setf gerbil (getenv "GERBIL_HOME"))
+  (autoload 'gerbil-mode
+    (concat gerbil "/etc/gerbil-mode.el") "Gerbil editing mode." t)
+  :hook
+  ((inferior-scheme-mode . gambit-inferior-mode))
+  :config
+  (require 'gambit (concat gambit "/misc/gambit.el"))
+  (setf scheme-program-name (concat gerbil "/bin/gxi"))
+
+  (let ((tags (locate-dominating-file default-directory "TAGS")))
+    (when tags (visit-tags-table tags)))
+  (visit-tags-table (concat gerbil "/src/TAGS")))
+
+;; Use APL font face in current buffer
+(defun my-buffer-face-mode-apl ()
+  "Use the APL font in current buffer."
+  (interactive)
+  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
+  (buffer-face-mode))
+
+(use-package dyalog-mode
+  :straight t
+  :hook (dyalog-mode . my-buffer-face-mode-apl)
+  :custom
+  (dyalog-fix-whitespace-before-save t))
+
+(use-package gnu-apl-mode
+  :straight t)
+
+(use-package bqn-mode
+  :straight (:host github :repo "museoa/bqn-mode")
+  :after gnu-apl-mode
+  :bind (:map bqn-mode-map
+	      (("C-c d" . bqn-help-symbol-info-at-point)
+	       ("C-c C-d" . bqn-help-symbol-info-at-point)))
+  :custom (bqn-key-prefix ?ù)
+  :config
+  (defface bqn-default
+    '((t (:height 140 :family "BQN386 Unicode"))) "BQN default face.")
+
+  (defun bqn-init ()
+    (setq buffer-face-mode-face 'bqn-default)
+    (buffer-face-mode))
+
+  (setq bqn-keymap-mode-reference
+	"
+  ┌───────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┬────┐
+  ┊(AltGr)┊~ ¬ ┊# ⍟ ┊{ ⊣ ┊[ ← ┊|   ┊` ˜	┊\\   ┊^ ⎊ ┊@   ┊] → ┊} ⊢ ┊
+┌─┴──┬────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼────┼─────────┐
+│    │1 ˘ │2 ¨ │3 ⁼ │4 ⌜ │5 ´ │6 ˝ │7   │8 ∞ │9 ¯ │0 • │°   │+ ⋆ │Backspace│
+│²   │& ⍎ │é   │\" ˙ │' ↩ │( ⟨ │- ÷ │è   │_ √ │ç   │à   │) ⟩ │= × │         │
+├────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬──────┤
+│Tab    │A ↖ │Z ⋈ │E ⍷ │R 𝕣 │T ⍋ │Y   │U   │I ⊑ │O ⊒ │P ⍳ │¨   │£   │Enter │
+│       │a ⍉ │z ⥊ │e ∊ │r ↑ │t ∧ │y   │u ⊔ │i ⊏ │o ⊐ │p π │^ ⎊ │$ ◶ │      │
+├───────┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┬───┴┐     │
+│Caps    │Q ↙ │S 𝕊 │D   │F 𝔽 │G 𝔾 │H « │J   │K ⌾ │L » │M ≢ │% ⊘ │µ   │     │
+│Lock    │q ⌽ │s 𝕤 │d ↕ │f 𝕗 │g 𝕘 │h ⊸ │j ∘ │k ○ │l ⟜ │m ≡ │ù   │* ⍕ │     │
+├────────┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴──┬─┴────┴─────┤
+│Shift      │W 𝕎 │X 𝕏 │C   │V ⍒ │B ⌈ │N   │? ⇐ │. ≍ │/ ≠ │§ ⎉ │Shift       │
+│           │w 𝕨 │x 𝕩 │c ↓ │v ∨ │b ⌊ │n   │, ∾ │; ⋄ │: · │! ⎉ │            │
+└───────────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────┴────────────┘
+                             Space: ‿
+")
+
+  (add-hook 'bqn-mode-hook 'bqn-init)
+  (add-hook 'bqn-comint-mode-hook 'bqn-init)
+  (add-hook 'bqn-keymap-mode-hook 'bqn-init))
+
 (use-package graphviz-dot-mode
   :straight t
   :config
   (setq graphviz-dot-indent-width 4)
   (setq graphviz-dot-preview-extension "svg"))
+
+;;; Natural languages
+
+(use-package tex-site
+  :defer t
+  :straight auctex
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+  (setq TeX-engine 'luatex)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
+  ;; Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	TeX-source-correlate-start-server t)
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer))
+
+(use-package flyspell
+  :config
+  (setq ispell-program-name "hunspell")
+  (setq ispell-local-dictionary "en_GB")
+  (setq ispell-local-dictionary-alist
+        ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+        ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_GB") nil utf-8)))
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  ;; (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  (global-set-key (kbd "<f8>") 'ispell-word)
+  (global-set-key (kbd "C-S-<f8>") 'flyspell-mode)
+  (global-set-key (kbd "M-<f8>") 'flyspell-buffer)
+  (global-set-key (kbd "C-<f8>") 'flyspell-check-previous-highlighted-word))
+
+(use-package langtool
+  :straight t
+  :init
+  (setq langtool-java-classpath
+	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; External media
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package elfeed
+  :straight t
+  :bind ("C-c f" . elfeed)
+  :config
+  (setq shr-width 100))
+
+(use-package elfeed-org
+  :straight t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
+
+(use-package mastodon
+  :straight t
+  :config
+  (setq mastodon-instance-url "https://mathstodon.xyz"
+	mastodon-active-user "dlzv"))
+
+(use-package pdf-tools
+  :straight t
+  :load-path "site-lisp/pdf-tools/lisp"
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
+
+(defun dl/view-exif-data (file)
+  "View EXIF data of FILE."
+  (interactive "fFile: ")
+  (let ((buf-name (concat "*EXIF " file "*")))
+    ;; If the buffer already exists, kill it.
+    (when (get-buffer buf-name)
+      (kill-buffer buf-name))
+    ;; Create a new buffer and window.
+    (let ((buf (get-buffer-create buf-name))
+	  (window (split-window nil)))
+      (call-process "exiftool"
+		    nil buf t
+		    (expand-file-name file))
+      (with-current-buffer buf
+	(goto-char (point-min))
+	;; Read-only, q to close the window, C-u q to close and kill.
+	(special-mode))
+      (set-window-buffer window buf))))
+
+(defun dl/set-exif-data (file tag-name tag-value)
+  "In FILE, set EXIF tag TAG-NAME to value TAG-VALUE."
+  (interactive "fFile: \nsTag: \nsValue: ")
+  (let ((options '("-%t=%v" "-overwrite_original" "%f"))
+	(spec (list
+	       (cons ?f (expand-file-name file))
+	       (cons ?t tag-name)
+	       (cons ?v tag-value))))
+    (apply #'call-process "exiftool" nil nil nil
+	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
+
+(use-package nov
+  :straight t
+  :custom
+  (nov-text-width 80)
+  :config
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
 (use-package hledger-mode
   :straight t
@@ -885,14 +881,6 @@
   (global-set-key (kbd "C-x RET RET") 'vterm-other-window)
   (define-key vterm-mode-map (kbd "<C-backspace>")
 	      (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
-
-(use-package atomic-chrome
-  :straight t
-  :config
-  (setq atomic-chrome-default-major-mode 'markdown-mode)
-  (setq atomic-chrome-url-major-mode-alist
-	'(("github\\.com" . gfm-mode)))
-  (setq atomic-chrome-buffer-open-style 'frame))
 
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
