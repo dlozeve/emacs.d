@@ -792,12 +792,6 @@
   (global-set-key (kbd "M-<f8>") 'flyspell-buffer)
   (global-set-key (kbd "C-<f8>") 'flyspell-check-previous-highlighted-word))
 
-(use-package langtool
-  :straight t
-  :init
-  (setq langtool-java-classpath
-	"/usr/share/languagetool:/usr/share/java/languagetool/*"))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; External media
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
