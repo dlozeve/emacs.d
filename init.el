@@ -434,26 +434,48 @@
   :straight t
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
+  (org-cite-csl-styles-dir "~/notes/bibliography/")
   (org-cite-export-processors '((beamer . biblatex)
 				(latex . biblatex)
-				(t . (csl "~/notes/bibliography/chicago-author-date.csl"))))
+				(t . (csl "chicago-author-date.csl"))))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   (citar-bibliography org-cite-global-bibliography)
-  (citar-citeproc-csl-styles-dir "~/notes/bibliography/")
-  (citar-citeproc-csl-locales-dir "~/notes/bibliography/")
-  (citar-notes-paths '("~/notes/notes"))
   ;; optional: org-cite-insert is also bound to C-c C-x C-@
   :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
+  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert))
+  :custom-face
+  ;; Have citation link faces look closer to as they were for `org-ref'
+  (org-cite ((t (:foreground "DarkSeaGreen4"))))
+  (org-cite-key ((t (:foreground "forest green" :slant italic)))))
 
 (use-package citar-embark
   :straight t
   :after citar embark
-  :init
-  (setq citar-at-point-function 'embark-act)
+  :no-require
+  :custom
+  (citar-at-point-function 'embark-act)
   :config (citar-embark-mode))
+
+(defun dl/formatted-citation-at-point ()
+  "Kill the formatted citation for the reference at point using Pandoc."
+  (interactive)
+  (let* ((bibfile (expand-file-name (car org-cite-global-bibliography)))
+	 (cslfile (expand-file-name (concat org-cite-csl-styles-dir "chicago-author-date.csl")))
+	 (datum (org-element-context))
+         (datum-type (org-element-type datum))
+         (key (if (eq datum-type 'citation-reference) (org-element-property :key datum) (citar-select-ref)))
+	 (citation (shell-command-to-string
+		    (format
+		     (concat
+		      "echo cite:%s"
+		      " | pandoc --citeproc --bibliography=%s --csl=%s -f org -t markdown_strict"
+		      " | tail -n +3"
+		      " | tr '\n' ' '")
+		     key bibfile cslfile))))
+    (message citation)
+    (kill-new citation)))
 
 (use-package org-roam
   :straight (:type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam" :branch "main")
