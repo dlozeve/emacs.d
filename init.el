@@ -819,6 +819,17 @@
 ;;; External media
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package dirvish
+  :straight t
+  :custom
+  (dirvish-quick-access-entries
+   '(("h" "~/" "Home")
+     ("d" "~/Downloads/" "Downloads")))
+  :config
+  (dirvish-override-dired-mode)
+  :bind
+  (([remap dired] . dirvish-dwim)))
+
 (use-package elfeed
   :straight t
   :bind ("C-c f" . elfeed)
