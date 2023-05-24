@@ -1,2 +1,11 @@
 * Emacs config
 
+** Compiling Emacs from source
+
+#+begin_src sh
+./autogen.sh
+./configure --prefix=$HOME/.local --with-native-compilation=aot --with-modules --with-pgtk --with-json --with-rsvg CFLAGS='-O3 -march=native -mtune=native'
+make -j
+src/emacs -Q
+make install
+#+end_src
