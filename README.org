@@ -4,8 +4,13 @@
 
 #+begin_src sh
 ./autogen.sh
-./configure --prefix=$HOME/.local --with-native-compilation=aot --with-modules --with-pgtk --with-json --with-rsvg CFLAGS='-O3 -march=native -mtune=native'
+./configure --prefix=$HOME/.local \
+	    --with-native-compilation=aot \
+	    --with-modules --with-tree-sitter \
+	    --with-pgtk --with-json --with-rsvg \
+	    CFLAGS='-O3 -march=native -mtune=native'
 make -j
+make check
 src/emacs -Q
 make install
 #+end_src

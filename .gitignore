@@ -20,6 +20,7 @@ snippets/
 straight
 tramp
 transient/
+tree-sitter/
 url
 
 custom.el
