@@ -961,8 +961,7 @@
 		    (smtpmail-smtp-service . 465)))))
   (setq mu4e-context-policy 'pick-first)
   (add-to-list 'mu4e-view-actions '("view in browser" . mu4e-action-view-in-browser))
-  (add-hook 'mu4e-view-mode-hook #'visual-line-mode)
-  (add-hook 'mu4e-compose-mode-hook 'flyspell-mode))
+  (add-hook 'mu4e-view-mode-hook #'visual-line-mode))
 
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
