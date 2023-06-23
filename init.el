@@ -686,7 +686,7 @@
   ;; https://www.hexstreamsoft.com/libraries/clhs/
   (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
 
-(use-package geiser-racket
+(use-package racket-mode
   :straight t)
 
 (use-package geiser-chicken
