@@ -890,10 +890,11 @@
   :mode ("\\.journal\\'" "\\.hledger\\'")
   :init
   (setq hledger-jfile (expand-file-name "~/.hledger.journal"))
-  :config
-  (add-to-list 'company-backends 'hledger-company)
-  (global-set-key (kbd "C-c e") 'hledger-jentry)
-  (global-set-key (kbd "C-c j") 'hledger-run-command))
+  :custom
+  (hledger-currency-string " ")
+  :bind
+  (("C-c e" . hledger-jentry)
+   ("C-c j" . hledger-run-command)))
 
 (use-package vterm
   :straight t
