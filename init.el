@@ -385,6 +385,25 @@
 
   (require 'ox-md))
 
+(use-package org-mime
+  :straight t
+  :after (org)
+  :config
+  (setq org-mime-export-options
+	'(:section-numbers nil
+	  :with-author nil
+          :with-toc nil))
+  (add-hook 'org-mime-html-hook
+            (lambda ()
+              (org-mime-change-element-style
+               "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                             "#E6E1DC" "#232323"))))
+  ;; the following can be used to nicely offset block quotes in email bodies
+  (add-hook 'org-mime-html-hook
+            (lambda ()
+              (org-mime-change-element-style
+               "blockquote" "border-left: 2px solid gray; padding-left: 4px;"))))
+
 (use-package ox-pandoc
   :straight t
   :after (org)
