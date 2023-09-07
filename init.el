@@ -54,7 +54,7 @@
               '((c-mode    . doxygen)
                 (c++-mode  . doxygen)))
 
-(let ((my-font "Iosevka Term")
+(let ((my-font "Iosevka")
       (my-height 120))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
@@ -363,7 +363,7 @@
 	org-edit-src-content-indentation 0)
   (setq
    org-startup-with-latex-preview t
-   org-format-latex-options (plist-put org-format-latex-options :scale 1))
+   org-format-latex-options (plist-put org-format-latex-options :scale 0.6))
 
   (require 'ox-latex)
   (add-to-list 'org-latex-classes
