@@ -781,17 +781,15 @@
   :custom
   (dyalog-fix-whitespace-before-save t))
 
-(use-package gnu-apl-mode
-  :straight t)
-
 (use-package bqn-mode
   :straight (:host github :repo "museoa/bqn-mode")
-  :after gnu-apl-mode
   :bind (:map bqn-mode-map
 	      (("C-c d" . bqn-help-symbol-info-at-point)
-	       ("C-c C-d" . bqn-help-symbol-info-at-point)))
+	       ("C-c C-d" . bqn-help-symbol-info-at-point)
+	       ("C-c C-c" . bqn-comint-send-dwim)))
   :custom (bqn-key-prefix ?ù)
   :config
+  (require 'bqn-keymap-mode)
   (defface bqn-default
     '((t (:height 140 :family "BQN386 Unicode"))) "BQN default face.")
 
