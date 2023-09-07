@@ -391,6 +391,7 @@
 	'(:section-numbers nil
 	  :with-author nil
           :with-toc nil))
+  (setq org-mime-export-ascii 'utf-8)
   (add-hook 'org-mime-html-hook
             (lambda ()
               (org-mime-change-element-style
@@ -452,8 +453,8 @@
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
   (org-cite-csl-styles-dir "~/notes/bibliography/")
-  (org-cite-export-processors '((beamer . biblatex)
-				(latex . biblatex)
+  (org-cite-export-processors '((beamer . (biblatex))
+				(latex . (biblatex))
 				(t . (csl "chicago-author-date.csl"))))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
