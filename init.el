@@ -942,6 +942,12 @@
   (setq hledger-jfile (expand-file-name "~/.hledger.journal"))
   :custom
   (hledger-currency-string " ")
+  (hledger-top-income-account "revenues")
+  (hledger-ratios-assets-accounts "assets")
+  (hledger-ratios-income-accounts "revenues")
+  (hledger-ratios-liquid-asset-accounts "assets:checking assets:cash assets:tickets-resto")
+  (hledger-ratios-debt-accounts "liabilities")
+  (hledger-ratios-essential-expense-accounts "expenses:banking expenses:food expenses:rent expenses:insurance expenses:medical expenses:taxes expenses:transport expenses:utilities")
   :bind
   (("C-c e" . hledger-jentry)
    ("C-c j" . hledger-run-command)))
