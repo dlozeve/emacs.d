@@ -153,9 +153,7 @@
     (exec-path-from-shell-initialize)
     (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
     (exec-path-from-shell-copy-env "PYENV_ROOT")
-    (exec-path-from-shell-copy-env "PYENV_ROOT")
-    (exec-path-from-shell-copy-env "GAMBIT")
-    (exec-path-from-shell-copy-env "GERBIL_HOME")))
+    (exec-path-from-shell-copy-env "PYENV_ROOT")))
 
 ;;; Menus and completion
 
@@ -753,25 +751,22 @@
   :straight t)
 
 (use-package gerbil-mode
-  :when (getenv "GERBIL_HOME")
   :straight nil
   :defer t
   :mode (("\\.ss\\'"  . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
   :init
-  (setf gambit (getenv "GAMBIT"))
-  (setf gerbil (getenv "GERBIL_HOME"))
-  (autoload 'gerbil-mode
-    (concat gerbil "/etc/gerbil-mode.el") "Gerbil editing mode." t)
+  (add-to-list 'load-path "/opt/gerbil/share/emacs/site-lisp")
+  (require 'gambit)
+  (autoload 'gerbil-mode "gerbil-mode" "Gerbil editing mode." t)
   :hook
   ((inferior-scheme-mode . gambit-inferior-mode))
   :config
-  (require 'gambit (concat gambit "/misc/gambit.el"))
-  (setf scheme-program-name (concat gerbil "/bin/gxi"))
+  (setf scheme-program-name "gxi")
 
   (let ((tags (locate-dominating-file default-directory "TAGS")))
     (when tags (visit-tags-table tags)))
-  (visit-tags-table (concat gerbil "/src/TAGS")))
+  (visit-tags-table "~/build/gerbil/src/TAGS"))
 
 ;; Use APL font face in current buffer
 (defun my-buffer-face-mode-apl ()
