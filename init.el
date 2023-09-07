@@ -578,7 +578,9 @@
 	       (python "https://github.com/tree-sitter/tree-sitter-python")
 	       (rust "https://github.com/tree-sitter/tree-sitter-rust")
 	       (toml "https://github.com/tree-sitter/tree-sitter-toml")
-	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+	       (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
       ;; installed. However, if you want to *update* a grammar then
