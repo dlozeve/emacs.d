@@ -103,8 +103,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package 'use-package)
-
 ;; Better than default: act on the region if active
 (bind-key [remap upcase-word] #'upcase-dwim)
 (bind-key [remap downcase-word] #'downcase-dwim)
