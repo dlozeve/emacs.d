@@ -5,7 +5,8 @@
 auto-save-list/
 bookmarks
 eln-cache/
-eshell
+eshell/history
+eshell/lastdir
 forge-database.sqlite
 mastodon.plstore
 multisession/
