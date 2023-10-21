@@ -149,9 +149,8 @@
   :config
   (when (memq window-system '(mac ns x pgtk))
     (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
-    (exec-path-from-shell-copy-env "PYENV_ROOT")
-    (exec-path-from-shell-copy-env "PYENV_ROOT")))
+    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+    (exec-path-from-shell-copy-env "SSH_AGENT_PID")))
 
 ;;; Menus and completion
 
