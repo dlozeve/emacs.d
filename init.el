@@ -19,6 +19,9 @@
 
 (setq auto-window-vscroll nil)
 
+(setq ns-right-alternate-modifier nil
+      ns-command-modifier 'meta)
+
 ;; Dired human readable sizes
 (setq dired-listing-switches "-alh")
 
@@ -55,7 +58,7 @@
                 (c++-mode  . doxygen)))
 
 (let ((my-font "Iosevka")
-      (my-height 120))
+      (my-height 130))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
 
