@@ -952,13 +952,16 @@
   (("C-c e" . hledger-jentry)
    ("C-c j" . hledger-run-command)))
 
-(use-package vterm
-  :straight t
+(use-package eat
+  :straight (:type git :host codeberg :repo "akib/emacs-eat"
+		   :files ("*.el" ("term" "term/*.el") "*.texi"
+			   "*.ti" ("terminfo/e" "terminfo/e/*")
+			   ("terminfo/65" "terminfo/65/*")
+			   ("integration" "integration/*")
+			   (:exclude ".dir-locals.el" "*-tests.el")))
   :config
-  (setq vterm-kill-buffer-on-exit t)
-  (global-set-key (kbd "C-x RET RET") 'vterm-other-window)
-  (define-key vterm-mode-map (kbd "<C-backspace>")
-	      (lambda () (interactive) (vterm-send-key (kbd "C-w")))))
+  (global-set-key (kbd "C-x RET RET") 'eat-other-window)
+  (global-set-key (kbd "C-x p RET") 'eat-project-other-window))
 
 (use-package mu4e
   :straight (:type git :host github :repo "djcb/mu"
