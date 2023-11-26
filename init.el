@@ -961,7 +961,10 @@
 			   (:exclude ".dir-locals.el" "*-tests.el")))
   :config
   (global-set-key (kbd "C-x RET RET") 'eat-other-window)
-  (global-set-key (kbd "C-x p RET") 'eat-project-other-window))
+  (global-set-key (kbd "C-x p RET") 'eat-project-other-window)
+  (setq eat-enable-shell-prompt-annotation nil)
+  (add-hook 'eshell-load-hook #'eat-eshell-mode)
+  (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode))
 
 (use-package mu4e
   :straight (:type git :host github :repo "djcb/mu"
