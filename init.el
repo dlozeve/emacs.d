@@ -959,6 +959,14 @@
   (("C-c e" . hledger-jentry)
    ("C-c j" . hledger-run-command)))
 
+(use-package osm
+  :straight t
+  :bind ("C-c m" . osm-prefix-map) ;; Alternatives: `osm-home' or `osm'
+  :custom
+  (osm-server 'default) ;; Configure the tile server
+  (osm-copyright nil)   ;; Display the copyright information
+  (osm-home '(48.853495 2.348391 12)))
+
 (use-package eat
   :straight (:type git :host codeberg :repo "akib/emacs-eat"
 		   :files ("*.el" ("term" "term/*.el") "*.texi"
