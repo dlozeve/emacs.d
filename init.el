@@ -873,6 +873,13 @@
   :bind
   (([remap dired] . dirvish-dwim)))
 
+(use-package restclient
+  :straight t)
+
+(use-package ob-restclient
+  :straight t
+  :after (org))
+
 (use-package elfeed
   :straight t
   :bind ("C-c f" . elfeed)
