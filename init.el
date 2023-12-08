@@ -911,7 +911,10 @@
 
 (defun dl/view-exif-data (file)
   "View EXIF data of FILE."
-  (interactive "fFile: ")
+  (interactive (let ((fname (thing-at-point 'existing-filename)))
+		 (list
+		  (read-string (format "File (%s): " (file-name-nondirectory fname))
+			       nil nil fname))))
   (let ((buf-name (concat "*EXIF " file "*")))
     ;; If the buffer already exists, kill it.
     (when (get-buffer buf-name)
@@ -930,7 +933,11 @@
 
 (defun dl/set-exif-data (file tag-name tag-value)
   "In FILE, set EXIF tag TAG-NAME to value TAG-VALUE."
-  (interactive "fFile: \nsTag: \nsValue: ")
+  (interactive (list (let ((fname (thing-at-point 'existing-filename)))
+		       (read-string (format "File (%s): " (file-name-nondirectory fname))
+				    nil nil fname))
+		     (read-string "Tag (Title): " nil nil "Title")
+		     (read-string "Value: ")))
   (let ((options '("-%t=%v" "-overwrite_original" "%f"))
 	(spec (list
 	       (cons ?f (expand-file-name file))
