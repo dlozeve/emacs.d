@@ -761,7 +761,9 @@
   :mode (("\\.ss\\'"  . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
   :init
-  (add-to-list 'load-path "/opt/gerbil/share/emacs/site-lisp")
+  (if (eq system-type 'darwin)
+    (add-to-list 'load-path "/opt/homebrew/opt/gerbil-scheme/share/emacs/site-lisp")
+    (add-to-list 'load-path "/opt/gerbil/share/emacs/site-lisp"))
   (require 'gambit)
   (autoload 'gerbil-mode "gerbil-mode" "Gerbil editing mode." t)
   :hook
