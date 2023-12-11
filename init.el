@@ -18,6 +18,7 @@
 (blink-cursor-mode 0)
 
 (setq auto-window-vscroll nil)
+(setq view-read-only t)
 
 (setq ns-right-alternate-modifier nil
       ns-command-modifier 'meta)
