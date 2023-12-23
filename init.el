@@ -195,7 +195,7 @@
   :straight t
   :bind
   (("C-;" . embark-act)         ;; pick some comfortable binding
-   ;("M-;" . embark-dwim)
+   ;;("M-;" . embark-dwim)
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   :init
   ;; Optionally replace the key help with a completing-read interface
@@ -391,9 +391,7 @@
   :after (org)
   :config
   (setq org-mime-export-options
-	'(:section-numbers nil
-	  :with-author nil
-          :with-toc nil))
+	'(:section-numbers nil :with-author nil :with-toc nil))
   (setq org-mime-export-ascii 'utf-8)
   (add-hook 'org-mime-html-hook
             (lambda ()
@@ -652,9 +650,14 @@
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
 
-(use-package format-all
+(use-package apheleia
   :straight t
-  :bind ("C-c C-f" . format-all-buffer))
+  :config
+  (apheleia-global-mode +1)
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist)
+	'(ruff))
+  (setf (alist-get 'python-mode apheleia-mode-alist)
+	'(ruff)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Programming languages modes
@@ -737,7 +740,7 @@
   ;; which is annoying when backspacing over a '('
   (defun override-slime-repl-bindings-with-paredit ()
     (define-key slime-repl-mode-map
-      (read-kbd-macro paredit-backward-delete-key) nil))
+		(read-kbd-macro paredit-backward-delete-key) nil))
   (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
   (setq lisp-indent-function 'lisp-indent-function)
   ;; Use the offline hyperspec from the "clhs" quicklisp package:
@@ -763,7 +766,7 @@
          ("\\.pkg\\'" . gerbil-mode))
   :init
   (if (eq system-type 'darwin)
-    (add-to-list 'load-path "/opt/homebrew/opt/gerbil-scheme/share/emacs/site-lisp")
+      (add-to-list 'load-path "/opt/homebrew/opt/gerbil-scheme/share/emacs/site-lisp")
     (add-to-list 'load-path "/opt/gerbil/share/emacs/site-lisp"))
   (require 'gambit)
   (autoload 'gerbil-mode "gerbil-mode" "Gerbil editing mode." t)
