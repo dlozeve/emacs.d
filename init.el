@@ -666,7 +666,11 @@
   (setf (alist-get 'python-ts-mode apheleia-mode-alist)
 	'(ruff))
   (setf (alist-get 'python-mode apheleia-mode-alist)
-	'(ruff)))
+	'(ruff))
+  (setf (alist-get 'ormolu apheleia-formatters)
+	'("ormolu" "--stdin-input-file" filepath))
+  (setf (alist-get 'haskell-mode apheleia-mode-alist)
+	'(ormolu)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Programming languages modes
