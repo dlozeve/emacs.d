@@ -612,6 +612,11 @@
   :straight t
   :bind (("<f5>" . deadgrep)))
 
+(use-package rg
+  :straight t
+  :config
+  (rg-enable-default-bindings))
+
 (use-package magit
   :straight t
   :bind (("C-x g" . magit-status)
