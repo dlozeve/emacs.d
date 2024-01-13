@@ -728,25 +728,6 @@
 	  racket-repl-mode
 	  gerbil-mode) . enable-paredit-mode))
 
-(use-package slime
-  :straight t
-  :config
-  (require 'slime-autoloads)
-  (setq slime-contribs '(slime-fancy slime-repl slime-quicklisp))
-  (setq slime-lisp-implementations
-	'((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)))
-  (setq slime-net-coding-system 'utf-8-unix)
-  ;; Stop SLIME's REPL from grabbing DEL,
-  ;; which is annoying when backspacing over a '('
-  (defun override-slime-repl-bindings-with-paredit ()
-    (define-key slime-repl-mode-map
-		(read-kbd-macro paredit-backward-delete-key) nil))
-  (add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
-  (setq lisp-indent-function 'lisp-indent-function)
-  ;; Use the offline hyperspec from the "clhs" quicklisp package:
-  ;; https://www.hexstreamsoft.com/libraries/clhs/
-  (load "/home/dimitri/quicklisp/clhs-use-local.el" t))
-
 (use-package racket-mode
   :straight t)
 
