@@ -26,7 +26,7 @@
 (setq frame-resize-pixelwise t)
 
 ;; Dired human readable sizes
-(setq dired-listing-switches "-alh")
+(setq dired-listing-switches "-Alh")
 
 ;; Enable disabled commands
 (put 'narrow-to-region 'disabled nil)
@@ -841,10 +841,11 @@
   (dirvish-quick-access-entries
    '(("h" "~/" "Home")
      ("d" "~/Downloads/" "Downloads")))
+  (dirvish-header-line-height 16)
+  (dirvish-mode-line-height 16)
+  (dirvish-default-layout '(1 0.21 0.35))
   :config
-  (dirvish-override-dired-mode)
-  :bind
-  (([remap dired] . dirvish-dwim)))
+  (dirvish-override-dired-mode))
 
 (use-package restclient
   :straight t)
