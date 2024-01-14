@@ -127,16 +127,8 @@
 
 ;;; Appearance
 
-(use-package paren
-  :config
-  (show-paren-mode 1))
-
-;; Highlight the current line
-(use-package hl-line
-  :config
-  (global-hl-line-mode -1))
-
 (use-package emacs
+  :straight nil
   :init
   (setq modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
@@ -145,6 +137,9 @@
   :config
   ;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-faint)
   (load-theme 'modus-vivendi)
+  (show-paren-mode 1)
+  (global-hl-line-mode -1) ; Highlight the current line
+  (global-hi-lock-mode 1)
   :bind ("<f12>" . modus-themes-toggle))
 
 (use-package mood-line
