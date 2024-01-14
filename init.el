@@ -25,6 +25,10 @@
 
 (setq frame-resize-pixelwise t)
 
+;; Display time in mode-line
+(setq display-time-24hr-format t)
+(display-time-mode 1)
+
 ;; Dired human readable sizes
 (setq dired-listing-switches "-Alh")
 
@@ -60,12 +64,12 @@
               '((c-mode    . doxygen)
                 (c++-mode  . doxygen)))
 
-(let ((my-font "Iosevka Fixed")
+(let ((my-font "Iosevka Term")
       (my-height 130))
   (set-face-attribute 'default nil :family my-font :height my-height)
   (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
 
-(set-face-attribute 'variable-pitch nil :family "Linux Libertine O" :height 140)
+(set-face-attribute 'variable-pitch nil :family "Libertinus Serif" :height 160)
 
 ;; Better renaming rules for buffers with the same name
 (setq uniquify-buffer-name-style 'forward)
