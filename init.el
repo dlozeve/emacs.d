@@ -495,6 +495,24 @@
     (message citation)
     (kill-new citation)))
 
+(defun dl/get-bibtex (query)
+  "Use Wikipedia's Citoid service to get a bibtex citation of the given QUERY."
+  (interactive "sQuery: ")
+  (let ((target-buf (current-buffer))
+	(target-point (point))
+	(url (concat "https://en.wikipedia.org/api/rest_v1/data/citation/bibtex/"
+		     (url-hexify-string query))))
+    (message "Querying %s..." url)
+    (with-current-buffer (url-retrieve-synchronously url 'silent 'inhibit-cookies 5)
+      (-let* (((headers s) (split-string (buffer-string) "\n\n\n"))
+	      (code (string-to-number (cadr (split-string headers)))))
+	(if (eq code 200)
+	    (with-current-buffer target-buf
+	      (save-excursion
+		(goto-char target-point)
+		(insert s)))
+	  (message "HTTP error %s" code))))))
+
 (use-package org-roam
   :straight (:type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam" :branch "main")
   :after org
