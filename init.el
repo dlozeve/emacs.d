@@ -4,100 +4,8 @@
 
 ;;; Code:
 
-;; Always load newest byte code
-(setq load-prefer-newer t)
+;;; Straight.el setup
 
-(setq inhibit-startup-screen t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
-(setq visible-bell 1)
-(line-number-mode 1)
-(column-number-mode 1)
-(size-indication-mode 1)
-(blink-cursor-mode 0)
-
-(setq auto-window-vscroll nil)
-(setq view-read-only t)
-
-(setq ns-right-alternate-modifier nil
-      ns-command-modifier 'meta)
-
-(setq frame-resize-pixelwise t)
-
-;; Display time in mode-line
-(setq display-time-24hr-format t)
-(display-time-mode 1)
-
-;; Dired human readable sizes
-(setq dired-listing-switches "-Alh")
-
-;; Enable disabled commands
-(put 'narrow-to-region 'disabled nil)
-
-;; more useful frame title, that show either a file or a
-;; buffer name (if the buffer isn't visiting a file)
-(setq frame-title-format
-      '((:eval (if (buffer-file-name)
-                   (abbreviate-file-name (buffer-file-name))
-                 "%b"))))
-
-;; Newline at end of file
-(setq require-final-newline t)
-
-;; TAB cycle if there are only few candidates
-(setq completion-cycle-threshold 3)
-
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-
-;; System locale to use for formatting time values.  Make sure that
-;; the weekdays in the time stamps of your Org mode files and in the
-;; agenda appear in English.
-(setq system-time-locale "C")
-
-(setq-default c-basic-offset 2)
-(setq c-default-style "linux")
-(setq-default c-doc-comment-style
-              '((c-mode    . doxygen)
-                (c++-mode  . doxygen)))
-
-(let ((my-font "Iosevka Term")
-      (my-height 130))
-  (set-face-attribute 'default nil :family my-font :height my-height)
-  (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
-
-(set-face-attribute 'variable-pitch nil :family "Libertinus Serif" :height 160)
-
-;; Better renaming rules for buffers with the same name
-(setq uniquify-buffer-name-style 'forward)
-(setq uniquify-separator "/")
-;; rename after killing uniquified
-(setq uniquify-after-kill-buffer-p t)
-;; don't muck with special buffers
-(setq uniquify-ignore-buffers-re "^\\*")
-
-(defun unfill-paragraph ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil)))
-
-(defun unfill-region ()
-  (interactive)
-  (let ((fill-column (point-max)))
-    (fill-region (region-beginning) (region-end) nil)))
-
-(defun random-todo ()
-  (interactive)
-  (let ((points nil))
-    (goto-char (point-min))
-    (while (search-forward-regexp "\*\sTODO" nil t)
-      (setq points (cons (1+ (match-end 0)) points)))
-    (goto-char (seq-random-elt points))))
-
-;; Straight.el setup
 (setq straight-repository-branch "develop"
       straight-use-package-by-default t)
 (defvar bootstrap-version)
@@ -113,20 +21,108 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Better than default: act on the region if active
-(bind-key [remap upcase-word] #'upcase-dwim)
-(bind-key [remap downcase-word] #'downcase-dwim)
-(bind-key [remap capitalize-word] #'capitalize-dwim)
-(bind-key [remap count-words-region] #'count-words)
+;;; Appearance and general behavior
 
-(bind-key [remap just-one-space] #'cycle-spacing)
-(bind-key [remap zap-to-char] #'zap-up-to-char)
-(bind-key [remap buffer-menu] #'ibuffer)
+(use-package emacs
+  :straight nil
+  :config
+  ;; Always load newest byte code
+  (setq load-prefer-newer t)
 
-(bind-key "M-o" #'other-window)
+  ;; Display configuration
+  (setq inhibit-startup-screen t)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+  (setq visible-bell 1)
+  (blink-cursor-mode 0)
+  (show-paren-mode 1)
+  (global-hl-line-mode -1)
+  (global-hi-lock-mode 1)
+  ;; More useful frame title, that show either a file or a buffer name
+  ;; (if the buffer isn't visiting a file)
+  (setq frame-title-format
+	'((:eval (if (buffer-file-name)
+                     (abbreviate-file-name (buffer-file-name))
+                   "%b"))))
 
-;;; Appearance
+  ;; Font configuration
+  (let ((my-font "Iosevka Term")
+	(my-height 130))
+    (set-face-attribute 'default nil :family my-font :height my-height)
+    (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
+  (set-face-attribute 'variable-pitch nil :family "Libertinus Serif" :height 160)
 
+  ;; Mode line configuration
+  (line-number-mode 1)
+  (column-number-mode 1)
+  (size-indication-mode 1)
+  (setq display-time-24hr-format t)
+  (display-time-mode 1)
+
+  ;; Behavior configuration
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (setq auto-window-vscroll nil)
+  (setq frame-resize-pixelwise t)
+  (setq view-read-only t)
+  ;; Newline at end of file
+  (setq require-final-newline t)
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
+  ;; System locale to use for formatting time values.  Make sure that
+  ;; the weekdays in the time stamps of your Org mode files and in the
+  ;; agenda appear in English.
+  (setq system-time-locale "C")
+
+  ;; Enable disabled commands
+  (put 'narrow-to-region 'disabled nil)
+
+  ;; MacOS specific configuration
+  (setq ns-right-alternate-modifier nil
+	ns-command-modifier 'meta)
+
+  ;; Dired human readable sizes
+  (setq dired-listing-switches "-Alh")
+
+  ;; C mode configuration
+  (setq-default c-basic-offset 2)
+  (setq c-default-style "linux")
+  (setq-default c-doc-comment-style
+		'((c-mode    . doxygen)
+                  (c++-mode  . doxygen)))
+
+  ;; Better renaming rules for buffers with the same name
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-separator "/")
+  ;; rename after killing uniquified
+  (setq uniquify-after-kill-buffer-p t)
+  ;; don't muck with special buffers
+  (setq uniquify-ignore-buffers-re "^\\*")
+
+  (defun unfill-paragraph ()
+    (interactive)
+    (let ((fill-column (point-max)))
+      (fill-paragraph nil)))
+
+  (defun unfill-region ()
+    (interactive)
+    (let ((fill-column (point-max)))
+      (fill-region (region-beginning) (region-end) nil)))
+
+  :bind (("M-o" . other-window)
+	 ([remap buffer-menu] . ibuffer)
+	 ([remap count-words-region] . count-words)
+	 ([remap just-one-space] . cycle-spacing)
+	 ([remap zap-to-char] . zap-up-to-char)
+	 ;; Better than default: act on the region if active
+	 ([remap upcase-word] . upcase-dwim)
+	 ([remap downcase-word] . downcase-dwim)
+	 ([remap capitalize-word] . capitalize-dwim)))
+
+;; Theme configuration
 (use-package emacs
   :straight nil
   :init
@@ -137,9 +133,6 @@
   :config
   ;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-faint)
   (load-theme 'modus-vivendi)
-  (show-paren-mode 1)
-  (global-hl-line-mode -1) ; Highlight the current line
-  (global-hi-lock-mode 1)
   :bind ("<f12>" . modus-themes-toggle))
 
 (use-package diminish
