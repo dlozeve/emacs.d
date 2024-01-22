@@ -142,10 +142,9 @@
   (global-hi-lock-mode 1)
   :bind ("<f12>" . modus-themes-toggle))
 
-(use-package mood-line
+(use-package diminish
   :straight t
-  :config
-  (mood-line-mode t))
+  :diminish visual-line-mode)
 
 ;;; Environment variables
 
@@ -472,6 +471,7 @@
   :straight t
   :after citar embark
   :no-require
+  :diminish citar-embark-mode
   :custom
   (citar-at-point-function 'embark-act)
   :config (citar-embark-mode))
@@ -655,6 +655,7 @@
 
 (use-package apheleia
   :straight t
+  :diminish apheleia-mode
   :config
   (apheleia-global-mode +1)
   (setf (alist-get 'python-ts-mode apheleia-mode-alist)
@@ -819,6 +820,7 @@
 
 (use-package jinx
   :straight t
+  :diminish jinx-mode
   :hook (emacs-startup . global-jinx-mode)
   :config
   (setq jinx-languages "en_US fr_FR")
