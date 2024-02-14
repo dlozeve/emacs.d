@@ -143,11 +143,13 @@
 
 (use-package exec-path-from-shell
   :straight t
+  :init
+  (setq exec-path-from-shell-arguments '("-l"))
   :config
   (when (memq window-system '(mac ns x pgtk))
-    (exec-path-from-shell-initialize)
-    (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-    (exec-path-from-shell-copy-env "SSH_AGENT_PID")))
+    (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID"))
+      (add-to-list 'exec-path-from-shell-variables var))
+    (exec-path-from-shell-initialize)))
 
 ;;; Menus and completion
 
