@@ -39,6 +39,7 @@
   (show-paren-mode 1)
   (global-hl-line-mode -1)
   (global-hi-lock-mode 1)
+  (setq tab-bar-show 1)
   ;; More useful frame title, that show either a file or a buffer name
   ;; (if the buffer isn't visiting a file)
   (setq frame-title-format
@@ -160,12 +161,9 @@
 
 (use-package orderless
   :straight t
-  :init
-  (setq completion-styles '(orderless)
-	completion-category-defaults nil
-	completion-category-overrides nil
-	completion-category-overrides '((file (styles partial-completion
-						      orderless)))))
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
   :straight t
@@ -227,6 +225,30 @@
   (setq completion-cycle-threshold 3)
   (setq tab-always-indent 'complete)
   (global-corfu-mode))
+
+(use-package vundo
+  :straight t
+  :config
+  (setq vundo-glyph-alist vundo-unicode-symbols))
+
+(use-package activities
+  :straight t
+  :init
+  (activities-mode)
+  (activities-tabs-mode)
+  ;; Prevent `edebug' default bindings from interfering.
+  (setq edebug-inhibit-emacs-lisp-mode-bindings t)
+  :bind
+  (("C-x C-a C-n" . activities-new)
+   ;; As resuming is expected to be one of the most commonly used
+   ;; commands, this binding is one of the easiest to press.
+   ("C-x C-a C-a" . activities-resume)
+   ("C-x C-a C-s" . activities-suspend)
+   ("C-x C-a C-k" . activities-kill)
+   ;; This binding mirrors, e.g. "C-x t RET".
+   ("C-x C-a RET" . activities-switch)
+   ("C-x C-a g" . activities-revert)
+   ("C-x C-a l" . activities-list)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
