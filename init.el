@@ -675,6 +675,7 @@
   :diminish apheleia-mode
   :config
   (apheleia-global-mode +1)
+  (setq apheleia-formatters-respect-indent-level nil)
   (setf (alist-get 'python-ts-mode apheleia-mode-alist)
 	'(ruff))
   (setf (alist-get 'python-mode apheleia-mode-alist)
