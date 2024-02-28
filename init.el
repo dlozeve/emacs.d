@@ -661,9 +661,11 @@
   :after magit)
 
 (use-package eglot
-  :straight nil
+  :straight t
   :config
-  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil))
+  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil)
+  (setq eglot-events-buffer-size 0)
+  (fset #'jsonrpc--log-event #'ignore))
 
 (use-package eldoc-box
   :straight t
