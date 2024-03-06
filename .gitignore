@@ -7,7 +7,7 @@ bookmarks
 eln-cache/
 eshell/history
 eshell/lastdir
-forge-database.sqlite
+forge-database*.sqlite
 mastodon.plstore
 multisession/
 network-security.data
@@ -23,6 +23,7 @@ tramp
 transient/
 tree-sitter/
 url
+var/
 
 custom.el
 secrets.el
