@@ -124,17 +124,14 @@
 	 ([remap capitalize-word] . capitalize-dwim)))
 
 ;; Theme configuration
-(use-package emacs
-  :straight nil
+(use-package ef-themes
+  :straight t
   :init
-  (setq modus-themes-italic-constructs t
-	modus-themes-bold-constructs t
-	modus-themes-mixed-fonts t
-	modus-themes-org-blocks '(gray-background))
-  :config
-  ;; (setq modus-themes-common-palette-overrides modus-themes-preset-overrides-faint)
-  (load-theme 'modus-vivendi)
-  :bind ("<f12>" . modus-themes-toggle))
+  (setq ef-themes-mixed-fonts t)
+  (setq ef-themes-to-toggle '(ef-day ef-night))
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'ef-night :no-confirm)
+  :bind ("<f12>" . ef-themes-toggle))
 
 (use-package diminish
   :straight t
