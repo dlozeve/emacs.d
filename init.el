@@ -716,20 +716,7 @@
   :straight t)
 
 (use-package pyvenv
-  :straight t
-  :init
-  (setenv "WORKON_HOME" "~/.pyenv/versions"))
-
-(use-package julia-mode
   :straight t)
-
-(use-package julia-repl
-  :straight t
-  :hook (julia-mode . julia-repl-mode)
-  :init
-  (setenv "JULIA_NUM_THREADS" "6")
-  :config
-  (julia-repl-set-terminal-backend 'vterm))
 
 (use-package ess
   :straight t
