@@ -68,6 +68,7 @@
   (set-keyboard-coding-system 'utf-8)
   (setq auto-window-vscroll nil)
   (setq frame-resize-pixelwise t)
+  (setq split-height-threshold 100)
   (setq view-read-only t)
   ;; Newline at end of file
   (setq require-final-newline t)
