@@ -693,6 +693,10 @@
   (setf (alist-get 'haskell-mode apheleia-mode-alist)
 	'(ormolu)))
 
+(use-package flymake-ruff
+  :straight t
+  :hook (python-mode . flymake-ruff-load))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Programming languages modes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
