@@ -609,6 +609,8 @@
 
 (use-package treesit
   :straight nil
+  :mode (("\\.tsx\\'" . tsx-ts-mode)
+	 ("\\.ts\\'" . typescript-ts-mode))
   :preface
   (defun dl/setup-install-grammars ()
     "Install Tree-sitter grammars if they are absent."
@@ -620,6 +622,9 @@
 	       (rust "https://github.com/tree-sitter/tree-sitter-rust")
 	       (toml "https://github.com/tree-sitter/tree-sitter-toml")
 	       (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+	       (css . ("https://github.com/tree-sitter/tree-sitter-css"))
+               (html . ("https://github.com/tree-sitter/tree-sitter-html"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
 	       (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
 	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
       (add-to-list 'treesit-language-source-alist grammar)
@@ -636,10 +641,14 @@
   ;; also
   (dolist (mapping '((c-mode . c-ts-mode)
 		     (json-mode . json-ts-mode)
+		     (js-json-mode . json-ts-mode)
 		     (python-mode . python-ts-mode)
 		     (rust-mode . rust-ts-mode)
 		     (toml-mode . toml-ts-mode)
-                     (yaml-mode . yaml-ts-mode)))
+                     (yaml-mode . yaml-ts-mode)
+		     (css-mode . css-ts-mode)
+		     (typescript-mode . typescript-ts-mode)
+		     (js2-mode . js-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
   (dl/setup-install-grammars))
