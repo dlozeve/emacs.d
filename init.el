@@ -287,6 +287,13 @@
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
+(use-package helpful
+  :straight t
+  :bind (("C-h f" . helpful-callable)
+	 ("C-h v" . helpful-variable)
+	 ("C-h k" . helpful-key)
+	 ("C-h x" . helpful-command)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
