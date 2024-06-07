@@ -114,7 +114,7 @@
     (let ((fill-column (point-max)))
       (fill-region (region-beginning) (region-end) nil)))
 
-  :bind (("M-o" . other-window)
+  :bind (;; ("M-o" . other-window) ;; Replaced with ace-window
 	 ([remap buffer-menu] . ibuffer)
 	 ([remap count-words-region] . count-words)
 	 ([remap just-one-space] . cycle-spacing)
@@ -281,6 +281,16 @@
   (setq completion-cycle-threshold 3)
   (setq tab-always-indent 'complete)
   (global-corfu-mode))
+
+(use-package ace-window
+  :straight t
+  :bind (("M-o" . ace-window)))
+
+(use-package avy
+  :straight t
+  :config  (avy-setup-default)
+  :bind (("M-j" . avy-goto-char-timer)
+	 ("C-c C-j" . avy-resume)))
 
 (use-package vundo
   :straight t
@@ -1015,9 +1025,14 @@
 			   ("terminfo/65" "terminfo/65/*")
 			   ("integration" "integration/*")
 			   (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (("C-x RET RET" . eat-other-window)
+	 ("C-x p RET" . eat-project-other-window))
   :config
-  (global-set-key (kbd "C-x RET RET") 'eat-other-window)
-  (global-set-key (kbd "C-x p RET") 'eat-project-other-window)
+  ;; Enable M-o in semi-char-mode
+  (add-to-list 'eat-semi-char-non-bound-keys [?\e ?o])
+  (eat-update-semi-char-mode-map)
+  (eat-reload)
+  ;; Appearance
   (setq eat-enable-shell-prompt-annotation nil)
   (setopt eat-very-visible-cursor-type '(t nil nil))
   (setopt eat-default-cursor-type '(t nil nil))
