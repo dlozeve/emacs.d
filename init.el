@@ -1036,8 +1036,8 @@
   (setq eat-enable-shell-prompt-annotation nil)
   (setopt eat-very-visible-cursor-type '(t nil nil))
   (setopt eat-default-cursor-type '(t nil nil))
+  (setq eshell-visual-commands '())
   (add-hook 'eshell-load-hook #'eat-eshell-mode)
-  (add-hook 'eshell-load-hook #'eat-eshell-visual-command-mode)
   (setq process-adaptive-read-buffering nil)
   (setq read-process-output-max (* 4 1024 1024)))
 
