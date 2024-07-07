@@ -321,7 +321,7 @@
   (end-of-buffer))
 
 (use-package org
-  :straight t
+  :straight nil
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
@@ -715,7 +715,7 @@
   :after magit)
 
 (use-package eglot
-  :straight t
+  :straight nil
   :config
   (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil)
   (setq eglot-events-buffer-size 0)
