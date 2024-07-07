@@ -494,11 +494,6 @@
   :straight t
   :after (org))
 
-(use-package org-fragtog
-  :straight t
-  :after (org)
-  :hook (org-mode . org-fragtog-mode))
-
 (use-package citeproc
   :straight t)
 
@@ -704,10 +699,6 @@
 (use-package expand-region
   :straight t
   :bind ("C-=" . er/expand-region))
-
-(use-package deadgrep
-  :straight t
-  :bind (("<f5>" . deadgrep)))
 
 (use-package rg
   :straight t
