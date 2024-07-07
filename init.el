@@ -124,6 +124,20 @@
 	 ([remap downcase-word] . downcase-dwim)
 	 ([remap capitalize-word] . capitalize-dwim)))
 
+(use-package project
+  :straight nil
+  :config
+  (keymap-set project-prefix-map "t" 'eat-project)
+  (keymap-set project-prefix-map "RET" 'eat-project-other-window)
+  (keymap-set project-prefix-map "g" 'magit-project-status)
+  (setq project-switch-commands
+	'((project-find-file "Find file")
+	  (project-find-dir "Find directory")
+	  (project-eshell "Eshell")
+	  (eat-project "Terminal")
+	  (eat-project-other-window "Terminal other window")
+	  (magit-project-status "Magit"))))
+
 ;; Theme configuration
 (use-package ef-themes
   :straight t
@@ -1016,8 +1030,6 @@
 			   ("terminfo/65" "terminfo/65/*")
 			   ("integration" "integration/*")
 			   (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (("C-x RET RET" . eat-other-window)
-	 ("C-x p RET" . eat-project-other-window))
   :config
   ;; Enable M-o in semi-char-mode
   (add-to-list 'eat-semi-char-non-bound-keys [?\e ?o])
