@@ -929,17 +929,6 @@
   :straight t
   :after (org))
 
-(use-package elfeed
-  :straight t
-  :bind ("C-c f" . elfeed)
-  :config
-  (setq shr-width 100))
-
-(use-package elfeed-org
-  :straight t
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/notes/elfeed.org")))
 
 (use-package mastodon
   :straight t
