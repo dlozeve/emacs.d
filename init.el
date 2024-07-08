@@ -143,16 +143,16 @@
   :straight t
   :init
   (setq ef-themes-mixed-fonts t)
-  (setq ef-themes-to-toggle '(ef-day ef-night))
+  (setq ef-themes-to-toggle '(ef-light ef-dark))
   (mapc #'disable-theme custom-enabled-themes)
-  (load-theme 'ef-night :no-confirm)
+  (load-theme 'ef-dark :no-confirm)
   (when (eq window-system 'ns)
     (defun dl/themes-toggle-with-system (appearance)
       "Load dark or light theme depending on system appearance on macOS."
       (mapc #'disable-theme custom-enabled-themes)
       (pcase appearance
-	('light (load-theme 'ef-day :no-confirm))
-	('dark (load-theme 'ef-night :no-confirm))))
+	('light (load-theme 'ef-light :no-confirm))
+	('dark (load-theme 'ef-dark :no-confirm))))
     (add-hook 'ns-system-appearance-change-functions #'dl/themes-toggle-with-system))
   :bind ("<f12>" . ef-themes-toggle))
 
