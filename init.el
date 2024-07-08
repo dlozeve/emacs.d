@@ -1019,6 +1019,7 @@
 			   ("terminfo/65" "terminfo/65/*")
 			   ("integration" "integration/*")
 			   (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (("C-x RET RET" . eat-other-window))
   :config
   ;; Enable M-o in semi-char-mode
   (add-to-list 'eat-semi-char-non-bound-keys [?\e ?o])
