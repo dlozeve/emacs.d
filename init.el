@@ -298,7 +298,9 @@
 
 (use-package ace-window
   :straight t
-  :bind (("M-o" . ace-window)))
+  :bind (("M-o" . ace-window))
+  :config
+  (setq aw-scope 'frame))
 
 (use-package avy
   :straight t
