@@ -4,27 +4,58 @@
 
 ;;; Code:
 
-;;; Straight.el setup
+;;; Elpaca setup
 
-(setq straight-repository-branch "develop"
-      straight-use-package-by-default t)
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
+(defvar elpaca-installer-version 0.7)
+(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
+(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
+(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
+(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
+                              :ref nil :depth 1
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
+                              :build (:not elpaca--activate-package)))
+(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
+       (build (expand-file-name "elpaca/" elpaca-builds-directory))
+       (order (cdr elpaca-order))
+       (default-directory repo))
+  (add-to-list 'load-path (if (file-exists-p build) build repo))
+  (unless (file-exists-p repo)
+    (make-directory repo t)
+    (when (< emacs-major-version 28) (require 'subr-x))
+    (condition-case-unless-debug err
+        (if-let ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
+                 ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
+                                                 ,@(when-let ((depth (plist-get order :depth)))
+                                                     (list (format "--depth=%d" depth) "--no-single-branch"))
+                                                 ,(plist-get order :repo) ,repo))))
+                 ((zerop (call-process "git" nil buffer t "checkout"
+                                       (or (plist-get order :ref) "--"))))
+                 (emacs (concat invocation-directory invocation-name))
+                 ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
+                                       "--eval" "(byte-recompile-directory \".\" 0 'force)")))
+                 ((require 'elpaca))
+                 ((elpaca-generate-autoloads "elpaca" repo)))
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
+          (error "%s" (with-current-buffer buffer (buffer-string))))
+      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
+  (unless (require 'elpaca-autoloads nil t)
+    (require 'elpaca)
+    (elpaca-generate-autoloads "elpaca" repo)
+    (load "./elpaca-autoloads")))
+(add-hook 'after-init-hook #'elpaca-process-queues)
+(elpaca `(,@elpaca-order))
+
+;; Install use-package support
+(elpaca elpaca-use-package
+  ;; Enable use-package :ensure support for Elpaca.
+  (elpaca-use-package-mode))
+;; Block until package is installed/activated so we can use it at the top-level below.
+(elpaca-wait)
 
 ;;; Appearance and general behavior
 
 (use-package emacs
-  :straight nil
+  :ensure nil
   :config
   ;; Always load newest byte code
   (setq load-prefer-newer t)
@@ -125,7 +156,7 @@
 	 ([remap capitalize-word] . capitalize-dwim)))
 
 (use-package project
-  :straight nil
+  :ensure nil
   :config
   (keymap-set project-prefix-map "t" 'eat-project)
   (keymap-set project-prefix-map "RET" 'eat-project-other-window)
@@ -140,7 +171,7 @@
 
 ;; Theme configuration
 (use-package ef-themes
-  :straight t
+  :ensure t
   :init
   (setq ef-themes-mixed-fonts t)
   (setq ef-themes-to-toggle '(ef-light ef-dark))
@@ -157,13 +188,13 @@
   :bind ("<f12>" . ef-themes-toggle))
 
 (use-package diminish
-  :straight t
+  :ensure t
   :diminish visual-line-mode)
 
 ;;; Environment variables
 
 (use-package exec-path-from-shell
-  :straight t
+  :ensure t
   :init
   (setq exec-path-from-shell-arguments '("-l"))
   :config
@@ -175,18 +206,18 @@
 ;;; Menus and completion
 
 (use-package vertico
-  :straight t
+  :ensure t
   :init
   (vertico-mode +1))
 
 (use-package orderless
-  :straight t
+  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package consult
-  :straight t
+  :ensure t
   :bind (;; C-c bindings in `mode-specific-map'
          ("C-c M-x" . consult-mode-command)
          ("C-c h" . consult-history)
@@ -246,14 +277,14 @@
         xref-show-definitions-function #'consult-xref))
 
 (use-package marginalia
-  :straight t
+  :ensure t
   :bind (:map minibuffer-local-map
 	      ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode +1))
 
 (use-package embark
-  :straight t
+  :ensure t
   :bind
   (("C-;" . embark-act)         ;; pick some comfortable binding
    ;;("M-;" . embark-dwim)
@@ -270,7 +301,7 @@
 
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :straight t
+  :ensure t
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
@@ -279,7 +310,7 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package corfu
-  :straight t
+  :ensure t
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   ;; (corfu-auto t)                 ;; Enable auto completion
@@ -297,24 +328,24 @@
   (global-corfu-mode))
 
 (use-package ace-window
-  :straight t
+  :ensure t
   :bind (("M-o" . ace-window))
   :config
   (setq aw-scope 'frame))
 
 (use-package avy
-  :straight t
+  :ensure t
   :config  (avy-setup-default)
   :bind (("M-j" . avy-goto-char-timer)
 	 ("C-c C-j" . avy-resume)))
 
 (use-package vundo
-  :straight t
+  :ensure t
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols))
 
 (use-package helpful
-  :straight t
+  :ensure t
   :bind (("C-h f" . helpful-callable)
 	 ("C-h v" . helpful-variable)
 	 ("C-h k" . helpful-key)
@@ -337,7 +368,7 @@
   (end-of-buffer))
 
 (use-package org
-  :straight nil
+  :ensure nil
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
@@ -472,7 +503,7 @@
   (require 'ox-md))
 
 (use-package org-mime
-  :straight t
+  :ensure t
   :after (org)
   :config
   (setq org-mime-export-options
@@ -490,28 +521,28 @@
                "blockquote" "border-left: 2px solid gray; padding-left: 4px;"))))
 
 (use-package ox-pandoc
-  :straight t
+  :ensure t
   :after (org)
   :config
   (setq org-pandoc-options '((standalone . t)
 			     (bibliography . "~/notes/bibliography/bibliography.bib"))))
 
 (use-package ox-gfm
-  :straight t
+  :ensure t
   :after (org)
   :config
   (eval-after-load "org"
     '(require 'ox-gfm nil t)))
 
 (use-package ox-reveal
-  :straight t)
+  :ensure t)
 
 (use-package ob-mermaid
-  :straight t
+  :ensure t
   :after (org))
 
 (use-package citeproc
-  :straight t)
+  :ensure t)
 
 (use-package bibtex
   :config
@@ -524,13 +555,13 @@
 	bibtex-autokey-titlewords-stretch 1))
 
 (use-package oc
-  :straight nil
+  :ensure nil
   :init
   (require 'oc-csl)
   (require 'oc-biblatex))
 
 (use-package citar
-  :straight t
+  :ensure t
   :custom
   (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
   (org-cite-csl-styles-dir "~/notes/bibliography/")
@@ -550,7 +581,7 @@
   (org-cite-key ((t (:foreground "forest green" :slant italic)))))
 
 (use-package citar-embark
-  :straight t
+  :ensure t
   :after citar embark
   :no-require
   :diminish citar-embark-mode
@@ -596,7 +627,7 @@
 	  (message "HTTP error %s" code))))))
 
 (use-package org-roam
-  :straight (:type git :flavor melpa :files (:defaults "extensions/*" "org-roam-pkg.el") :host github :repo "org-roam/org-roam" :branch "main")
+  :ensure t
   :after org
   :custom
   (org-roam-directory (file-truename "~/notes/notes"))
@@ -626,12 +657,12 @@
   (require 'org-roam-export))
 
 (use-package org-roam-bibtex
-  :straight t
+  :ensure t
   :after (org-roam citar)
   :hook (org-roam-mode . org-roam-bibtex-mode))
 
 (use-package org-roam-ui
-  :straight
+  :ensure
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
   :after org-roam
   ;; normally we'd recommend hooking orui after org-roam, but since org-roam does not have
@@ -645,7 +676,7 @@
         org-roam-ui-open-on-start t))
 
 (use-package deft
-  :straight t
+  :ensure t
   :after org
   :bind ("C-c n s" . deft)
   :custom
@@ -667,7 +698,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package treesit
-  :straight nil
+  :ensure nil
   :mode (("\\.tsx\\'" . tsx-ts-mode)
 	 ("\\.ts\\'" . typescript-ts-mode))
   :preface
@@ -713,37 +744,41 @@
   (dl/setup-install-grammars))
 
 (use-package expand-region
-  :straight t
+  :ensure t
   :bind ("C-=" . er/expand-region))
 
 (use-package rg
-  :straight t
+  :ensure t
   :config
   (rg-enable-default-bindings))
 
+(use-package transient
+  :ensure t)
+
 (use-package magit
-  :straight t
+  :ensure t
+  :after transient
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch)))
 
 (use-package forge
-  :straight t
+  :ensure t
   :after magit)
 
 (use-package eglot
-  :straight nil
+  :ensure nil
   :config
   (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil)
   (setq eglot-events-buffer-size 0)
   (fset #'jsonrpc--log-event #'ignore))
 
 (use-package eldoc-box
-  :straight t
+  :ensure t
   :config
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
 
 (use-package apheleia
-  :straight t
+  :ensure t
   :diminish apheleia-mode
   :config
   (apheleia-global-mode +1)
@@ -758,7 +793,7 @@
 	'(ormolu)))
 
 (use-package flymake-ruff
-  :straight t
+  :ensure t
   :hook (python-mode . flymake-ruff-load))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -766,37 +801,37 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package yaml-mode
-  :straight t)
+  :ensure t)
 
 (use-package json-mode
-  :straight t)
+  :ensure t)
 
 (use-package markdown-mode
-  :straight t)
+  :ensure t)
 
 (use-package cmake-mode
-  :straight t)
+  :ensure t)
 
 (use-package dockerfile-mode
-  :straight t)
+  :ensure t)
 
 (use-package terraform-mode
-  :straight t)
+  :ensure t)
 
 (use-package mermaid-mode
-  :straight t)
+  :ensure t)
 
 (use-package haskell-mode
-  :straight t)
+  :ensure t)
 
 (use-package rust-mode
-  :straight t)
+  :ensure t)
 
 (use-package pyvenv
-  :straight t)
+  :ensure t)
 
 (use-package ess
-  :straight t
+  :ensure t
   :config
   (defun my-ess-startup-directory-function ()
     "Force ESS to use `default-directory' as its startup directory."
@@ -804,7 +839,7 @@
   (setq ess-startup-directory-function 'my-ess-startup-directory-function))
 
 (use-package paredit
-  :straight t
+  :ensure t
   :hook ((emacs-lisp-mode
 	  eval-expression-minibuffer-setup
 	  ielm-mode
@@ -818,19 +853,19 @@
 	  gerbil-mode) . enable-paredit-mode))
 
 (use-package racket-mode
-  :straight t)
+  :ensure t)
 
 (use-package geiser-chicken
-  :straight t)
+  :ensure t)
 
 (use-package geiser-gambit
-  :straight t)
+  :ensure t)
 
 (use-package geiser-guile
-  :straight t)
+  :ensure t)
 
 (use-package gerbil-mode
-  :straight nil
+  :ensure nil
   :defer t
   :mode (("\\.ss\\'"  . gerbil-mode)
          ("\\.pkg\\'" . gerbil-mode))
@@ -857,13 +892,13 @@
   (buffer-face-mode))
 
 (use-package dyalog-mode
-  :straight t
+  :ensure t
   :hook (dyalog-mode . my-buffer-face-mode-apl)
   :custom
   (dyalog-fix-whitespace-before-save t))
 
 (use-package bqn-mode
-  :straight (:host github :repo "museoa/bqn-mode")
+  :ensure (:host github :repo "museoa/bqn-mode")
   :bind (:map bqn-mode-map
 	      (("C-c d" . bqn-help-symbol-info-at-point)
 	       ("C-c C-d" . bqn-help-symbol-info-at-point)
@@ -874,7 +909,7 @@
   (require 'bqn-glyph-mode))
 
 (use-package graphviz-dot-mode
-  :straight t
+  :ensure t
   :config
   (setq graphviz-dot-indent-width 4)
   (setq graphviz-dot-preview-extension "svg"))
@@ -883,7 +918,7 @@
 
 (use-package tex-site
   :defer t
-  :straight auctex
+  :ensure auctex
   :config
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
@@ -900,7 +935,7 @@
             #'TeX-revert-document-buffer))
 
 (use-package jinx
-  :straight t
+  :ensure t
   :diminish jinx-mode
   :hook (emacs-startup . global-jinx-mode)
   :config
@@ -913,7 +948,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package dirvish
-  :straight t
+  :ensure t
   :custom
   (dirvish-quick-access-entries
    '(("h" "~/" "Home")
@@ -925,21 +960,20 @@
   (dirvish-override-dired-mode))
 
 (use-package restclient
-  :straight t)
+  :ensure t)
 
 (use-package ob-restclient
-  :straight t
+  :ensure t
   :after (org))
 
-
 (use-package mastodon
-  :straight t
+  :ensure t
   :config
   (setq mastodon-instance-url "https://mathstodon.xyz"
 	mastodon-active-user "dlzv"))
 
 (use-package pdf-tools
-  :straight t
+  :ensure t
   :load-path "site-lisp/pdf-tools/lisp"
   :magic ("%PDF" . pdf-view-mode)
   :config
@@ -983,14 +1017,14 @@
 	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
 
 (use-package nov
-  :straight t
+  :ensure t
   :custom
   (nov-text-width 80)
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
 (use-package hledger-mode
-  :straight t
+  :ensure t
   :mode ("\\.journal\\'" "\\.hledger\\'")
   :init
   (setq hledger-jfile (expand-file-name "~/.hledger.journal"))
@@ -1007,7 +1041,7 @@
    ("C-c j" . hledger-run-command)))
 
 (use-package osm
-  :straight t
+  :ensure t
   :bind ("C-c m" . osm-prefix-map) ;; Alternatives: `osm-home' or `osm'
   :custom
   (osm-server 'default) ;; Configure the tile server
@@ -1015,12 +1049,12 @@
   (osm-home '(48.853495 2.348391 12)))
 
 (use-package eat
-  :straight (:type git :host codeberg :repo "akib/emacs-eat"
-		   :files ("*.el" ("term" "term/*.el") "*.texi"
-			   "*.ti" ("terminfo/e" "terminfo/e/*")
-			   ("terminfo/65" "terminfo/65/*")
-			   ("integration" "integration/*")
-			   (:exclude ".dir-locals.el" "*-tests.el")))
+  :ensure (:host codeberg :repo "akib/emacs-eat"
+		 :files ("*.el" ("term" "term/*.el") "*.texi"
+			 "*.ti" ("terminfo/e" "terminfo/e/*")
+			 ("terminfo/65" "terminfo/65/*")
+			 ("integration" "integration/*")
+			 (:exclude ".dir-locals.el" "*-tests.el")))
   :bind (("C-x RET RET" . eat-other-window))
   :config
   ;; Enable M-o in semi-char-mode
@@ -1040,15 +1074,16 @@
 ;; configuration file for secrets (API keys, etc)
 (setq secrets-file (expand-file-name "secrets.el" user-emacs-directory))
 
-(when (file-exists-p secrets-file)
-  (load secrets-file))
+(add-hook 'elpaca-after-init-hook
+	  (lambda () (when (file-exists-p custom-file)
+		       (load secrets-file 'noerror))))
 
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-(when (file-exists-p custom-file)
-  (load custom-file))
+(add-hook 'elpaca-after-init-hook
+	  (lambda () (when (file-exists-p custom-file)
+		       (load custom-file 'noerror))))
 
 
 ;;; init.el ends here
