@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;;; ~/.emacs.d/init.el --- Configuration file for Emacs
 
 ;;; Commentary:
@@ -980,42 +982,43 @@
   :config
   (pdf-tools-install))
 
-(defun dl/view-exif-data (file)
-  "View EXIF data of FILE."
-  (interactive (let ((fname (thing-at-point 'existing-filename)))
-		 (list
-		  (read-string (format "File (%s): " (file-name-nondirectory fname))
-			       nil nil fname))))
-  (let ((buf-name (concat "*EXIF " file "*")))
-    ;; If the buffer already exists, kill it.
-    (when (get-buffer buf-name)
-      (kill-buffer buf-name))
-    ;; Create a new buffer and window.
-    (let ((buf (get-buffer-create buf-name))
-	  (window (split-window nil)))
-      (call-process "exiftool"
-		    nil buf t
-		    (expand-file-name file))
-      (with-current-buffer buf
-	(goto-char (point-min))
-	;; Read-only, q to close the window, C-u q to close and kill.
-	(special-mode))
-      (set-window-buffer window buf))))
 
-(defun dl/set-exif-data (file tag-name tag-value)
-  "In FILE, set EXIF tag TAG-NAME to value TAG-VALUE."
-  (interactive (list (let ((fname (thing-at-point 'existing-filename)))
-		       (read-string (format "File (%s): " (file-name-nondirectory fname))
-				    nil nil fname))
-		     (read-string "Tag (Title): " nil nil "Title")
-		     (read-string "Value: ")))
-  (let ((options '("-%t=%v" "-overwrite_original" "%f"))
-	(spec (list
-	       (cons ?f (expand-file-name file))
-	       (cons ?t tag-name)
-	       (cons ?v tag-value))))
-    (apply #'call-process "exiftool" nil nil nil
-	   (mapcar (lambda (arg) (format-spec arg spec)) options))))
+(defun dl/edit-exif-metadata ()
+  "Edit the EXIF metadata of the file at point or of the current file."
+  (interactive)
+  (let* ((file (or (thing-at-point 'existing-filename) (buffer-file-name)))
+         (buffer (switch-to-buffer-other-window "*EXIFTool Metadata*"))
+         (metadata (with-temp-buffer
+                     (call-process "exiftool" nil t nil file)
+                     (buffer-string))))
+    ;; Display current metadata
+    (with-current-buffer buffer
+      (erase-buffer)
+      (insert metadata)
+      (goto-char (point-min))
+      (while (re-search-forward "\\(.*\\): \\(.*\\)" nil t)
+        (replace-match "\\1:\t\\2")))
+    (switch-to-buffer buffer)
+    (local-set-key (kbd "C-c C-c") (lambda ()
+				     (interactive)
+				     (dl/save-exif-metadata file buffer)))
+    (local-set-key (kbd "C-c C-k") 'kill-buffer)))
+
+(defun dl/save-exif-metadata (file buffer)
+  "Save the edited EXIF metadata in BUFFER to the FILE."
+  (interactive)
+  (with-current-buffer buffer
+    (goto-char (point-min))
+    (let ((arguments '()))
+      (while (re-search-forward "\\(.*?\\):\\(.*\\)" nil t)
+        (let ((tag (string-trim (match-string 1)))
+              (value (string-trim (match-string 2))))
+          (push (format "-%s=%s" tag value) arguments)))
+      ;; Write metadata changes to file using exiftool
+      (apply #'call-process
+	     "exiftool" nil nil nil (append arguments (list "-overwrite_original" file)))
+      (kill-buffer)
+      (message "EXIF metadata updated."))))
 
 (use-package nov
   :ensure t
