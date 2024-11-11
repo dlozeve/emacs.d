@@ -354,15 +354,8 @@
 	 ("C-h k" . helpful-key)
 	 ("C-h x" . helpful-command)))
 
-(use-package casual-calc
-  :ensure t
-  :bind (:map
-         calc-mode-map
-         ("C-o" . casual-calc-tmenu)
-         :map
-         calc-alg-map
-         ("C-o" . casual-calc-tmenu))
-  :after (calc))
+(use-package casual
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
@@ -820,9 +813,6 @@
   :ensure t)
 
 (use-package markdown-mode
-  :ensure t)
-
-(use-package cmake-mode
   :ensure t)
 
 (use-package dockerfile-mode
