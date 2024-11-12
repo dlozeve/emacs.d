@@ -906,10 +906,7 @@
 	      (("C-c d" . bqn-help-symbol-info-at-point)
 	       ("C-c C-d" . bqn-help-symbol-info-at-point)
 	       ("C-c C-c" . bqn-comint-send-dwim)))
-  :custom (bqn-key-prefix ?\\)
-  :config
-  (require 'bqn-keymap-mode)
-  (require 'bqn-glyph-mode))
+  :custom (bqn-key-prefix ?\\))
 
 (use-package graphviz-dot-mode
   :ensure t
