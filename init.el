@@ -354,9 +354,6 @@
 	 ("C-h k" . helpful-key)
 	 ("C-h x" . helpful-command)))
 
-(use-package casual
-  :ensure t)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -867,26 +864,6 @@
 (use-package geiser-guile
   :ensure t)
 
-(use-package gerbil-mode
-  :ensure nil
-  :defer t
-  :mode (("\\.ss\\'"  . gerbil-mode)
-         ("\\.pkg\\'" . gerbil-mode))
-  :init
-  (if (eq system-type 'darwin)
-      (add-to-list 'load-path "/opt/homebrew/opt/gerbil-scheme/share/emacs/site-lisp")
-    (add-to-list 'load-path "/opt/gerbil/share/emacs/site-lisp"))
-  (require 'gambit)
-  (autoload 'gerbil-mode "gerbil-mode" "Gerbil editing mode." t)
-  :hook
-  ((inferior-scheme-mode . gambit-inferior-mode))
-  :config
-  (setf scheme-program-name "gxi")
-
-  (let ((tags (locate-dominating-file default-directory "TAGS")))
-    (when tags (visit-tags-table tags)))
-  (visit-tags-table "~/build/gerbil/src/TAGS"))
-
 ;; Use APL font face in current buffer
 (defun my-buffer-face-mode-apl ()
   "Use the APL font in current buffer."
@@ -965,12 +942,6 @@
 (use-package ob-restclient
   :ensure t
   :after (org))
-
-(use-package mastodon
-  :ensure t
-  :config
-  (setq mastodon-instance-url "https://mathstodon.xyz"
-	mastodon-active-user "dlzv"))
 
 (use-package pdf-tools
   :ensure t
