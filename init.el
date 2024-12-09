@@ -678,18 +678,6 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(use-package deft
-  :ensure t
-  :after org
-  :bind ("C-c n s" . deft)
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-default-extension "org")
-  (deft-directory "~/notes/notes")
-  (deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
-  (deft-use-filename-as-title t))
-
 (defun dl/org-roam-rg-search ()
   "Search org-roam directory using consult-ripgrep.  With live-preview."
   (interactive)
@@ -830,14 +818,6 @@
 (use-package pyvenv
   :ensure t)
 
-(use-package ess
-  :ensure t
-  :config
-  (defun my-ess-startup-directory-function ()
-    "Force ESS to use `default-directory' as its startup directory."
-    default-directory)
-  (setq ess-startup-directory-function 'my-ess-startup-directory-function))
-
 (use-package paredit
   :ensure t
   :hook ((emacs-lisp-mode
@@ -851,31 +831,6 @@
 	  racket-mode
 	  racket-repl-mode
 	  gerbil-mode) . enable-paredit-mode))
-
-(use-package racket-mode
-  :ensure t)
-
-(use-package geiser-chicken
-  :ensure t)
-
-(use-package geiser-gambit
-  :ensure t)
-
-(use-package geiser-guile
-  :ensure t)
-
-;; Use APL font face in current buffer
-(defun my-buffer-face-mode-apl ()
-  "Use the APL font in current buffer."
-  (interactive)
-  (setq buffer-face-mode-face '(:family "APL385 Unicode" :height 150))
-  (buffer-face-mode))
-
-(use-package dyalog-mode
-  :ensure t
-  :hook (dyalog-mode . my-buffer-face-mode-apl)
-  :custom
-  (dyalog-fix-whitespace-before-save t))
 
 (use-package bqn-mode
   :ensure (:host github :repo "museoa/bqn-mode")
