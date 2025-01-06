@@ -812,8 +812,10 @@
 (use-package rust-mode
   :ensure t)
 
-(use-package pyvenv
-  :ensure t)
+(use-package pet
+  :ensure t
+  :config
+  (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 (use-package paredit
   :ensure t
