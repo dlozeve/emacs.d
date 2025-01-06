@@ -986,6 +986,7 @@
   (eat-update-semi-char-mode-map)
   (eat-reload)
   ;; Appearance
+  (setq eat-term-scrollback-size nil)
   (setq eat-enable-shell-prompt-annotation nil)
   (setopt eat-very-visible-cursor-type '(t nil nil))
   (setopt eat-default-cursor-type '(t nil nil))
