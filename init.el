@@ -194,6 +194,14 @@
   :ensure t
   :diminish visual-line-mode)
 
+(use-package ultra-scroll
+  :ensure (:host github :repo "jdtsmith/ultra-scroll" :branch "main")
+  :init
+  (setq scroll-conservatively 101	; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+
 ;;; Environment variables
 
 (use-package exec-path-from-shell
