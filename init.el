@@ -1019,6 +1019,8 @@
 	  (lambda () (when (file-exists-p custom-file)
 		       (load custom-file 'noerror))))
 
-(message "Successfully loaded entire config!")
+(use-package gptel
+  :ensure t)
 
+(message "Successfully loaded entire config!")
 ;;; init.el ends here
