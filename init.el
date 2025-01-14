@@ -731,7 +731,6 @@
 		     (python-mode . python-ts-mode)
 		     (rust-mode . rust-ts-mode)
 		     (toml-mode . toml-ts-mode)
-                     (yaml-mode . yaml-ts-mode)
 		     (css-mode . css-ts-mode)
 		     (typescript-mode . typescript-ts-mode)
 		     (js2-mode . js-ts-mode)))
