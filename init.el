@@ -366,16 +366,18 @@
 ;;; Knowledge management: org-mode, org-roam, bibliography
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(setq notes-dir "~/Documents/notes")
+
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
   "Find the planner file."
   (interactive)
-  (find-file "~/notes/planner.org"))
+  (find-file (file-name-concat notes-dir "planner.org")))
 
 (defun bib ()
   "Find the bibliography file."
   (interactive)
-  (find-file "~/notes/bibliography/bibliography.bib")
+  (find-file (file-name-concat notes-dir "bibliography/bibliography.bib"))
   (end-of-buffer))
 
 (use-package org
@@ -384,8 +386,8 @@
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
   :config
-  (setq org-agenda-files (list "~/notes/planner.org"))
-  (setq org-default-notes-file "~/notes/planner.org")
+  (setq org-agenda-files (list (file-name-concat notes-dir "planner.org")))
+  (setq org-default-notes-file (file-name-concat notes-dir "planner.org"))
   ;; List numbering with a. b. a) b), etc.
   (setq org-list-allow-alphabetical t)
   ;; Fontify code in code blocks
@@ -406,7 +408,7 @@
   (add-hook 'org-mode-hook #'visual-line-mode)
 
   ;; Set to the location of your Org files on your local system
-  (setq org-directory "~/notes")
+  (setq org-directory notes-dir)
 
   (setq org-agenda-block-separator ?─
 	org-agenda-time-grid '((daily today require-timed)
@@ -445,13 +447,13 @@
   (setq org-capture-templates
 	(quote
 	 (("t" "Task" entry
-	   (file+olp "~/notes/planner.org" "Inbox")
+	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
 	   "** TODO %?")
 	  ("n" "Note" entry
-	   (file+olp "~/notes/planner.org" "Inbox")
+	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
 	   "** %?")
 	  ("e" "Event" entry
-	   (file+olp "~/notes/planner.org" "Inbox")
+	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
 	   "** %?\n%^T"))))
   (setq org-log-into-drawer t)
   (setq org-structure-template-alist
@@ -536,7 +538,7 @@
   :after (org)
   :config
   (setq org-pandoc-options '((standalone . t)
-			     (bibliography . "~/notes/bibliography/bibliography.bib"))))
+			     (bibliography . (file-name-concat notes-dir "bibliography/bibliography.bib")))))
 
 (use-package ox-gfm
   :ensure t
@@ -574,8 +576,8 @@
 (use-package citar
   :ensure t
   :custom
-  (org-cite-global-bibliography '("~/notes/bibliography/bibliography.bib"))
-  (org-cite-csl-styles-dir "~/notes/bibliography/")
+  (org-cite-global-bibliography `(,(file-name-concat notes-dir "bibliography/bibliography.bib")))
+  (org-cite-csl-styles-dir (file-name-concat notes-dir "bibliography/"))
   (org-cite-export-processors '((beamer . (biblatex))
 				(latex . (biblatex))
 				(t . (csl "chicago-author-date.csl"))))
@@ -641,7 +643,7 @@
   :ensure t
   :after org
   :custom
-  (org-roam-directory (file-truename "~/notes/notes"))
+  (org-roam-directory (file-truename (file-name-concat notes-dir "notes")))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	 ("C-c n f" . org-roam-node-find)
 	 ("C-c n g" . org-roam-graph)
