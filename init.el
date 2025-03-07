@@ -758,9 +758,11 @@
   :bind (("C-x g" . magit-status)
 	 ("C-x M-g" . magit-dispatch)))
 
-(use-package forge
+(use-package git-link
   :ensure t
-  :after magit)
+  :after transient
+  :config
+  (require 'git-link-transient))
 
 (use-package eglot
   :ensure nil
