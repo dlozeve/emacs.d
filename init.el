@@ -8,7 +8,7 @@
 
 ;;; Elpaca setup
 
-(defvar elpaca-installer-version 0.9)
+(defvar elpaca-installer-version 0.10)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -104,6 +104,7 @@
   (setq frame-resize-pixelwise t)
   (setq split-height-threshold 100)
   (setq view-read-only t)
+  (setq buffer-save-without-query t)
   ;; Newline at end of file
   (setq require-final-newline t)
   ;; TAB cycle if there are only few candidates
@@ -686,7 +687,7 @@
         org-roam-ui-open-on-start t))
 
 (defun dl/org-roam-rg-search ()
-  "Search org-roam directory using consult-ripgrep.  With live-preview."
+  "Search org-roam directory using 'consult-ripgrep'.  With live-preview."
   (interactive)
   (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
     (consult-ripgrep org-roam-directory)))
