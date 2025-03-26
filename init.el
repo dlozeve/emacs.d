@@ -902,13 +902,6 @@
   :config
   (dirvish-override-dired-mode))
 
-(use-package restclient
-  :ensure t)
-
-(use-package ob-restclient
-  :ensure t
-  :after (org))
-
 (use-package pdf-tools
   :ensure t
   :load-path "site-lisp/pdf-tools/lisp"
