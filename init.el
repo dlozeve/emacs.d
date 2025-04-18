@@ -283,10 +283,10 @@
          :map minibuffer-local-map
          ("M-s" . consult-history)                 ;; orig. next-matching-history-element
          ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-  :init
+  :custom
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref))
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
 
 (use-package marginalia
   :ensure t
@@ -334,16 +334,16 @@
   ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
   ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+  (completion-cycle-threshold 3)
+  (tab-always-indent 'complete)
   :init
-  (setq completion-cycle-threshold 3)
-  (setq tab-always-indent 'complete)
   (global-corfu-mode))
 
 (use-package ace-window
   :ensure t
   :bind (("M-o" . ace-window))
-  :config
-  (setq aw-scope 'frame))
+  :custom
+  (aw-scope 'frame))
 
 (use-package avy
   :ensure t
@@ -353,8 +353,8 @@
 
 (use-package vundo
   :ensure t
-  :config
-  (setq vundo-glyph-alist vundo-unicode-symbols))
+  :custom
+  (vundo-glyph-alist vundo-unicode-symbols))
 
 (use-package helpful
   :ensure t
@@ -559,14 +559,14 @@
   :ensure t)
 
 (use-package bibtex
-  :config
-  (setq bibtex-dialect 'biblatex
-	bibtex-autokey-year-length 4
-	bibtex-autokey-name-year-separator ""
-	bibtex-autokey-year-title-separator "_"
-	bibtex-autokey-titleword-separator "_"
-	bibtex-autokey-titlewords 2
-	bibtex-autokey-titlewords-stretch 1))
+  :custom
+  (bibtex-dialect 'biblatex)
+  (bibtex-autokey-year-length 4)
+  (bibtex-autokey-name-year-separator "")
+  (bibtex-autokey-year-title-separator "_")
+  (bibtex-autokey-titleword-separator "_")
+  (bibtex-autokey-titlewords 2)
+  (bibtex-autokey-titlewords-stretch 1))
 
 (use-package oc
   :ensure nil
@@ -654,17 +654,18 @@
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-completion-system 'default)
+  :custom
+  (org-roam-graph-executable "dot")
+  (org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
+  (org-roam-dailies-directory "daily/")
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %U %?"
+      :empty-lines-before 1
+      :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
+"))))
   :config
   (org-roam-db-autosync-mode)
-  (setq org-roam-graph-executable "dot")
-  (setq org-roam-graph-extra-config '(("overlap" . "false") ("rankdir" . "LR")))
   (require 'org-roam-protocol)
-  (setq org-roam-dailies-directory "daily/")
-  (setq org-roam-dailies-capture-templates
-	'(("d" "default" entry "* %U %?"
-	   :empty-lines-before 1
-	   :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
-"))))
   (require 'org-roam-export))
 
 (use-package org-roam-bibtex
@@ -702,9 +703,10 @@
 
 (use-package org-download
   :ensure t
+  :custom
+  (org-download-method 'attach)
   :config
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  (setq org-download-method 'attach))
+  (add-hook 'dired-mode-hook 'org-download-enable))
 
 (use-package org-roam-ui
   :ensure
@@ -714,11 +716,11 @@
   ;; a hookable mode anymore, you're advised to pick something yourself
   ;; if you don't care about startup time, use
   ;; :hook (after-init . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+  :custom
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Programming tools
@@ -881,9 +883,9 @@
 
 (use-package graphviz-dot-mode
   :ensure t
-  :config
-  (setq graphviz-dot-indent-width 4)
-  (setq graphviz-dot-preview-extension "svg"))
+  :custom
+  (graphviz-dot-indent-width 4)
+  (graphviz-dot-preview-extension "svg"))
 
 ;;; Natural languages
 
@@ -909,8 +911,8 @@
   :ensure t
   :diminish jinx-mode
   :hook (emacs-startup . global-jinx-mode)
-  :config
-  (setq jinx-languages "en_US fr_FR")
+  :custom
+  (jinx-languages "en_US fr_FR")
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
