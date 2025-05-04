@@ -83,7 +83,7 @@
 
   ;; Font configuration
   (let ((my-font "Iosevka Term")
-	(my-height 130))
+	(my-height 120))
     (set-face-attribute 'default nil :family my-font :height my-height)
     (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
   (set-face-attribute 'variable-pitch nil :family "Libertinus Serif" :height 160)
