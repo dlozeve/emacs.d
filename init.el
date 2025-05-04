@@ -210,6 +210,7 @@
   :init
   (setq exec-path-from-shell-arguments '("-l"))
   :config
+  (setenv "SSH_AUTH_SOCK" (file-name-concat (getenv "XDG_RUNTIME_DIR") "ssh-agent.socket"))
   (when (memq window-system '(mac ns x pgtk))
     (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID"))
       (add-to-list 'exec-path-from-shell-variables var))
