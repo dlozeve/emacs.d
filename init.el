@@ -386,93 +386,96 @@
   :bind (("C-c l" . org-store-link)
 	 ("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
-  :config
-  (setq org-agenda-files (list (file-name-concat notes-dir "planner.org")))
-  (setq org-default-notes-file (file-name-concat notes-dir "planner.org"))
+  :custom
+  (org-agenda-files (list (file-name-concat notes-dir "planner.org")))
+  (org-default-notes-file (file-name-concat notes-dir "planner.org"))
   ;; List numbering with a. b. a) b), etc.
-  (setq org-list-allow-alphabetical t)
+  (org-list-allow-alphabetical t)
   ;; Fontify code in code blocks
-  (setq org-src-fontify-natively t)
+  (org-src-fontify-natively t)
   ;; Tabs in src blocks
-  (setq org-src-tab-acts-natively t)
+  (org-src-tab-acts-natively t)
   ;; Full contents opened by default
-  (setq org-startup-folded nil)
+  (org-startup-folded nil)
   ;; Only one empty line is enough to separate headings when folded
-  (setq org-cycle-separator-lines 2)
+  (org-cycle-separator-lines 2)
   ;; Refile to paths in the file (level1/level2/level3)
-  (setq org-refile-targets '((nil :maxlevel . 5)))
-  (setq org-refile-use-outline-path t)
-  (setq org-outline-path-complete-in-steps nil)
-
-  (setq org-special-ctrl-a/e nil)
-
-  (add-hook 'org-mode-hook #'visual-line-mode)
-
+  (org-refile-targets '((nil :maxlevel . 5)))
+  (org-refile-use-outline-path t)
+  (org-outline-path-complete-in-steps nil)
+  (org-special-ctrl-a/e nil)
   ;; Set to the location of your Org files on your local system
-  (setq org-directory notes-dir)
-
-  (setq org-agenda-block-separator ?─
-	org-agenda-time-grid '((daily today require-timed)
-			       (800 1000 1200 1400 1600 1800 2000)
-			       " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
-	org-agenda-current-time-string
-	"⭠ now ─────────────────────────────────────────────────")
-  (setq org-agenda-custom-commands
-	(quote
-	 (("z" "Agenda and TODOs"
-	   ((agenda ""
-		    ((org-agenda-span 7)
-		     (org-agenda-start-on-weekday 1)
-		     (org-agenda-prefix-format "  %t%s ")
-		     (org-agenda-repeating-timestamp-show-all t)
-		     (org-agenda-hide-tags-regexp "\\work")))
-	    (tags-todo "work"
-		       ((org-agenda-prefix-format "")
-			(org-agenda-sorting-strategy '(priority-down tag-up))))
-	    (tags-todo "personal"
-		       ((org-agenda-prefix-format "")
-			(org-agenda-sorting-strategy '(tag-up priority-down)))))
-	   ((org-agenda-remove-tags 'prefix)
-	    (org-agenda-todo-ignore-scheduled 'future)
-	    (org-agenda-todo-ignore-deadlines 'future)
-	    (org-agenda-tags-todo-honor-ignore-options t))
-	   ("fortnight.html"))
-	  ("n" "Agenda and all TODOs"
-	   ((agenda "" nil)
-	    (alltodo "" nil))
-	   nil))))
-
-  (setq org-clock-persist 'history)
+  (org-directory notes-dir)
+  ;; Agenda
+  (org-agenda-block-separator ?─)
+  (org-agenda-time-grid '((daily today require-timed)
+			  (800 1000 1200 1400 1600 1800 2000)
+			  " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄"))
+  (org-agenda-current-time-string
+   "⭠ now ─────────────────────────────────────────────────")
+  (org-agenda-custom-commands
+   (quote
+    (("z" "Agenda and TODOs"
+      ((agenda ""
+	       ((org-agenda-span 7)
+		(org-agenda-start-on-weekday 1)
+		(org-agenda-prefix-format "  %t%s ")
+		(org-agenda-repeating-timestamp-show-all t)
+		(org-agenda-hide-tags-regexp "\\work")))
+       (tags-todo "work"
+		  ((org-agenda-prefix-format "")
+		   (org-agenda-sorting-strategy '(priority-down tag-up))))
+       (tags-todo "personal"
+		  ((org-agenda-prefix-format "")
+		   (org-agenda-sorting-strategy '(tag-up priority-down)))))
+      ((org-agenda-remove-tags 'prefix)
+       (org-agenda-todo-ignore-scheduled 'future)
+       (org-agenda-todo-ignore-deadlines 'future)
+       (org-agenda-tags-todo-honor-ignore-options t))
+      ("fortnight.html"))
+     ("n" "Agenda and all TODOs"
+      ((agenda "" nil)
+       (alltodo "" nil))
+      nil))))
+  (org-capture-templates
+   (quote
+    (("t" "Task" entry
+      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
+      "** TODO %?")
+     ("n" "Note" entry
+      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
+      "** %?")
+     ("e" "Event" entry
+      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
+      "** %?\n%^T"))))
+  (org-clock-persist 'history)
+  (org-log-into-drawer t)
+  (org-structure-template-alist
+   (quote
+    (("a" . "export ascii")
+     ("c" . "center")
+     ("C" . "comment")
+     ("e" . "example")
+     ("E" . "export")
+     ("h" . "export html")
+     ("l" . "export latex")
+     ("q" . "quote")
+     ("s" . "src")
+     ("v" . "verse")
+     ("d" . "definition")
+     ("t" . "theorem")
+     ("p" . "proposition")
+     ("P" . "proof"))))
+  ;; Org babel
+  (org-confirm-babel-evaluate nil)
+  (org-src-preserve-indentation nil)
+  (org-edit-src-content-indentation 0)
+  (org-startup-with-latex-preview t)
+  :hook ((org-mode . visual-line-mode)
+	 (org-babel-after-execute . org-redisplay-inline-images))
+  :config
   (org-clock-persistence-insinuate)
 
-  (setq org-capture-templates
-	(quote
-	 (("t" "Task" entry
-	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
-	   "** TODO %?")
-	  ("n" "Note" entry
-	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
-	   "** %?")
-	  ("e" "Event" entry
-	   (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
-	   "** %?\n%^T"))))
-  (setq org-log-into-drawer t)
-  (setq org-structure-template-alist
-	(quote
-	 (("a" . "export ascii")
-	  ("c" . "center")
-	  ("C" . "comment")
-	  ("e" . "example")
-	  ("E" . "export")
-	  ("h" . "export html")
-	  ("l" . "export latex")
-	  ("q" . "quote")
-	  ("s" . "src")
-	  ("v" . "verse")
-	  ("d" . "definition")
-	  ("t" . "theorem")
-	  ("p" . "proposition")
-	  ("P" . "proof"))))
 
   ;; Org-babel
   (org-babel-do-load-languages
@@ -489,16 +492,9 @@
      (shell . t)
      (sqlite . t)))
 
-  (setq org-confirm-babel-evaluate nil)
-  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-
-  (setq org-src-preserve-indentation nil
-	org-edit-src-content-indentation 0)
-  (setq
-   org-startup-with-latex-preview t
-   org-format-latex-options (plist-put org-format-latex-options :scale 0.6))
-
   (require 'ox-latex)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 0.6))
+
   (add-to-list 'org-latex-classes
 	       '("koma-article" "\\documentclass{scrartcl}"
 		 ("\\section{%s}" . "\\section*{%s}")
@@ -537,9 +533,9 @@
 (use-package ox-pandoc
   :ensure t
   :after (org)
-  :config
-  (setq org-pandoc-options '((standalone . t)
-			     (bibliography . (file-name-concat notes-dir "bibliography/bibliography.bib")))))
+  :custom
+  (org-pandoc-options '((standalone . t)
+			(bibliography . (file-name-concat notes-dir "bibliography/bibliography.bib")))))
 
 (use-package ox-gfm
   :ensure t
@@ -705,8 +701,7 @@
   :ensure t
   :custom
   (org-download-method 'attach)
-  :config
-  (add-hook 'dired-mode-hook 'org-download-enable))
+  :hook (dired-mode . org-download-enable))
 
 (use-package org-roam-ui
   :ensure
@@ -797,15 +792,17 @@
 
 (use-package eglot
   :ensure nil
+  :hook
+  (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode nil)))
+  :custom
+  (eglot-events-buffer-config '(:size 0 :format full))
   :config
-  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode nil)
-  (setq eglot-events-buffer-size 0)
   (fset #'jsonrpc--log-event #'ignore))
 
 (use-package eldoc-box
   :ensure t
-  :config
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t))
+  :hook
+  (eglot-managed-mode . eldoc-box-hover-mode))
 
 (use-package apheleia
   :ensure t
@@ -856,8 +853,8 @@
 
 (use-package pet
   :ensure t
-  :config
-  (add-hook 'python-base-mode-hook 'pet-mode -10))
+  :hook
+  (python-base-mode . (lambda () (pet-mode -10))))
 
 (use-package paredit
   :ensure t
