@@ -83,7 +83,7 @@
 
   ;; Font configuration
   (let ((my-font "Iosevka Term")
-	(my-height 120))
+	(my-height (if (eq window-system 'ns) 130 120)))
     (set-face-attribute 'default nil :family my-font :height my-height)
     (set-face-attribute 'fixed-pitch nil :family my-font :height my-height))
   (set-face-attribute 'variable-pitch nil :family "Libertinus Serif" :height 160)
@@ -368,7 +368,7 @@
 ;;; Knowledge management: org-mode, org-roam, bibliography
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(setq notes-dir "~/Documents/notes")
+(setq notes-dir (if (eq window-system 'ns) "~/Documents/personal/notes" "~/Documents/notes"))
 
 ;; Pour accéder rapidement à l'organisation
 (defun gtd ()
