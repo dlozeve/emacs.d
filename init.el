@@ -854,8 +854,10 @@
 
 (use-package pet
   :ensure t
-  :hook
-  (python-base-mode . (lambda () (pet-mode -10))))
+  :config
+  ;; The -10 tells `add-hook' to makes sure the function is called as early as
+  ;; possible whenever it is added to the hook variable
+  (add-hook 'python-base-mode-hook 'pet-mode -10))
 
 (use-package paredit
   :ensure t
