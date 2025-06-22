@@ -727,8 +727,8 @@
   :mode (("\\.tsx\\'" . tsx-ts-mode)
 	 ("\\.ts\\'" . typescript-ts-mode))
   :preface
-  (defun dl/setup-install-grammars ()
-    "Install Tree-sitter grammars if they are absent."
+  (defun dl/setup-install-grammars (update)
+    "Install Tree-sitter grammars if they are absent. Set UPDATE to non-nil to force grammar installation even if it already exists."
     (interactive)
     (dolist (grammar
              '((c "https://github.com/tree-sitter/tree-sitter-c")
@@ -744,9 +744,9 @@
 	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
-      ;; installed. However, if you want to *update* a grammar then
-      ;; this obviously prevents that from happening.
-      (unless (treesit-language-available-p (car grammar))
+      ;; installed or if `update' is non-nil.
+      (unless (and (not update) (treesit-language-available-p (car grammar)))
+	(message "Installing tree-sitter language grammars")
         (treesit-install-language-grammar (car grammar)))))
   ;; Optional, but recommended. Tree-sitter enabled major modes are
   ;; distinct from their ordinary counterparts.
@@ -765,7 +765,7 @@
 		     (js2-mode . js-ts-mode)))
     (add-to-list 'major-mode-remap-alist mapping))
   :config
-  (dl/setup-install-grammars))
+  (dl/setup-install-grammars nil))
 
 (use-package combobulate
   :ensure (:host github :repo "mickeynp/combobulate")
