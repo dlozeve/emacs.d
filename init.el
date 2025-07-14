@@ -197,9 +197,9 @@
 
 (use-package ultra-scroll
   :ensure (:host github :repo "jdtsmith/ultra-scroll" :branch "main")
-  :init
-  (setq scroll-conservatively 101	; important!
-        scroll-margin 0)
+  :custom
+  (scroll-conservatively 3)
+  (scroll-margin 0)
   :config
   (ultra-scroll-mode 1))
 
