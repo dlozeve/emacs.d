@@ -372,19 +372,18 @@
   (require 'casual-editkit)
   (require 'casual-image)
   (require 'casual-info)
-  :bind (("C-o" . casual-editkit-main-tmenu)
-	 :map dired-mode-map
-	 ("C-o" . casual-dired-tmenu)
-	 ("s" . casual-dired-sort-by-tmenu)
-	 ("/" . casual-dired-search-replace-tmenu)
-	 :map calc-mode-map
-	 ("C-o" . casual-calc-tmenu)
-	 :map calc-alg-map
-	 ("C-o" . casual-calc-tmenu)
-	 :map image-mode-map
-	 ("C-o" . casual-image-tmenu)
-	 :map Info-mode-map
-	 ("C-o" . casual-info-tmenu)))
+  :bind ( :map dired-mode-map
+	  ("C-o" . casual-dired-tmenu)
+	  ("s" . casual-dired-sort-by-tmenu)
+	  ("/" . casual-dired-search-replace-tmenu)
+	  :map calc-mode-map
+	  ("C-o" . casual-calc-tmenu)
+	  :map calc-alg-map
+	  ("C-o" . casual-calc-tmenu)
+	  :map image-mode-map
+	  ("C-o" . casual-image-tmenu)
+	  :map Info-mode-map
+	  ("C-o" . casual-info-tmenu)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
