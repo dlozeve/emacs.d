@@ -762,7 +762,8 @@
                (html . ("https://github.com/tree-sitter/tree-sitter-html"))
                (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
 	       (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
+	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+	       (typst "https://github.com/uben0/tree-sitter-typst")))
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
       ;; installed or if `update' is non-nil.
@@ -918,23 +919,8 @@
 
 ;;; Natural languages
 
-(use-package tex-site
-  :defer t
-  :ensure auctex
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-  (setq TeX-engine 'luatex)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-
-  ;; Use pdf-tools to open PDF files
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-	TeX-source-correlate-start-server t)
-
-  ;; Update PDF buffers after successful LaTeX runs
-  (add-hook 'TeX-after-compilation-finished-functions
-            #'TeX-revert-document-buffer))
+(use-package typst-ts-mode
+  :ensure (:type git :host codeberg :repo "meow_king/typst-ts-mode"))
 
 (use-package jinx
   :ensure t
