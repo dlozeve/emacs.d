@@ -372,6 +372,7 @@
   (require 'casual-editkit)
   (require 'casual-image)
   (require 'casual-info)
+  (require 'casual-bibtex)
   :bind ( :map dired-mode-map
 	  ("C-o" . casual-dired-tmenu)
 	  ("s" . casual-dired-sort-by-tmenu)
@@ -383,7 +384,9 @@
 	  :map image-mode-map
 	  ("C-o" . casual-image-tmenu)
 	  :map Info-mode-map
-	  ("C-o" . casual-info-tmenu)))
+	  ("C-o" . casual-info-tmenu)
+	  :map bibtex-mode-map
+	  ("C-o" . casual-bibtex-tmenu)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Knowledge management: org-mode, org-roam, bibliography
