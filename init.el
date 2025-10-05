@@ -176,20 +176,21 @@
 ;; Theme configuration
 (use-package ef-themes
   :ensure t
+  :demand t
   :init
-  (setq ef-themes-mixed-fonts t)
-  (setq ef-themes-to-toggle '(ef-light ef-dark))
-  (mapc #'disable-theme custom-enabled-themes)
-  (load-theme 'ef-dark :no-confirm)
+  (modus-themes-include-derivatives-mode 1)
+  :config
+  (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-to-toggle '(ef-light ef-dark))
+  (modus-themes-load-theme 'ef-dark)
   (when (eq window-system 'ns)
     (defun dl/themes-toggle-with-system (appearance)
       "Load dark or light theme depending on system appearance on macOS."
-      (mapc #'disable-theme custom-enabled-themes)
       (pcase appearance
-	('light (load-theme 'ef-light :no-confirm))
-	('dark (load-theme 'ef-dark :no-confirm))))
+	('light (modus-themes-load-theme 'ef-light))
+	('dark (modus-themes-load-theme 'ef-dark))))
     (add-hook 'ns-system-appearance-change-functions #'dl/themes-toggle-with-system))
-  :bind ("<f12>" . ef-themes-toggle))
+  :bind ("<f12>" . modus-themes-toggle))
 
 (use-package diminish
   :ensure t
