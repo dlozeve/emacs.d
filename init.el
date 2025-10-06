@@ -466,16 +466,15 @@
        (alltodo "" nil))
       nil))))
   (org-capture-templates
-   (quote
-    (("t" "Task" entry
-      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
+   `(("t" "Task" entry
+      (file+olp ,(file-name-concat notes-dir "planner.org") "Inbox")
       "** TODO %?")
      ("n" "Note" entry
-      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
+      (file+olp ,(file-name-concat notes-dir "planner.org") "Inbox")
       "** %?")
      ("e" "Event" entry
-      (file+olp (file-name-concat notes-dir "planner.org") "Inbox")
-      "** %?\n%^T"))))
+      (file+olp ,(file-name-concat notes-dir "planner.org") "Inbox")
+      "** %?\n%^T")))
   (org-clock-persist 'history)
   (org-log-into-drawer t)
   (org-structure-template-alist
