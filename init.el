@@ -161,6 +161,8 @@
 
 (use-package project
   :ensure nil
+  :custom
+  (project-vc-extra-root-markers '("pyproject.toml" "Cargo.toml"))
   :config
   (keymap-set project-prefix-map "t" 'eat-project)
   (keymap-set project-prefix-map "RET" 'eat-project-other-window)
@@ -892,6 +894,10 @@
 
 (use-package pet
   :ensure t
+  :custom
+  (pet-find-file-functions '(pet-locate-dominating-file
+			     pet-find-file-from-project-root
+                             pet-find-file-from-project-root-recursively))
   :config
   ;; The -10 tells `add-hook' to makes sure the function is called as early as
   ;; possible whenever it is added to the hook variable
