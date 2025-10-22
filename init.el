@@ -183,14 +183,14 @@
   (modus-themes-include-derivatives-mode 1)
   :config
   (setq modus-themes-mixed-fonts t)
-  (setq modus-themes-to-toggle '(ef-light ef-dark))
-  (modus-themes-load-theme 'ef-dark)
+  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
+  (modus-themes-load-theme 'modus-vivendi)
   (when (eq window-system 'ns)
     (defun dl/themes-toggle-with-system (appearance)
       "Load dark or light theme depending on system appearance on macOS."
       (pcase appearance
-	('light (modus-themes-load-theme 'ef-light))
-	('dark (modus-themes-load-theme 'ef-dark))))
+	('light (modus-themes-load-theme 'modus-operandi))
+	('dark (modus-themes-load-theme 'modus-vivendi))))
     (add-hook 'ns-system-appearance-change-functions #'dl/themes-toggle-with-system))
   :bind ("<f12>" . modus-themes-toggle))
 
