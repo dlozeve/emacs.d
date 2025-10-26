@@ -769,7 +769,8 @@
 	       (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
 	       (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
 	       (typst "https://github.com/uben0/tree-sitter-typst")
-	       (kdl "https://github.com/tree-sitter-grammars/tree-sitter-kdl")))
+	       (kdl "https://github.com/tree-sitter-grammars/tree-sitter-kdl")
+	       (gleam "https://github.com/gleam-lang/tree-sitter-gleam")))
       (add-to-list 'treesit-language-source-alist grammar)
       ;; Only install `grammar' if we don't already have it
       ;; installed or if `update' is non-nil.
@@ -929,6 +930,10 @@
   :custom
   (graphviz-dot-indent-width 4)
   (graphviz-dot-preview-extension "svg"))
+
+(use-package gleam-ts-mode
+  :ensure t
+  :mode (rx ".gleam" eos))
 
 ;;; Natural languages
 
