@@ -855,7 +855,9 @@
   (setf (alist-get 'ormolu apheleia-formatters)
 	'("ormolu" "--stdin-input-file" filepath))
   (setf (alist-get 'haskell-mode apheleia-mode-alist)
-	'(ormolu)))
+	'(ormolu))
+  (setf (alist-get 'terraform apheleia-formatters)
+	'("tofu" "fmt" "-")))
 
 (use-package flymake-ruff
   :ensure t
