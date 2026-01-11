@@ -829,9 +829,11 @@
   (require 'git-link-transient))
 
 (use-package eglot
-  :ensure nil
+  :ensure t
   :hook
   (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode nil)))
+  :bind (:map eglot-mode-map
+	      ("<f7>" . eglot-momentary-inlay-hints))
   :custom
   (eglot-events-buffer-config '(:size 0 :format full))
   :config
