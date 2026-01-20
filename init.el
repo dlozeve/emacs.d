@@ -1087,5 +1087,13 @@
 (use-package gptel
   :ensure t)
 
+(use-package acp
+  :ensure (:host github :repo "xenodium/acp.el" :branch "main"))
+
+(use-package agent-shell
+  :ensure (:host github :repo "xenodium/agent-shell" :branch "main")
+  :custom
+  (agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config)))
+
 (message "Successfully loaded entire config!")
 ;;; init.el ends here
