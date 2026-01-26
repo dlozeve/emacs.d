@@ -159,6 +159,10 @@
 	 ([remap downcase-word] . downcase-dwim)
 	 ([remap capitalize-word] . capitalize-dwim)))
 
+(use-package ansi-color
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
 (use-package project
   :ensure nil
   :custom
