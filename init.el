@@ -122,7 +122,8 @@
 	ns-command-modifier 'meta)
 
   ;; Dired human readable sizes
-  (setq dired-listing-switches "-Alh")
+  (setq dired-listing-switches "-Alh"
+	dired-dwim-target t)
 
   ;; C mode configuration
   (setq-default c-basic-offset 2)
