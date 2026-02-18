@@ -167,7 +167,7 @@
 (use-package project
   :ensure nil
   :custom
-  (project-vc-extra-root-markers '("pyproject.toml" "Cargo.toml"))
+  (project-vc-extra-root-markers '("Cargo.toml"))
   :config
   (keymap-set project-prefix-map "t" 'eat-project)
   (keymap-set project-prefix-map "RET" 'eat-project-other-window)
@@ -834,7 +834,7 @@
   (require 'git-link-transient))
 
 (use-package eglot
-  :ensure t
+  :ensure nil
   :hook
   (eglot-managed-mode . (lambda () (eglot-inlay-hints-mode nil)))
   :bind (:map eglot-mode-map
@@ -842,7 +842,10 @@
   :custom
   (eglot-events-buffer-config '(:size 0 :format full))
   :config
-  (fset #'jsonrpc--log-event #'ignore))
+  (fset #'jsonrpc--log-event #'ignore)
+  (add-to-list 'eglot-server-programs
+	       '((python-mode python-ts-mode)
+		 . ("rass" "python"))))
 
 (use-package eldoc-box
   :ensure t
