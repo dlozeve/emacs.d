@@ -203,6 +203,9 @@
   :ensure t
   :diminish visual-line-mode)
 
+(use-package nyan-mode
+  :ensure t)
+
 (use-package ultra-scroll
   :ensure (:host github :repo "jdtsmith/ultra-scroll" :branch "main")
   :custom
