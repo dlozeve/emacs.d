@@ -884,6 +884,11 @@
   :ensure t
   :hook (python-mode . flymake-ruff-load))
 
+(use-package uniline
+  :ensure t
+  :custom
+  (uniline-key-insert '("<f9>")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Programming languages modes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
