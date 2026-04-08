@@ -95,6 +95,16 @@
   (setq display-time-24hr-format t)
   (display-time-mode 1)
 
+  ;; Performance tweaks
+  ;; Disable bidirectional text scanning
+  (setq-default bidi-display-reordering 'left-to-right
+		bidi-paragraph-direction 'left-to-right)
+  (setq bidi-inhibit-bpa t)
+  ;; Skip fontification during input
+  (setq redisplay-skip-fontification-on-input t)
+  ;; Increase process output buffer
+  (setq read-process-output-max (* 4 1024 1024)) ; 4MB
+
   ;; Behavior configuration
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8)
@@ -105,6 +115,8 @@
   (setq split-height-threshold 100)
   (setq view-read-only t)
   (setq buffer-save-without-query t)
+  ;; Auto-select help window
+  (setq help-window-select t)
   ;; Newline at end of file
   (setq require-final-newline t)
   ;; TAB cycle if there are only few candidates
@@ -113,6 +125,12 @@
   ;; the weekdays in the time stamps of your Org mode files and in the
   ;; agenda appear in English.
   (setq system-time-locale "C")
+
+  ;; Kill ring
+  ;; Save the clipboard before killing
+  (setq save-interprogram-paste-before-kill t)
+  ;; No duplicates in the kill ring
+  (setq kill-do-not-save-duplicates t)
 
   ;; Enable disabled commands
   (put 'narrow-to-region 'disabled nil)
@@ -1096,9 +1114,7 @@
   (setopt eat-very-visible-cursor-type '(t nil nil))
   (setopt eat-default-cursor-type '(t nil nil))
   (setq eshell-visual-commands '())
-  (add-hook 'eshell-load-hook #'eat-eshell-mode)
-  (setq process-adaptive-read-buffering nil)
-  (setq read-process-output-max (* 4 1024 1024)))
+  (add-hook 'eshell-load-hook #'eat-eshell-mode))
 
 
 ;; configuration file for secrets (API keys, etc)
