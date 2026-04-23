@@ -902,6 +902,10 @@
   :ensure t
   :hook (python-mode . flymake-ruff-load))
 
+(use-package comment-dwim-2
+  :ensure t
+  :bind ("M-;" . comment-dwim-2))
+
 (use-package uniline
   :ensure t
   :custom
