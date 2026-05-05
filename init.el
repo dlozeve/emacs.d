@@ -891,6 +891,25 @@
 	'(ruff))
   (setf (alist-get 'python-mode apheleia-mode-alist)
 	'(ruff))
+  (dolist (mode '(css-mode
+		  css-ts-mode
+		  graphql-mode
+		  html-mode
+		  html-ts-mode
+		  js3-mode
+		  js-json-mode
+		  js-mode
+		  js-ts-mode
+		  json-mode
+		  json-ts-mode
+		  scss-mode
+		  tsx-ts-mode
+		  typescript-mode
+		  typescript-ts-mode
+		  web-mode
+		  yaml-mode
+		  yaml-ts-mode))
+    (setf (alist-get mode apheleia-mode-alist) '(oxfmt)))
   (setf (alist-get 'ormolu apheleia-formatters)
 	'("ormolu" "--stdin-input-file" filepath))
   (setf (alist-get 'haskell-mode apheleia-mode-alist)
