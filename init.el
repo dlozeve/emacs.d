@@ -237,7 +237,7 @@
 (use-package exec-path-from-shell
   :ensure t
   :init
-  (setq exec-path-from-shell-arguments '("-l"))
+  (setq exec-path-from-shell-arguments '("-i"))
   :config
   (setenv "SSH_AUTH_SOCK" (file-name-concat (getenv "XDG_RUNTIME_DIR") "ssh-agent.socket"))
   (when (memq window-system '(mac ns x pgtk))
