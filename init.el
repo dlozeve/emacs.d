@@ -81,6 +81,10 @@
                      (abbreviate-file-name (buffer-file-name))
                    "%b"))))
 
+  ;; Transparency
+  (set-frame-parameter nil 'alpha-background 90) ; For current frame
+  (add-to-list 'default-frame-alist '(alpha-background . 90)) ; For all new frames henceforth
+
   ;; Font configuration
   (let ((my-font "Iosevka Term")
 	(my-height (if (eq window-system 'ns) 130 120)))
