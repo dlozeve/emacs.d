@@ -247,6 +247,9 @@
 
 ;;; Menus and completion
 
+(use-package compat
+  :ensure t)
+
 (use-package vertico
   :ensure t
   :init
