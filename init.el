@@ -185,7 +185,7 @@
 (use-package project
   :ensure nil
   :custom
-  (project-vc-extra-root-markers '("Cargo.toml"))
+  (project-vc-extra-root-markers '(".project.el"))
   :config
   (keymap-set project-prefix-map "t" 'eat-project)
   (keymap-set project-prefix-map "RET" 'eat-project-other-window)
